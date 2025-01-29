@@ -1,6 +1,7 @@
 package com.backendchallenge.plazoletaservice.application.http.handler;
 
 import com.backendchallenge.plazoletaservice.application.http.dto.CreateDishRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.UpdateDishRequest;
 import com.backendchallenge.plazoletaservice.application.http.mapper.ICreateDishRequestMapper;
 import com.backendchallenge.plazoletaservice.domain.api.IDishServicePort;
 import com.backendchallenge.plazoletaservice.domain.model.Dish;
@@ -34,5 +35,15 @@ class DishHandlerTest {
 
         verify(dishServicePort, times(1)).createDish(dish, ConstTest.ID_TEST);
     }
+    @Test
+    void updateDish_Success() {
+        UpdateDishRequest request = new UpdateDishRequest();
+        request.setDishId(ConstTest.ID_TEST);
+        request.setDescriptionUpdate(ConstTest.DISH_DESCRIPTION_TEST);
+        request.setPriceUpdate(ConstTest.DISH_PRICE_TEST);
 
+        dishHandler.updateDish(request);
+
+        verify(dishServicePort, times(1)).updateDish(ConstTest.ID_TEST, ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_PRICE_TEST);
+    }
 }
