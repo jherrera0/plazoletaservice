@@ -1,6 +1,6 @@
 package com.backendchallenge.plazoletaservice.infrastructure.configuration.excepcionhandler;
 
-import com.backendchallenge.plazoletaservice.domain.exceptions.*;
+import com.backendchallenge.plazoletaservice.domain.exceptions.restaurantexceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

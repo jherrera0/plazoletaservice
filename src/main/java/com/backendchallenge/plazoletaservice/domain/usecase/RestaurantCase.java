@@ -1,7 +1,7 @@
 package com.backendchallenge.plazoletaservice.domain.usecase;
 
 import com.backendchallenge.plazoletaservice.domain.api.IRestaurantServicePort;
-import com.backendchallenge.plazoletaservice.domain.exceptions.*;
+import com.backendchallenge.plazoletaservice.domain.exceptions.restaurantexceptions.*;
 import com.backendchallenge.plazoletaservice.domain.model.Restaurant;
 import com.backendchallenge.plazoletaservice.domain.spi.IUserPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IRestaurantPersistencePort;

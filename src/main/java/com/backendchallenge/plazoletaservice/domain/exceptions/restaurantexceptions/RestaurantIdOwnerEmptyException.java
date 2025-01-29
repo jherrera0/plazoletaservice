@@ -1,4 +1,4 @@
-package com.backendchallenge.plazoletaservice.domain.exceptions;
+package com.backendchallenge.plazoletaservice.domain.exceptions.restaurantexceptions;
 
 import com.backendchallenge.plazoletaservice.domain.until.ConstExceptions;
 

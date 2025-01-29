@@ -1,6 +1,6 @@
 package com.backendchallenge.plazoletaservice.infrastructure.configuration.excepcionhandler;
 
-import com.backendchallenge.plazoletaservice.domain.exceptions.*;
+import com.backendchallenge.plazoletaservice.domain.exceptions.restaurantexceptions.*;
 import com.backendchallenge.plazoletaservice.domain.until.ConstExceptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
