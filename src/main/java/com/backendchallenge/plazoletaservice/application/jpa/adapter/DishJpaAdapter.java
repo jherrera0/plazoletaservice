@@ -1,8 +1,10 @@
 package com.backendchallenge.plazoletaservice.application.jpa.adapter;
 
 import com.backendchallenge.plazoletaservice.application.jpa.entity.DishEntity;
+import com.backendchallenge.plazoletaservice.application.jpa.entity.RestaurantEntity;
 import com.backendchallenge.plazoletaservice.application.jpa.mapper.IDishEntityMapper;
 import com.backendchallenge.plazoletaservice.application.jpa.repository.IDishRepository;
+import com.backendchallenge.plazoletaservice.application.jpa.repository.IRestaurantRepository;
 import com.backendchallenge.plazoletaservice.domain.model.Dish;
 import com.backendchallenge.plazoletaservice.domain.spi.IDishPersistencePort;
 import lombok.RequiredArgsConstructor;
@@ -10,10 +12,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DishJpaAdapter implements IDishPersistencePort {
     private final IDishRepository dishRepository;
+    private final IRestaurantRepository restaurantRepository;
     private final IDishEntityMapper dishEntityMapper;
     @Override
-    public void createDish(Dish dish, Long idOwner) {
+    public Boolean createDish(Dish dish) {
         DishEntity dishEntity = dishEntityMapper.toEntity(dish);
-        dishRepository.save(dishEntity);
+        dishEntity.setRestaurant(restaurantRepository.findById(dish.getIdRestaurant()).orElse(new RestaurantEntity()));
+        if(dishEntity.getRestaurant().getId() != null) {
+            dishRepository.save(dishEntity);
+            return true;
+        }
+        return false;
     }
 }

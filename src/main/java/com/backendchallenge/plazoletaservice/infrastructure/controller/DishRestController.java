@@ -25,7 +25,7 @@ public class DishRestController {
             @ApiResponse(responseCode = ConstDocumentation.CODE_400, description = ConstDocumentation.CREATE_DISH_CODE_400),
     })
     @PostMapping(ConstRoute.CREATE_DISH)
-    public void createDish(@RequestBody @Valid CreateDishRequest request, Long ownerId) {
+    public void createDish(@RequestBody @Valid CreateDishRequest request, @RequestParam Long ownerId) {
         dishHandler.createDish(request,ownerId);
     }
 }

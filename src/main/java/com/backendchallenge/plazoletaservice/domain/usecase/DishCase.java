@@ -33,7 +33,9 @@ public class DishCase implements IDishServicePort {
             throw new RestaurantNotFoundException();
         }
         validatedDishParams(dish);
-        dishPersistencePort.createDish(dish, idOwner);
+        if (!Boolean.TRUE.equals(dishPersistencePort.createDish(dish))) {
+            throw new RestaurantNotFoundException();
+        }
     }
 
     private static void validatedDishParams(Dish dish) {
