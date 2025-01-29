@@ -30,6 +30,10 @@ public class ConstTest {
     public static final String DISH_CATEGORY_EMPTY = "";
     public static final Integer DISH_PRICE_INVALID = -1;
 
+    public static final String FIELD1 = "field1";
+    public static final String FIELD2 = "field2";
+    public static final String ERROR1 = "error1";
+    public static final String ERROR2 = "error2";
     private ConstTest() {
     }
 }

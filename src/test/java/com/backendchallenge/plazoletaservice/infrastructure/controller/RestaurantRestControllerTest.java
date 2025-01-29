@@ -40,16 +40,22 @@ class RestaurantRestControllerTest {
         closeable.close();
     }
 
+
     @Test
     void createRestaurant_withValidRequest_shouldReturnStatusOk() throws Exception {
         CreateRestaurantRequest request = new CreateRestaurantRequest();
-        // Set valid request fields here
+        request.setIdOwner(ConstTest.ID_TEST);
+        request.setName(ConstTest.NAME_TEST);
+        request.setNit(ConstTest.NIT_TEST);
+        request.setAddress(ConstTest.ADDRESS_TEST);
+        request.setPhone(ConstTest.PHONE_TEST);
+        request.setUrlLogo(ConstTest.URL_LOGO_TEST);
 
         doNothing().when(restaurantHandler).createRestaurant(request);
 
         mockMvc.perform(post(ConstRoute.RESTAURANT + ConstRoute.CREATE_RESTAURANT)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"ownerId\":\""+ ConstTest.ID_TEST +"\"}"))
+                        .content("{\"ownerId\":\"" + ConstTest.ID_TEST + "\", \"name\":\"Valid Name\", \"nit\":\"Valid NIT\", \"address\":\"Valid Address\", \"phone\":\"Valid Phone\", \"urlLogo\":\"http://valid.url/logo.png\"}"))
                 .andExpect(status().isOk());
     }
 }
