@@ -17,7 +17,7 @@ public class RestaurantCase implements IRestaurantServicePort {
     }
 
     @Override
-    public void CreateRestaurant(Restaurant restaurant) {
+    public void createRestaurant(Restaurant restaurant) {
         validatedRestaurantParams(restaurant);
         if (!feignUserPersistencePort.findOwnerById(restaurant.getIdOwner())) {
             throw new OwnerNotFoundException();
