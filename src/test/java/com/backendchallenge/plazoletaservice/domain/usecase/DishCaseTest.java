@@ -12,6 +12,7 @@ import com.backendchallenge.plazoletaservice.domain.until.ConstTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -171,5 +172,33 @@ class DishCaseTest {
         when(dishPersistencePort.createDish(dish)).thenReturn(false);
 
         assertThrows(RestaurantNotFoundException.class, () -> dishServicePort.createDish(dish, ConstTest.ID_TEST));
+    }
+
+    @Test
+    void updateDish_withValidParams_shouldSucceed() {
+        when(dishPersistencePort.findDishById(ConstTest.ID_TEST)).thenReturn(true);
+
+        assertDoesNotThrow(() -> dishServicePort.updateDish(ConstTest.ID_TEST, ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_PRICE_TEST));
+    }
+
+    @Test
+    void updateDish_withInvalidDishId_shouldThrowDishNotFoundException() {
+        when(dishPersistencePort.findDishById(ConstTest.ID_TEST)).thenReturn(false);
+
+        assertThrows(DishNotFoundException.class, () -> dishServicePort.updateDish(ConstTest.ID_TEST, ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_PRICE_TEST));
+    }
+
+    @Test
+    void updateDish_withEmptyDescription_shouldThrowDishDescriptionUpdateEmptyException() {
+        when(dishPersistencePort.findDishById(ConstTest.ID_TEST)).thenReturn(true);
+
+        assertThrows(DishDescriptionUpdateEmptyException.class, () -> dishServicePort.updateDish(ConstTest.ID_TEST, ConstTest.DISH_DESCRIPTION_EMPTY, ConstTest.DISH_PRICE_TEST));
+    }
+
+    @Test
+    void updateDish_withNullPrice_shouldThrowDishPriceUpdateEmptyException() {
+        when(dishPersistencePort.findDishById(ConstTest.ID_TEST)).thenReturn(true);
+
+        assertThrows(DishPriceUpdateEmptyException.class, () -> dishServicePort.updateDish(ConstTest.ID_TEST, ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_PRICE_NULL));
     }
 }

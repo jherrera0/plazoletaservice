@@ -34,6 +34,8 @@ public class ConstTest {
     public static final String FIELD2 = "field2";
     public static final String ERROR1 = "error1";
     public static final String ERROR2 = "error2";
+
+
     private ConstTest() {
     }
 }
