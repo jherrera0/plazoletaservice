@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -25,7 +27,8 @@ public class DishRestController {
             @ApiResponse(responseCode = ConstDocumentation.CODE_400, description = ConstDocumentation.CREATE_DISH_CODE_400),
     })
     @PostMapping(ConstRoute.CREATE_DISH)
-    public void createDish(@RequestBody @Valid CreateDishRequest request, @RequestParam Long ownerId) {
+    public ResponseEntity<Object> createDish(@RequestBody @Valid CreateDishRequest request, @RequestParam Long ownerId) {
         dishHandler.createDish(request,ownerId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
