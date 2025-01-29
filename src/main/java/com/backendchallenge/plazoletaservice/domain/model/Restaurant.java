@@ -1,6 +1,7 @@
 package com.backendchallenge.plazoletaservice.domain.model;
 
 public class Restaurant {
+    private Long id;
     private String name;
     private String nit;
     private String address;
@@ -11,13 +12,23 @@ public class Restaurant {
     public Restaurant() {
     }
 
-    public Restaurant(String name, String nit, String address, String phone, String urlLogo, Long idOwner) {
+    public Restaurant(Long id, String name, String nit, String address, String phone, String urlLogo, Long idOwner) {
+        this.id = id;
         this.name = name;
         this.nit = nit;
         this.address = address;
         this.phone = phone;
         this.urlLogo = urlLogo;
         this.idOwner = idOwner;
+    }
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
