@@ -26,6 +26,10 @@ public class ConstExceptions {
     public static final String DISH_CATEGORY_EMPTY = "Dish category cannot be empty";
     public static final String DISH_PRICE_INVALID_VALUE = "Dish price is invalid";
 
+    public static final String DISH_DESCRIPTION_UPDATE_EMPTY = "Dish description update cannot be empty";
+    public static final String DISH_PRICE_UPDATE_EMPTY = "Dish price update cannot be empty";
+    public static final String DISH_NOT_FOUND = "Dish not found";
+
     private ConstExceptions() {
     }
 }
