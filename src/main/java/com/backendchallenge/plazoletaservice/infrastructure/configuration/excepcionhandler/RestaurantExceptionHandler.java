@@ -1,6 +1,6 @@
 package com.backendchallenge.plazoletaservice.infrastructure.configuration.excepcionhandler;
 
-import com.backendchallenge.plazoletaservice.domain.exceptions.*;
+import com.backendchallenge.plazoletaservice.domain.exceptions.restaurantexceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -58,6 +58,11 @@ public class RestaurantExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(RestaurantUrlLogoEmptyException.class)
     public ResponseEntity<Object> handleRestaurantUrlLogoEmptyException(RestaurantUrlLogoEmptyException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(RestaurantNotFoundException.class)
+    public ResponseEntity<Object> handleRestaurantNotFoundException(RestaurantNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
 }

@@ -8,6 +8,7 @@ import com.backendchallenge.plazoletaservice.domain.until.ConstTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class RestaurantJpaAdapterTest {
@@ -42,5 +43,21 @@ class RestaurantJpaAdapterTest {
 
         verify(restaurantRepository, times(1)).save(restaurantEntity);
     }
+    @Test
+    void existsRestaurantByIdAndOwner_returnsTrueWhenExists() {
+        when(restaurantRepository.existsByIdAndIdOwner(ConstTest.ID_TEST, ConstTest.ID_TEST)).thenReturn(true);
 
+        boolean result = restaurantJpaAdapter.existsRestaurantByIdAndOwner(ConstTest.ID_TEST, ConstTest.ID_TEST);
+
+        assertTrue(result);
+    }
+
+    @Test
+    void existsRestaurantByIdAndOwner_returnsFalseWhenNotExists() {
+        when(restaurantRepository.existsByIdAndIdOwner(ConstTest.ID_TEST, ConstTest.ID_TEST)).thenReturn(false);
+
+        boolean result = restaurantJpaAdapter.existsRestaurantByIdAndOwner(ConstTest.ID_TEST, ConstTest.ID_TEST);
+
+        assertFalse(result);
+    }
 }

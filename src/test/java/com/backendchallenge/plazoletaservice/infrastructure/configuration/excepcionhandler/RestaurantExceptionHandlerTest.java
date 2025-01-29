@@ -1,6 +1,6 @@
 package com.backendchallenge.plazoletaservice.infrastructure.configuration.excepcionhandler;
 
-import com.backendchallenge.plazoletaservice.domain.exceptions.*;
+import com.backendchallenge.plazoletaservice.domain.exceptions.restaurantexceptions.*;
 import com.backendchallenge.plazoletaservice.domain.until.ConstExceptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -116,5 +116,13 @@ class RestaurantExceptionHandlerTest {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals(ConstExceptions.RESTAURANT_URL_LOGO_EMPTY, response.getBody());
     }
+    @Test
+    void handleRestaurantNotFoundException_ReturnsNotFound() {
+        RestaurantNotFoundException exception = new RestaurantNotFoundException();
 
+        ResponseEntity<Object> response = handler.handleRestaurantNotFoundException(exception);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals(exception.getMessage(), response.getBody());
+    }
 }

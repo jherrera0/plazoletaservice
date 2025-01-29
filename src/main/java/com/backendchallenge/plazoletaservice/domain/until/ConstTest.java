@@ -12,6 +12,24 @@ public class ConstTest {
     public static final String INVALID_NAME_TEST = "Invalid@Name";
     public static final String INVALID_PHONE_TEST = "InvalidPhone";
     public static final String INVALID_NIT_TEST = "InvalidNIT";
+
+    public static final String DISH_NAME_TEST = "Test Dish";
+    public static final Integer DISH_PRICE_TEST = 10000;
+    public static final String DISH_CATEGORY_TEST = "Test Category";
+    public static final String DISH_URL_IMAGE_TEST = "http://test.com/dish.png";
+    public static final String DISH_DESCRIPTION_TEST = "Test Description";
+
+    public static final String OWNER_ID_TEST = "100";
+    public static final String OWNER_NAME_LABEL = "ownerId";
+
+
+    public static final String DISH_NAME_EMPTY = "";
+    public static final Integer DISH_PRICE_NULL = null;
+    public static final String DISH_DESCRIPTION_EMPTY = "";
+    public static final String DISH_URL_IMAGE_EMPTY = "";
+    public static final String DISH_CATEGORY_EMPTY = "";
+    public static final Integer DISH_PRICE_INVALID = -1;
+
     private ConstTest() {
     }
 }
