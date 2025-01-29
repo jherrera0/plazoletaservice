@@ -11,5 +11,4 @@ import org.mapstruct.ReportingPolicy;
 
 public interface ICreateRestaurantRequestMapper {
     Restaurant toDomain(CreateRestaurantRequest createRestaurantRequest);
-
 }

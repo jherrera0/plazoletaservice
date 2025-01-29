@@ -5,14 +5,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.io.Serializable;
 
 @Entity
 @RequiredArgsConstructor
-@NoArgsConstructor
 @Data
 public class RestaurantEntity implements Serializable {
     @Id

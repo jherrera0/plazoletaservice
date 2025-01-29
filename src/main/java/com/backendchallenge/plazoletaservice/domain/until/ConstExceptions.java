@@ -13,6 +13,11 @@ public class ConstExceptions {
     public static final String INVALID_RESTAURANT_NAME_FORMAT = "Restaurant name format is invalid";
     public static final String OWNER_NOT_FOUND = "Owner with this id is not found";
 
+    public static final int CODE_400 = 400;
+    public static final int CODE_404 = 404;
+    public static final int CODE_302 = 302;
+    public static final int CODE_500 = 500;
+
     private ConstExceptions() {
     }
 }

@@ -1,11 +1,12 @@
 package com.backendchallenge.plazoletaservice.application.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.cloud.openfeign.FeignClientsConfiguration;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "user-service", url = "http://localhost:8080",configuration = FeignClientsConfiguration.class)
+@FeignClient(name = "user-service", url = "http://localhost:8080")
 public interface IFeignUserClient {
-    @GetMapping("/users/findOwnerById")
-    boolean findOwnerById(Long ownerId);
+
+    @GetMapping("/user/FindOwnerById")
+    boolean findOwnerById(@RequestParam("ownerId") Long ownerId);
 }

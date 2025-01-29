@@ -9,17 +9,17 @@ import com.backendchallenge.plazoletaservice.domain.until.ConstValidation;
 
 public class RestaurantCase implements IRestaurantServicePort {
     private final IRestaurantPersistencePort restaurantPersistencePort;
-    private final IUserPersistencePort feignUserPersistencePort;
+    private final IUserPersistencePort userPersistencePort;
 
-    public RestaurantCase(IRestaurantPersistencePort restaurantPersistencePort, IUserPersistencePort feignUserPersistencePort) {
+    public RestaurantCase(IRestaurantPersistencePort restaurantPersistencePort, IUserPersistencePort userPersistencePort) {
         this.restaurantPersistencePort = restaurantPersistencePort;
-        this.feignUserPersistencePort = feignUserPersistencePort;
+        this.userPersistencePort = userPersistencePort;
     }
 
     @Override
     public void createRestaurant(Restaurant restaurant) {
         validatedRestaurantParams(restaurant);
-        if (!feignUserPersistencePort.findOwnerById(restaurant.getIdOwner())) {
+        if (!userPersistencePort.findOwnerById(restaurant.getIdOwner())) {
             throw new OwnerNotFoundException();
         }
         restaurantPersistencePort.createRestaurant(restaurant);
