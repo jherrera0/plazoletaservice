@@ -5,4 +5,5 @@ import com.backendchallenge.plazoletaservice.domain.model.Restaurant;
 public interface IRestaurantPersistencePort {
     void createRestaurant(Restaurant restaurant);
     boolean existsRestaurantByIdAndOwner(Long idRestaurant, Long idOwner);
+    
 }
