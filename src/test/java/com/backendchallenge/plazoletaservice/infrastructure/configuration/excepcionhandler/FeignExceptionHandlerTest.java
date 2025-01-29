@@ -1,9 +1,7 @@
 package com.backendchallenge.plazoletaservice.infrastructure.configuration.excepcionhandler;
 
 import com.backendchallenge.plazoletaservice.domain.until.ConstExceptions;
-import feign.Request;
 import feign.Response;
-import feign.codec.ErrorDecoder;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,15 +29,11 @@ class FeignExceptionHandlerTest {
     @Mock
     private Response response;
 
-    @Mock
-    private ErrorDecoder defaultErrorDecoder;
-
     private AutoCloseable closeable;
     @BeforeEach
     void setUp() {
         response = mock(Response.class);
         responseBody = mock(Response.Body.class);
-        request = mock(Request.class);
         closeable = MockitoAnnotations.openMocks(this);
     }
 

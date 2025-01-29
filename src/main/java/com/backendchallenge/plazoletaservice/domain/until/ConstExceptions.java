@@ -16,7 +16,6 @@ public class ConstExceptions {
     public static final int CODE_400 = 400;
     public static final int CODE_404 = 404;
     public static final int CODE_302 = 302;
-    public static final int CODE_500 = 500;
 
     private ConstExceptions() {
     }
