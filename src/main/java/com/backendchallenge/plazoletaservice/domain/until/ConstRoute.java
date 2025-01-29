@@ -1,10 +1,12 @@
 package com.backendchallenge.plazoletaservice.domain.until;
 
-public class ConstRute {
+public class ConstRoute {
 
     public static final String RESTAURANT = "/restaurant";
     public static final String CREATE_RESTAURANT = "/CREATE_RESTAURANT";
+    public static final String DISH = "/dish";
+    public static final String CREATE_DISH = "/CREATE_DISH";
 
-    private ConstRute() {
+    private ConstRoute() {
     }
 }

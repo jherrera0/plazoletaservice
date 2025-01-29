@@ -2,7 +2,7 @@ package com.backendchallenge.plazoletaservice.infrastructure.controller;
 
 import com.backendchallenge.plazoletaservice.application.http.dto.CreateRestaurantRequest;
 import com.backendchallenge.plazoletaservice.application.http.handler.interfaces.IRestaurantHandler;
-import com.backendchallenge.plazoletaservice.domain.until.ConstRute;
+import com.backendchallenge.plazoletaservice.domain.until.ConstRoute;
 import com.backendchallenge.plazoletaservice.domain.until.ConstTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,7 +47,7 @@ class RestaurantRestControllerTest {
 
         doNothing().when(restaurantHandler).createRestaurant(request);
 
-        mockMvc.perform(post(ConstRute.RESTAURANT + ConstRute.CREATE_RESTAURANT)
+        mockMvc.perform(post(ConstRoute.RESTAURANT + ConstRoute.CREATE_RESTAURANT)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"ownerId\":\""+ ConstTest.ID_TEST +"\"}"))
                 .andExpect(status().isOk());
