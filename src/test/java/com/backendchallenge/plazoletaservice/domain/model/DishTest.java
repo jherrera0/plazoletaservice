@@ -30,6 +30,7 @@ class DishTest {
         dish.setDescription(ConstTest.DISH_DESCRIPTION_TEST);
         dish.setUrlImage(ConstTest.DISH_URL_IMAGE_TEST);
         dish.setCategory(ConstTest.DISH_CATEGORY_TEST);
+        dish.setAvailable(ConstTest.AVAILABLE_TEST);
 
         assertEquals(ConstTest.ID_TEST, dish.getId());
         assertEquals(ConstTest.ID_TEST, dish.getIdRestaurant());
@@ -38,6 +39,7 @@ class DishTest {
         assertEquals(ConstTest.DISH_DESCRIPTION_TEST, dish.getDescription());
         assertEquals(ConstTest.DISH_URL_IMAGE_TEST, dish.getUrlImage());
         assertEquals(ConstTest.DISH_CATEGORY_TEST, dish.getCategory());
+        assertEquals(ConstTest.AVAILABLE_TEST, dish.getAvailable());
     }
 
     @Test

@@ -20,6 +20,7 @@ public class DishEntity implements Serializable {
     private String description;
     private String urlImage;
     private String category;
+    private Boolean available;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private RestaurantEntity restaurant;
