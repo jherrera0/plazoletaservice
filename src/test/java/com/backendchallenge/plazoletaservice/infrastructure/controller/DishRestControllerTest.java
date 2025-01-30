@@ -1,6 +1,7 @@
 package com.backendchallenge.plazoletaservice.infrastructure.controller;
 
 import com.backendchallenge.plazoletaservice.application.http.dto.CreateDishRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.UpdateDishRequest;
 import com.backendchallenge.plazoletaservice.application.http.handler.interfaces.IDishHandler;
 import com.backendchallenge.plazoletaservice.domain.until.ConstRoute;
 import com.backendchallenge.plazoletaservice.domain.until.ConstTest;
@@ -13,6 +14,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class DishRestControllerTest {
@@ -50,6 +52,30 @@ class DishRestControllerTest {
                                 ConstTest.DISH_URL_IMAGE_TEST,
                                 ConstTest.DISH_CATEGORY_TEST))
                         .param(ConstTest.OWNER_NAME_LABEL, ConstTest.OWNER_ID_TEST))
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    void updateDish_withValidRequest_shouldReturnStatusCreated() throws Exception {
+        UpdateDishRequest request = new UpdateDishRequest();
+        request.setDishId(ConstTest.ID_TEST);
+        request.setPriceUpdate(ConstTest.DISH_PRICE_TEST);
+        request.setDescriptionUpdate(ConstTest.DISH_DESCRIPTION_TEST);
+
+        doNothing().when(dishHandler).updateDish(request);
+
+        mockMvc.perform(put(ConstRoute.DISH + ConstRoute.UPDATE_DISH)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(String.format("""
+                            {
+                                "dishId": %d,
+                                "priceUpdate": %d,
+                                "descriptionUpdate": "%s"
+                            }
+                            """,
+                                ConstTest.ID_TEST,
+                                ConstTest.DISH_PRICE_TEST,
+                                ConstTest.DISH_DESCRIPTION_TEST)))
                 .andExpect(status().isCreated());
     }
 }

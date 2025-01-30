@@ -1,6 +1,7 @@
 package com.backendchallenge.plazoletaservice.application.http.handler;
 
 import com.backendchallenge.plazoletaservice.application.http.dto.CreateDishRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.UpdateDishRequest;
 import com.backendchallenge.plazoletaservice.application.http.handler.interfaces.IDishHandler;
 import com.backendchallenge.plazoletaservice.application.http.mapper.ICreateDishRequestMapper;
 import com.backendchallenge.plazoletaservice.domain.api.IDishServicePort;
@@ -12,8 +13,14 @@ import org.springframework.stereotype.Service;
 public class DishHandler implements IDishHandler {
     private final IDishServicePort dishServicePort;
     private final ICreateDishRequestMapper createDishRequestMapper;
+
     @Override
     public void createDish(CreateDishRequest request, Long ownerId) {
         dishServicePort.createDish(createDishRequestMapper.toDomain(request), ownerId);
+    }
+
+    @Override
+    public void updateDish(UpdateDishRequest request) {
+        dishServicePort.updateDish(request.getDishId(),request.getDescriptionUpdate(),request.getPriceUpdate());
     }
 }

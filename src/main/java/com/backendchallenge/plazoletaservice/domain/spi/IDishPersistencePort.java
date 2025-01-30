@@ -4,4 +4,7 @@ import com.backendchallenge.plazoletaservice.domain.model.Dish;
 
 public interface IDishPersistencePort {
     Boolean createDish(Dish dish);
+    boolean findDishById(Long idDish);
+
+    void updateDish(Long idDish, String descriptionUpdate, Integer priceUpdate);
 }

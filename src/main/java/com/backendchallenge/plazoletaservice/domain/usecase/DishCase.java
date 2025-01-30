@@ -38,6 +38,24 @@ public class DishCase implements IDishServicePort {
         }
     }
 
+    @Override
+    public void updateDish(Long idDish, String descriptionUpdate, Integer priceUpdate) {
+        if (!dishPersistencePort.findDishById(idDish)){
+            throw new DishNotFoundException();
+        }
+        updateValidatedParams(descriptionUpdate, priceUpdate);
+        dishPersistencePort.updateDish(idDish, descriptionUpdate, priceUpdate);
+    }
+
+    private static void updateValidatedParams(String descriptionUpdate,Integer priceUpdate) {
+        if(descriptionUpdate == null || descriptionUpdate.isBlank()) {
+            throw new DishDescriptionUpdateEmptyException();
+        }
+        if(priceUpdate == null) {
+            throw new DishPriceUpdateEmptyException();
+        }
+    }
+
     private static void validatedDishParams(Dish dish) {
         if (dish.getName() == null || dish.getName().isBlank()) {
             throw new DishNameEmptyException();

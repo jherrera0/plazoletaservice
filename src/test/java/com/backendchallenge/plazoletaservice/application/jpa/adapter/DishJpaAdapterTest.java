@@ -62,4 +62,44 @@ class DishJpaAdapterTest {
     void createDish_throwsExceptionWhenDishIsNull() {
         assertThrows(NullPointerException.class, () -> dishJpaAdapter.createDish(null));
     }
+    @Test
+    void findDishById_returnsTrueWhenDishExists() {
+        when(dishRepository.existsById(ConstTest.ID_TEST)).thenReturn(true);
+
+        boolean result = dishJpaAdapter.findDishById(ConstTest.ID_TEST);
+
+        assertTrue(result);
+    }
+
+    @Test
+    void findDishById_returnsFalseWhenDishDoesNotExist() {
+        when(dishRepository.existsById(ConstTest.ID_TEST)).thenReturn(false);
+
+        boolean result = dishJpaAdapter.findDishById(ConstTest.ID_TEST);
+
+        assertFalse(result);
+    }
+
+    @Test
+    void updateDish_updatesDishSuccessfully() {
+        DishEntity dishEntity = new DishEntity();
+        dishEntity.setId(ConstTest.ID_TEST);
+
+        when(dishRepository.findById(ConstTest.ID_TEST)).thenReturn(java.util.Optional.of(dishEntity));
+
+        dishJpaAdapter.updateDish(ConstTest.ID_TEST, ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_PRICE_TEST);
+
+        verify(dishRepository, times(1)).save(dishEntity);
+        assertEquals(ConstTest.DISH_DESCRIPTION_TEST, dishEntity.getDescription());
+        assertEquals(ConstTest.DISH_PRICE_TEST, dishEntity.getPrice());
+    }
+
+    @Test
+    void updateDish_doesNotUpdateWhenDishNotFound() {
+        when(dishRepository.findById(ConstTest.ID_TEST)).thenReturn(java.util.Optional.empty());
+
+        dishJpaAdapter.updateDish(ConstTest.ID_TEST, ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_PRICE_TEST);
+
+        verify(dishRepository, never()).save(any(DishEntity.class));
+    }
 }

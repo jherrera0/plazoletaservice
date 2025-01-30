@@ -17,6 +17,15 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class DishExceptionHandler  extends ResponseEntityExceptionHandler {
+    @ExceptionHandler(DishPriceUpdateEmptyException.class)
+    public ResponseEntity<Object> handleDishPriceUpdateEmptyException(DishPriceUpdateEmptyException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(DishDescriptionEmptyException.class)
+    public ResponseEntity<Object> handleDishCategoryUpdateEmptyException(DishDescriptionEmptyException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
 
     @ExceptionHandler(DishCategoryEmptyException.class)
     public ResponseEntity<Object> handleDishCategoryEmptyException(DishCategoryEmptyException ex) {

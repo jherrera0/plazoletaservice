@@ -15,6 +15,9 @@ public class ConstDocumentation {
     public static final String CREATE_DISH_OPERATION = "Create a new dish";
     public static final String CREATE_DISH_CODE_201 = "Dish created successfully";
     public static final String CREATE_DISH_CODE_400 = "Invalid data to request create dish";
+    public static final String UPDATE_DISH_OPERATION = "Update a dish";
+    public static final String UPDATE_DISH_CODE_201 = "Dish updated successfully";
+    public static final String UPDATE_DISH_CODE_400 = "Invalid data to request update dish";
 
     private ConstDocumentation() {
     }

@@ -1,6 +1,7 @@
 package com.backendchallenge.plazoletaservice.infrastructure.controller;
 
 import com.backendchallenge.plazoletaservice.application.http.dto.CreateDishRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.UpdateDishRequest;
 import com.backendchallenge.plazoletaservice.application.http.handler.interfaces.IDishHandler;
 import com.backendchallenge.plazoletaservice.domain.until.ConstDocumentation;
 import com.backendchallenge.plazoletaservice.domain.until.ConstRoute;
@@ -29,6 +30,17 @@ public class DishRestController {
     @PostMapping(ConstRoute.CREATE_DISH)
     public ResponseEntity<Object> createDish(@RequestBody @Valid CreateDishRequest request, @RequestParam Long ownerId) {
         dishHandler.createDish(request,ownerId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @Operation(summary = ConstDocumentation.UPDATE_DISH_OPERATION)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = ConstDocumentation.CODE_201, description = ConstDocumentation.UPDATE_DISH_CODE_201),
+            @ApiResponse(responseCode = ConstDocumentation.CODE_400, description = ConstDocumentation.UPDATE_DISH_CODE_400),
+    })
+    @PutMapping(ConstRoute.UPDATE_DISH)
+    public ResponseEntity<Object> updateDish(@RequestBody @Valid UpdateDishRequest request) {
+        dishHandler.updateDish(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
