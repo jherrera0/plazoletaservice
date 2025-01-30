@@ -4,6 +4,7 @@ import com.backendchallenge.plazoletaservice.application.http.dto.CreateDishRequ
 import com.backendchallenge.plazoletaservice.application.http.dto.UpdateDishRequest;
 import com.backendchallenge.plazoletaservice.application.http.handler.interfaces.IDishHandler;
 import com.backendchallenge.plazoletaservice.domain.until.ConstDocumentation;
+import com.backendchallenge.plazoletaservice.domain.until.ConstJwt;
 import com.backendchallenge.plazoletaservice.domain.until.ConstRoute;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,6 +14,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -27,6 +29,7 @@ public class DishRestController {
             @ApiResponse(responseCode = ConstDocumentation.CODE_201, description = ConstDocumentation.CREATE_DISH_CODE_201),
             @ApiResponse(responseCode = ConstDocumentation.CODE_400, description = ConstDocumentation.CREATE_DISH_CODE_400),
     })
+    @PreAuthorize(ConstJwt.HAS_AUTHORITY_OWNER)
     @PostMapping(ConstRoute.CREATE_DISH)
     public ResponseEntity<Object> createDish(@RequestBody @Valid CreateDishRequest request, @RequestParam Long ownerId) {
         dishHandler.createDish(request,ownerId);
@@ -38,6 +41,7 @@ public class DishRestController {
             @ApiResponse(responseCode = ConstDocumentation.CODE_201, description = ConstDocumentation.UPDATE_DISH_CODE_201),
             @ApiResponse(responseCode = ConstDocumentation.CODE_400, description = ConstDocumentation.UPDATE_DISH_CODE_400),
     })
+    @PreAuthorize(ConstJwt.HAS_AUTHORITY_OWNER)
     @PutMapping(ConstRoute.UPDATE_DISH)
     public ResponseEntity<Object> updateDish(@RequestBody @Valid UpdateDishRequest request) {
         dishHandler.updateDish(request);
