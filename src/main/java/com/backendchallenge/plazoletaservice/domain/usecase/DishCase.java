@@ -6,26 +6,34 @@ import com.backendchallenge.plazoletaservice.domain.exceptions.restaurantexcepti
 import com.backendchallenge.plazoletaservice.domain.exceptions.restaurantexceptions.RestaurantNotFoundException;
 import com.backendchallenge.plazoletaservice.domain.model.Dish;
 import com.backendchallenge.plazoletaservice.domain.spi.IDishPersistencePort;
+import com.backendchallenge.plazoletaservice.domain.spi.IJwtPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IRestaurantPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IUserPersistencePort;
+import com.backendchallenge.plazoletaservice.domain.until.ConstJwt;
 import com.backendchallenge.plazoletaservice.domain.until.ConstValidation;
+import com.backendchallenge.plazoletaservice.domain.until.TokenHolder;
 
 public class DishCase implements IDishServicePort {
     private final IDishPersistencePort dishPersistencePort;
     private final IRestaurantPersistencePort restaurantPersistencePort;
     private final IUserPersistencePort userPersistencePort;
+    private final IJwtPersistencePort jwtPersistencePort;
 
     public DishCase(IDishPersistencePort dishPersistencePort,
                     IRestaurantPersistencePort restaurantPersistencePort,
-                    IUserPersistencePort userPersistencePort
+                    IUserPersistencePort userPersistencePort,
+                    IJwtPersistencePort jwtPersistencePort
     ) {
         this.restaurantPersistencePort = restaurantPersistencePort;
         this.dishPersistencePort = dishPersistencePort;
         this.userPersistencePort = userPersistencePort;
+        this.jwtPersistencePort = jwtPersistencePort;
     }
 
     @Override
-    public void createDish(Dish dish, Long idOwner) {
+    public void createDish(Dish dish) {
+        String token = TokenHolder.getToken().replace(ConstJwt.BEARER, ConstJwt.SPLITERSTRING);
+        Long idOwner = jwtPersistencePort.getUserId(token);
         if(!userPersistencePort.findOwnerById(idOwner)) {
             throw new OwnerNotFoundException();
         }

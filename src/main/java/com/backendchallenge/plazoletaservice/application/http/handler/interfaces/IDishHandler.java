@@ -4,6 +4,6 @@ import com.backendchallenge.plazoletaservice.application.http.dto.CreateDishRequ
 import com.backendchallenge.plazoletaservice.application.http.dto.UpdateDishRequest;
 
 public interface IDishHandler {
-    void createDish(CreateDishRequest request, Long ownerId);
+    void createDish(CreateDishRequest request);
     void updateDish(UpdateDishRequest request);
 }
