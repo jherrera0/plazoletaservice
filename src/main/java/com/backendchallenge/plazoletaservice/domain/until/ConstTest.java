@@ -29,6 +29,7 @@ public class ConstTest {
     public static final String DISH_URL_IMAGE_EMPTY = "";
     public static final String DISH_CATEGORY_EMPTY = "";
     public static final Integer DISH_PRICE_INVALID = -1;
+    public static final Boolean AVAILABLE_TEST = true;
 
     private ConstTest() {
     }

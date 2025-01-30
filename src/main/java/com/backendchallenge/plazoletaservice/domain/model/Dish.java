@@ -8,6 +8,7 @@ public class Dish {
     private String description;
     private String urlImage;
     private String category;
+    private Boolean available;
 
     public Dish() {
     }
@@ -76,5 +77,13 @@ public class Dish {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public Boolean getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(Boolean available) {
+        this.available = available;
     }
 }
