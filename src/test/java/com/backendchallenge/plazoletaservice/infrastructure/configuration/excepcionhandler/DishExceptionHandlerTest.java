@@ -90,9 +90,9 @@ class DishExceptionHandlerTest {
 
     @Test
     void handleDishCategoryUpdateEmptyException_ReturnsBadRequest() {
-        DishDescriptionEmptyException exception = new DishDescriptionEmptyException();
+        DishDescriptionUpdateEmptyException exception = new DishDescriptionUpdateEmptyException();
 
-        ResponseEntity<Object> response = handler.handleDishCategoryUpdateEmptyException(exception);
+        ResponseEntity<Object> response = handler.handleDishDescriptionUpdateEmptyException(exception);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals(exception.getMessage(), response.getBody());
