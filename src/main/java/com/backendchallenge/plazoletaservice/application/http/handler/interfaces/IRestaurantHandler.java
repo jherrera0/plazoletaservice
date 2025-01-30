@@ -3,5 +3,5 @@ package com.backendchallenge.plazoletaservice.application.http.handler.interface
 import com.backendchallenge.plazoletaservice.application.http.dto.CreateRestaurantRequest;
 
 public interface IRestaurantHandler {
-    void createRestaurant(CreateRestaurantRequest request, String token);
+    void createRestaurant(CreateRestaurantRequest request);
 }

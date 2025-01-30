@@ -32,7 +32,7 @@ public class DishRestController {
     @PreAuthorize(ConstJwt.HAS_AUTHORITY_OWNER)
     @PostMapping(ConstRoute.CREATE_DISH)
     public ResponseEntity<Object> createDish(@RequestBody @Valid CreateDishRequest request, @RequestHeader(ConstJwt.HEADER_STRING) String token) {
-        dishHandler.createDish(request, token);
+        dishHandler.createDish(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

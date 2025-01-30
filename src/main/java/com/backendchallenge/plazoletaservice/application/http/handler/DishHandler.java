@@ -16,8 +16,8 @@ public class DishHandler implements IDishHandler {
     private final ICreateDishRequestMapper createDishRequestMapper;
 
     @Override
-    public void createDish(CreateDishRequest request, String token) {
-        TokenHolder.setToken(token);
+    public void createDish(CreateDishRequest request) {
+        TokenHolder.getToken();
         dishServicePort.createDish(createDishRequestMapper.toDomain(request));
     }
 

@@ -27,7 +27,7 @@ public class RestaurantRestController {
     })
     @PreAuthorize(ConstJwt.HAS_AUTHORITY_ADMIN)
     @PostMapping(ConstRoute.CREATE_RESTAURANT)
-    public void createRestaurant(@RequestBody @Valid CreateRestaurantRequest restaurantRequest, @RequestHeader(ConstJwt.HEADER_STRING) String token) {
-        restaurantHandler.createRestaurant(restaurantRequest, token);
+    public void createRestaurant(@RequestBody @Valid CreateRestaurantRequest restaurantRequest) {
+        restaurantHandler.createRestaurant(restaurantRequest);
     }
 }

@@ -14,9 +14,8 @@ public class RestaurantHandler implements IRestaurantHandler {
     private final IRestaurantServicePort restaurantServicePort;
     private final ICreateRestaurantRequestMapper createRestaurantRequestMapper;
     @Override
-    public void createRestaurant(CreateRestaurantRequest request, String token) {
-        TokenHolder.setToken(token);
+    public void createRestaurant(CreateRestaurantRequest request) {
+        TokenHolder.getToken();
         restaurantServicePort.createRestaurant(createRestaurantRequestMapper.toDomain(request));
-
     }
 }
