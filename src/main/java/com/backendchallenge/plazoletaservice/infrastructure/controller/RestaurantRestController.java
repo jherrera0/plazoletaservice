@@ -12,10 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -30,7 +27,7 @@ public class RestaurantRestController {
     })
     @PreAuthorize(ConstJwt.HAS_AUTHORITY_ADMIN)
     @PostMapping(ConstRoute.CREATE_RESTAURANT)
-    public void createRestaurant(@RequestBody @Valid CreateRestaurantRequest restaurantRequest) {
-        restaurantHandler.createRestaurant(restaurantRequest);
+    public void createRestaurant(@RequestBody @Valid CreateRestaurantRequest restaurantRequest, @RequestHeader(ConstJwt.HEADER_STRING) String token) {
+        restaurantHandler.createRestaurant(restaurantRequest, token);
     }
 }

@@ -18,7 +18,9 @@ public class JwtService {
     public String extractRole(String jwt) {
         return extractAllClaims(jwt).get(ConstJwt.ROLE).toString();
     }
-
+    public Long extractId(String jwt) {
+        return (Long) extractAllClaims(jwt).get(ConstJwt.ID);
+    }
     public Claims extractAllClaims(String jwt) {
         return Jwts.parserBuilder().setSigningKey(generateKey()).build().parseClaimsJws(jwt).getBody();
     }

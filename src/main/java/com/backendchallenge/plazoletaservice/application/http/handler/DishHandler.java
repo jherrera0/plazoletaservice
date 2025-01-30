@@ -5,6 +5,7 @@ import com.backendchallenge.plazoletaservice.application.http.dto.UpdateDishRequ
 import com.backendchallenge.plazoletaservice.application.http.handler.interfaces.IDishHandler;
 import com.backendchallenge.plazoletaservice.application.http.mapper.ICreateDishRequestMapper;
 import com.backendchallenge.plazoletaservice.domain.api.IDishServicePort;
+import com.backendchallenge.plazoletaservice.domain.until.TokenHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,9 @@ public class DishHandler implements IDishHandler {
     private final ICreateDishRequestMapper createDishRequestMapper;
 
     @Override
-    public void createDish(CreateDishRequest request, Long ownerId) {
-        dishServicePort.createDish(createDishRequestMapper.toDomain(request), ownerId);
+    public void createDish(CreateDishRequest request, String token) {
+        TokenHolder.setToken(token);
+        dishServicePort.createDish(createDishRequestMapper.toDomain(request));
     }
 
     @Override
