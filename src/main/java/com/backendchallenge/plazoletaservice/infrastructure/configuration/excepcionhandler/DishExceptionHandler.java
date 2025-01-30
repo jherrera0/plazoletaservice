@@ -22,8 +22,8 @@ public class DishExceptionHandler  extends ResponseEntityExceptionHandler {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
-    @ExceptionHandler(DishDescriptionEmptyException.class)
-    public ResponseEntity<Object> handleDishCategoryUpdateEmptyException(DishDescriptionEmptyException ex) {
+    @ExceptionHandler(DishDescriptionUpdateEmptyException.class)
+    public ResponseEntity<Object> handleDishDescriptionUpdateEmptyException(DishDescriptionUpdateEmptyException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
@@ -52,6 +52,7 @@ public class DishExceptionHandler  extends ResponseEntityExceptionHandler {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   @NonNull HttpHeaders headers,
@@ -65,4 +66,6 @@ public class DishExceptionHandler  extends ResponseEntityExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
+
+
 }

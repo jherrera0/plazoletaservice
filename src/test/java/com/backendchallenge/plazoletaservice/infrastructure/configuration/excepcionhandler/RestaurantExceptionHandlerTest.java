@@ -51,7 +51,7 @@ class RestaurantExceptionHandlerTest {
     }
 
     @Test
-    void handlInvalidRestaurantDocumentFormatException_ReturnsBadRequest() {
+    void handleInvalidRestaurantDocumentFormatException_ReturnsBadRequest() {
         InvalidRestaurantDocumentFormatException exception = new InvalidRestaurantDocumentFormatException();
 
         ResponseEntity<Object> response = handler.handleInvalidRestaurantDocumentFormatException(exception);
