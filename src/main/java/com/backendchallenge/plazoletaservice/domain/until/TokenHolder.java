@@ -23,6 +23,10 @@ public class TokenHolder {
         return setToken();
     }
 
+    public static String getTokenValue() {
+        return LOCAL_TOKEN.get();
+    }
+
     public static void clear() {
         LOCAL_TOKEN.remove();
     }

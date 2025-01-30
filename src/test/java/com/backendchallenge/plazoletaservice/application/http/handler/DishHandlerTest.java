@@ -31,9 +31,9 @@ class DishHandlerTest {
 
         when(createDishRequestMapper.toDomain(request)).thenReturn(dish);
 
-        dishHandler.createDish(request, ConstTest.ID_TEST);
+        dishHandler.createDish(request);
 
-        verify(dishServicePort, times(1)).createDish(dish, ConstTest.ID_TEST);
+        verify(dishServicePort, times(1)).createDish(dish);
     }
     @Test
     void updateDish_Success() {
