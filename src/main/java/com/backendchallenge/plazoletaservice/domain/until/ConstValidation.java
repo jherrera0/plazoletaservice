@@ -10,6 +10,7 @@ public class ConstValidation {
     public static final String ASC = "asc";
     public static final String DESC = "desc";
     public static final Integer MINUS_ONE = -1;
+    public static final Integer TWO = 2;
 
     private ConstValidation() {
     }

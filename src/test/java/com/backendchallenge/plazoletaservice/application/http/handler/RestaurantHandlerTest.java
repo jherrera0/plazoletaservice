@@ -1,14 +1,20 @@
 package com.backendchallenge.plazoletaservice.application.http.handler;
 
 import com.backendchallenge.plazoletaservice.application.http.dto.request.CreateRestaurantRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.request.ListRestaurantsRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.response.PageResponse;
+import com.backendchallenge.plazoletaservice.application.http.dto.response.RestaurantCustomResponse;
 import com.backendchallenge.plazoletaservice.application.http.mapper.ICreateRestaurantRequestMapper;
 import com.backendchallenge.plazoletaservice.application.http.mapper.IPageResponseMapper;
 import com.backendchallenge.plazoletaservice.domain.api.IRestaurantServicePort;
+import com.backendchallenge.plazoletaservice.domain.model.PageCustom;
 import com.backendchallenge.plazoletaservice.domain.model.Restaurant;
 import com.backendchallenge.plazoletaservice.domain.until.ConstTest;
+import com.backendchallenge.plazoletaservice.domain.until.ConstValidation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class RestaurantHandlerTest {
@@ -22,6 +28,7 @@ class RestaurantHandlerTest {
     void setUp() {
         restaurantServicePort = mock(IRestaurantServicePort.class);
         createRestaurantRequestMapper = mock(ICreateRestaurantRequestMapper.class);
+        pageResponseMapper = mock(IPageResponseMapper.class);
         restaurantHandler = new RestaurantHandler(restaurantServicePort,
                 createRestaurantRequestMapper,
                 pageResponseMapper);
@@ -46,4 +53,26 @@ class RestaurantHandlerTest {
 
         verify(restaurantServicePort, times(1)).createRestaurant(restaurant);
     }
+
+
+    @Test
+    void listRestaurants_withValidRequest_shouldReturnMappedResponse() {
+        ListRestaurantsRequest request = new ListRestaurantsRequest();
+        request.setCurrentPage(ConstTest.CURRENT_PAGE_TEST);
+        request.setLimitForPage(ConstTest.LIMIT_FOR_PAGE_TEST);
+        request.setOrderDirection(ConstValidation.ASC);
+
+        PageCustom<Restaurant> pageCustom = new PageCustom<>();
+
+        PageResponse<RestaurantCustomResponse> expectedResponse = new PageResponse<>();
+        when(restaurantServicePort.
+                listRestaurants(ConstTest.LIMIT_FOR_PAGE_TEST, ConstValidation.ASC, ConstTest.CURRENT_PAGE_TEST)).
+                thenReturn(pageCustom);
+        when(pageResponseMapper.toPageResponseOfCustomRestaurant(pageCustom)).thenReturn(expectedResponse);
+
+        PageResponse<RestaurantCustomResponse> actualResponse = restaurantHandler.listRestaurants(request);
+
+        assertEquals(expectedResponse, actualResponse);
+    }
+
 }
