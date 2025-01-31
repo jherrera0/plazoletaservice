@@ -1,6 +1,8 @@
 package com.backendchallenge.plazoletaservice.application.http.handler;
 
-import com.backendchallenge.plazoletaservice.application.http.dto.CreateDishRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.request.ChangeStatusRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.request.CreateDishRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.request.UpdateDishRequest;
 import com.backendchallenge.plazoletaservice.application.http.mapper.ICreateDishRequestMapper;
 import com.backendchallenge.plazoletaservice.domain.api.IDishServicePort;
 import com.backendchallenge.plazoletaservice.domain.model.Category;
@@ -36,9 +38,31 @@ class DishHandlerTest {
 
         when(createDishRequestMapper.toDomain(request)).thenReturn(dish);
 
-        dishHandler.createDish(request, ConstTest.ID_TEST);
+        dishHandler.createDish(request);
 
-        verify(dishServicePort, times(1)).createDish(dish, ConstTest.ID_TEST);
+        verify(dishServicePort, times(1)).createDish(dish);
     }
+    @Test
+    void updateDish_Success() {
+        UpdateDishRequest request = new UpdateDishRequest();
+        request.setDishId(ConstTest.ID_TEST);
+        request.setDescriptionUpdate(ConstTest.DISH_DESCRIPTION_TEST);
+        request.setPriceUpdate(ConstTest.DISH_PRICE_TEST);
+
+        dishHandler.updateDish(request);
+
+        verify(dishServicePort, times(1)).updateDish(ConstTest.ID_TEST, ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_PRICE_TEST);
+    }
+    @Test
+    void changeDishStatus_withValidRequest_shouldInvokeServicePort() {
+        ChangeStatusRequest request = new ChangeStatusRequest();
+        request.setDishId(ConstTest.ID_TEST);
+        request.setStatus(ConstTest.DISH_STATUS_TEST);
+
+        dishHandler.changeDishStatus(request);
+
+        verify(dishServicePort, times(1)).changeDishStatus(ConstTest.ID_TEST, ConstTest.DISH_STATUS_TEST);
+    }
+
 
 }

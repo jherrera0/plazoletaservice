@@ -6,8 +6,13 @@ public class ConstValidation {
     public static final String NAME_REGEX = "^(?!\\d+$)[a-zA-Z0-9\\s]+$";
     public static final Integer ZERO = 0;
     public static final String COMMA = ",";
-    public static final short TWO = 2;
     public static final int ONE = 1;
+    public static final String EMPTY = "";
+    public static final String NAME = "name";
+    public static final String ASC = "asc";
+    public static final String DESC = "desc";
+    public static final Integer MINUS_ONE = -1;
+    public static final Integer TWO = 2;
 
     private ConstValidation() {
     }

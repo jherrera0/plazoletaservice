@@ -7,6 +7,7 @@ import com.backendchallenge.plazoletaservice.application.jpa.repository.IDishRep
 import com.backendchallenge.plazoletaservice.application.jpa.repository.IRestaurantRepository;
 import com.backendchallenge.plazoletaservice.domain.model.Dish;
 import com.backendchallenge.plazoletaservice.domain.spi.IDishPersistencePort;
+import com.backendchallenge.plazoletaservice.domain.until.ConstValidation;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -23,5 +24,41 @@ public class DishJpaAdapter implements IDishPersistencePort {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean findDishById(Long idDish) {
+        return dishRepository.existsById(idDish);
+    }
+
+    @Override
+    public void updateDish(Long idDish, String descriptionUpdate, Integer priceUpdate) {
+        DishEntity dishEntity = dishRepository.findById(idDish).orElse(new DishEntity());
+        if(dishEntity.getId() != null) {
+            dishEntity.setDescription(descriptionUpdate);
+            dishEntity.setPrice(priceUpdate);
+            dishRepository.save(dishEntity);
+        }
+    }
+
+    @Override
+    public Long getRestaurantIdByDishId(Long idDish) {
+        DishEntity dishEntity = dishRepository.findById(idDish).orElse(new DishEntity());
+        if(dishEntity.getId() != null) {
+            return dishEntity.getRestaurant().getId();
+        }
+        return ConstValidation.ZERO.longValue();
+    }
+
+    @Override
+    public Dish getDishById(Long dishId) {
+        return dishEntityMapper.toDomain(dishRepository.findById(dishId).orElse(new DishEntity()));
+    }
+
+    @Override
+    public void changeDishStatus(Dish dish,Long idOwner) {
+        DishEntity dishEntity = dishEntityMapper.toEntity(dish);
+        dishEntity.setRestaurant(restaurantRepository.findById(dish.getIdRestaurant()).orElse(new RestaurantEntity()));
+        dishRepository.save(dishEntity);
     }
 }

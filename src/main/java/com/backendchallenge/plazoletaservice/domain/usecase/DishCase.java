@@ -7,29 +7,38 @@ import com.backendchallenge.plazoletaservice.domain.exceptions.restaurantexcepti
 import com.backendchallenge.plazoletaservice.domain.model.Dish;
 import com.backendchallenge.plazoletaservice.domain.spi.ICategoryPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IDishPersistencePort;
+import com.backendchallenge.plazoletaservice.domain.spi.IJwtPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IRestaurantPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IUserPersistencePort;
+import com.backendchallenge.plazoletaservice.domain.until.ConstJwt;
 import com.backendchallenge.plazoletaservice.domain.until.ConstValidation;
+import com.backendchallenge.plazoletaservice.domain.until.TokenHolder;
 
 public class DishCase implements IDishServicePort {
     private final IDishPersistencePort dishPersistencePort;
     private final IRestaurantPersistencePort restaurantPersistencePort;
     private final IUserPersistencePort userPersistencePort;
     private final ICategoryPersistencePort categoryPersistencePort;
+    private final IJwtPersistencePort jwtPersistencePort;
 
     public DishCase(IDishPersistencePort dishPersistencePort,
                     IRestaurantPersistencePort restaurantPersistencePort,
                     IUserPersistencePort userPersistencePort,
                     ICategoryPersistencePort categoryPersistencePort
+                    IUserPersistencePort userPersistencePort,
+                    IJwtPersistencePort jwtPersistencePort
     ) {
         this.restaurantPersistencePort = restaurantPersistencePort;
         this.dishPersistencePort = dishPersistencePort;
         this.userPersistencePort = userPersistencePort;
         this.categoryPersistencePort = categoryPersistencePort;
+        this.jwtPersistencePort = jwtPersistencePort;
     }
 
     @Override
-    public void createDish(Dish dish, Long idOwner) {
+    public void createDish(Dish dish) {
+        String token = TokenHolder.getToken().replace(ConstJwt.BEARER, ConstJwt.SPLITERSTRING);
+        Long idOwner = jwtPersistencePort.getUserId(token);
         if(!userPersistencePort.findOwnerById(idOwner)) {
             throw new OwnerNotFoundException();
         }
@@ -41,6 +50,50 @@ public class DishCase implements IDishServicePort {
         dish.setAvailable(true);
         if (!Boolean.TRUE.equals(dishPersistencePort.createDish(dish))) {
             throw new RestaurantNotFoundException();
+        }
+    }
+
+    @Override
+    public void updateDish(Long idDish, String descriptionUpdate, Integer priceUpdate) {
+        if (!dishPersistencePort.findDishById(idDish)){
+            throw new DishNotFoundException();
+        }
+        String token = TokenHolder.getToken().replace(ConstJwt.BEARER, ConstJwt.SPLITERSTRING);
+        Long idOwner = jwtPersistencePort.getUserId(token);
+
+        if(dishPersistencePort.getRestaurantIdByDishId(idDish)== 0 ){
+            throw new DishNotFoundException();
+        }
+
+        if (!restaurantPersistencePort.existsRestaurantByIdAndOwner(dishPersistencePort.getRestaurantIdByDishId(idDish), idOwner)) {
+            throw new RestaurantNotFoundException();
+        }
+
+        updateValidatedParams(descriptionUpdate, priceUpdate);
+        dishPersistencePort.updateDish(idDish, descriptionUpdate, priceUpdate);
+    }
+
+    @Override
+    public void changeDishStatus(Long dishId, Boolean status) {
+        if (!dishPersistencePort.findDishById(dishId)){
+            throw new DishNotFoundException();
+        }
+        String token = TokenHolder.getToken().replace(ConstJwt.BEARER, ConstJwt.SPLITERSTRING);
+        Long idOwner = jwtPersistencePort.getUserId(token);
+        if (!restaurantPersistencePort.existsRestaurantByIdAndOwner(dishPersistencePort.getRestaurantIdByDishId(dishId), idOwner)) {
+            throw new RestaurantNotFoundException();
+        }
+        Dish dish = dishPersistencePort.getDishById(dishId);
+        dish.setAvailable(status);
+        dishPersistencePort.changeDishStatus(dish, idOwner);
+    }
+
+    private static void updateValidatedParams(String descriptionUpdate,Integer priceUpdate) {
+        if(descriptionUpdate == null || descriptionUpdate.isBlank()) {
+            throw new DishDescriptionUpdateEmptyException();
+        }
+        if(priceUpdate == null) {
+            throw new DishPriceUpdateEmptyException();
         }
     }
 

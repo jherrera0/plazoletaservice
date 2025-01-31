@@ -26,6 +26,21 @@ public class ConstExceptions {
     public static final String DISH_CATEGORY_EMPTY = "Dish category cannot be empty";
     public static final String DISH_PRICE_INVALID_VALUE = "Dish price is invalid";
 
+    public static final String DISH_DESCRIPTION_UPDATE_EMPTY = "Dish description update cannot be empty";
+    public static final String DISH_PRICE_UPDATE_EMPTY = "Dish price update cannot be empty";
+    public static final String DISH_NOT_FOUND = "Dish not found";
+
+    public static final String MALFORMED_JWT = "Malformed JWT";
+    public static final String TOKEN_UNSUPPORTED = "Token is unsupported";
+    public static final String TOKEN_EXPIRED = "Token is expired";
+
+    public static final String INVALID_TOKEN = "Invalid token";
+    public static final String USER_NOT_FOUND = "User not found";
+    public static final String RESTAURANT_PAGE_SIZE_INVALID = "Restaurant page size is invalid";
+    public static final String RESTAURANT_ORDER_DIRECTION_EMPTY = "Restaurant order direction is empty";
+    public static final String RESTAURANT_CURRENT_PAGE_INVALID = "Restaurant current page is invalid";
+    public static final String RESTAURANT_ORDER_DIRECTION_INVALID = "Restaurant order direction is invalid";
+
     private ConstExceptions() {
     }
 }

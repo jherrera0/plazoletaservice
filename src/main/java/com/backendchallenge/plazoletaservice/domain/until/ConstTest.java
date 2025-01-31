@@ -4,6 +4,10 @@ import com.backendchallenge.plazoletaservice.domain.model.Category;
 
 import java.util.List;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+
 public class ConstTest {
 
     public static final Long ID_TEST = 1L;
@@ -37,6 +41,25 @@ public class ConstTest {
     public static final String CATEGORY_DESCRIPTION_TEST = "Test Category Description";
     public static final String CATEGORY_NAME_TEST = "Test Category Name";
     public static final List<Category> CATEGORIES_TEST = List.of(new Category(CATEGORY_NAME_TEST, CATEGORY_DESCRIPTION_TEST));
+
+    public static final String FIELD1 = "field1";
+    public static final String FIELD2 = "field2";
+    public static final String ERROR1 = "error1";
+    public static final String ERROR2 = "error2";
+
+    public static final String INVALID_TOKEN = "invalid.token.here";
+    public static final String USER_VALID = "valid@valid.com";
+    public static final String VALID_TOKEN = "valid.token.here";
+    public static final String ROLE_NAME_TEST = "RoleTest";
+    public static final @NotNull Boolean DISH_STATUS_TEST = true;
+    public static final @PositiveOrZero Integer CURRENT_PAGE_TEST = 0;
+    public static final @Positive Integer LIMIT_FOR_PAGE_TEST = 3;
+    public static final int PAGE_SIZE_TEST = 10;
+    public static final Integer PAGE_SIZE_TEST_EXCEEDED = 11;
+    public static final int INVALID_PAGE_SIZE_TEST = 0;
+    public static final int INVALID_CURRENT_PAGE_TEST = -1;
+    public static final Integer TOTAL_PAGES = 5;
+
 
     private ConstTest() {
     }

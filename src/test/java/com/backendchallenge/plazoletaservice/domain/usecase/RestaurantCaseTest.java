@@ -1,13 +1,16 @@
 package com.backendchallenge.plazoletaservice.domain.usecase;
 
 import com.backendchallenge.plazoletaservice.domain.exceptions.restaurantexceptions.*;
+import com.backendchallenge.plazoletaservice.domain.model.PageCustom;
 import com.backendchallenge.plazoletaservice.domain.model.Restaurant;
 import com.backendchallenge.plazoletaservice.domain.spi.IRestaurantPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IUserPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.until.ConstTest;
+import com.backendchallenge.plazoletaservice.domain.until.ConstValidation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -193,5 +196,70 @@ class RestaurantCaseTest {
         );
 
         assertThrows(InvalidRestaurantDocumentFormatException.class, () -> restaurantCase.createRestaurant(restaurant));
+    }
+    @Test
+    void listRestaurants_withValidRequest_shouldReturnPageCustom() {
+        int currentPage = ConstTest.CURRENT_PAGE_TEST;
+        int pageSize = ConstTest.PAGE_SIZE_TEST;
+        String sortDirection = ConstValidation.ASC;
+        PageCustom<Restaurant> pageCustom = new PageCustom<>();
+        when(restaurantPersistencePort.listRestaurants(pageSize, sortDirection, currentPage)).thenReturn(pageCustom);
+
+        PageCustom<Restaurant> result = restaurantCase.listRestaurants(pageSize, sortDirection, currentPage);
+
+        assertEquals(pageCustom, result);
+    }
+
+    @Test
+    void listRestaurants_withInvalidPageSize_shouldThrowException() {
+        int currentPage = ConstTest.CURRENT_PAGE_TEST;
+        int pageSize = ConstTest.INVALID_PAGE_SIZE_TEST;
+        String sortDirection = ConstValidation.ASC;
+
+        assertThrows(RestaurantPageSizeInvalidException.class, () -> restaurantCase.listRestaurants(pageSize, sortDirection, currentPage));
+    }
+
+    @Test
+    void listRestaurants_withInvalidCurrentPage_shouldThrowException() {
+        int currentPage = ConstTest.INVALID_CURRENT_PAGE_TEST;
+        int pageSize = ConstTest.PAGE_SIZE_TEST;
+        String sortDirection = ConstValidation.ASC;
+
+        assertThrows(RestaurantCurrentPageInvalidException.class, ()
+                -> restaurantCase.listRestaurants(pageSize, sortDirection, currentPage));
+    }
+
+    @Test
+    void listRestaurants_withEmptyOrderDirection_shouldThrowException() {
+        int currentPage = ConstTest.CURRENT_PAGE_TEST;
+        int pageSize = ConstTest.PAGE_SIZE_TEST;
+        String sortDirection = ConstValidation.EMPTY;
+
+        assertThrows(RestaurantOrderDirectionEmptyException.class, ()
+                -> restaurantCase.listRestaurants(pageSize, sortDirection, currentPage));
+    }
+
+    @Test
+    void listRestaurants_withInvalidOrderDirection_shouldThrowException() {
+        int currentPage = ConstTest.CURRENT_PAGE_TEST;
+        int pageSize = ConstTest.PAGE_SIZE_TEST;
+        String sortDirection = ConstTest.INVALID_NAME_TEST;
+
+        assertThrows(RestaurantOrderDirectionInvalidException.class, ()
+                -> restaurantCase.listRestaurants(pageSize, sortDirection, currentPage));
+    }
+
+    @Test
+    void listRestaurants_withOverMaxCurrentPage_shouldThrowException() {
+        int currentPage = ConstTest.PAGE_SIZE_TEST_EXCEEDED;
+        int pageSize = ConstTest.PAGE_SIZE_TEST;
+        String sortDirection = ConstValidation.ASC;
+        PageCustom<Restaurant> pageCustom = new PageCustom<>();
+        pageCustom.setCurrentPage(-1);
+
+        when(restaurantPersistencePort.listRestaurants(pageSize, sortDirection, currentPage)).thenReturn(pageCustom);
+
+        assertThrows(RestaurantCurrentPageInvalidException.class, ()
+                -> restaurantCase.listRestaurants(pageSize, sortDirection, currentPage));
     }
 }

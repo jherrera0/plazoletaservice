@@ -4,6 +4,7 @@ import com.backendchallenge.plazoletaservice.application.feign.IFeignUserClient;
 import com.backendchallenge.plazoletaservice.application.jpa.adapter.CategoryJpaAdapter;
 import com.backendchallenge.plazoletaservice.application.jpa.adapter.DishJpaAdapter;
 import com.backendchallenge.plazoletaservice.application.jpa.adapter.IUserJpaAdapter;
+import com.backendchallenge.plazoletaservice.application.jpa.adapter.JwtJpaAdapter;
 import com.backendchallenge.plazoletaservice.application.jpa.adapter.RestaurantJpaAdapter;
 import com.backendchallenge.plazoletaservice.application.jpa.mapper.ICategoryEntityMapper;
 import com.backendchallenge.plazoletaservice.application.jpa.mapper.IDishEntityMapper;
@@ -15,10 +16,12 @@ import com.backendchallenge.plazoletaservice.domain.api.IDishServicePort;
 import com.backendchallenge.plazoletaservice.domain.api.IRestaurantServicePort;
 import com.backendchallenge.plazoletaservice.domain.spi.ICategoryPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IDishPersistencePort;
+import com.backendchallenge.plazoletaservice.domain.spi.IJwtPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IRestaurantPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IUserPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.usecase.DishCase;
 import com.backendchallenge.plazoletaservice.domain.usecase.RestaurantCase;
+import com.backendchallenge.plazoletaservice.infrastructure.configuration.security.filter.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +36,7 @@ public class BeanConfiguration {
     private final IDishRepository dishRepository;
     private final ICategoryRepository categoryRepository;
     private final ICategoryEntityMapper categoryEntityMapper;
+    private final JwtService jwtService;
 
     @Bean
     public IUserPersistencePort userPersistencePort() {
@@ -47,11 +51,16 @@ public class BeanConfiguration {
 
     @Bean
     public IDishServicePort dishServicePort() {
-        return new DishCase(dishPersistencePort(), restaurantPersistencePort(), userPersistencePort(), categoryPersistencePort());
+        return new DishCase(dishPersistencePort(), restaurantPersistencePort(), userPersistencePort(),categoryPersistencePort(), jwtPersistencePort());
     }
     @Bean
     public ICategoryPersistencePort categoryPersistencePort() {
         return new CategoryJpaAdapter(categoryRepository,categoryEntityMapper);
+    }
+
+    @Bean
+    public IJwtPersistencePort jwtPersistencePort() {
+        return new JwtJpaAdapter(jwtService);
     }
 
     @Bean
