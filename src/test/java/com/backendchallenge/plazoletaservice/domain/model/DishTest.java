@@ -9,7 +9,8 @@ class DishTest {
 
     @Test
     void dishCreation_Success() {
-        Dish dish = new Dish(ConstTest.ID_TEST, ConstTest.ID_TEST, ConstTest.DISH_NAME_TEST, ConstTest.DISH_PRICE_TEST, ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_URL_IMAGE_TEST, ConstTest.DISH_CATEGORY_TEST);
+        Dish dish = new Dish(ConstTest.ID_TEST, ConstTest.ID_TEST, ConstTest.DISH_NAME_TEST, ConstTest.DISH_PRICE_TEST,
+                ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_URL_IMAGE_TEST, ConstTest.CATEGORIES_TEST);
 
         assertEquals(ConstTest.ID_TEST, dish.getId());
         assertEquals(ConstTest.ID_TEST, dish.getIdRestaurant());
@@ -17,7 +18,7 @@ class DishTest {
         assertEquals(ConstTest.DISH_PRICE_TEST, dish.getPrice());
         assertEquals(ConstTest.DISH_DESCRIPTION_TEST, dish.getDescription());
         assertEquals(ConstTest.DISH_URL_IMAGE_TEST, dish.getUrlImage());
-        assertEquals(ConstTest.DISH_CATEGORY_TEST, dish.getCategory());
+        assertEquals(ConstTest.CATEGORIES_TEST, dish.getCategories());
     }
 
     @Test
@@ -29,7 +30,7 @@ class DishTest {
         dish.setPrice(ConstTest.DISH_PRICE_TEST);
         dish.setDescription(ConstTest.DISH_DESCRIPTION_TEST);
         dish.setUrlImage(ConstTest.DISH_URL_IMAGE_TEST);
-        dish.setCategory(ConstTest.DISH_CATEGORY_TEST);
+        dish.setCategories(ConstTest.CATEGORIES_TEST);
         dish.setAvailable(ConstTest.AVAILABLE_TEST);
 
         assertEquals(ConstTest.ID_TEST, dish.getId());
@@ -38,7 +39,7 @@ class DishTest {
         assertEquals(ConstTest.DISH_PRICE_TEST, dish.getPrice());
         assertEquals(ConstTest.DISH_DESCRIPTION_TEST, dish.getDescription());
         assertEquals(ConstTest.DISH_URL_IMAGE_TEST, dish.getUrlImage());
-        assertEquals(ConstTest.DISH_CATEGORY_TEST, dish.getCategory());
+        assertEquals(ConstTest.CATEGORIES_TEST, dish.getCategories());
         assertEquals(ConstTest.AVAILABLE_TEST, dish.getAvailable());
     }
 

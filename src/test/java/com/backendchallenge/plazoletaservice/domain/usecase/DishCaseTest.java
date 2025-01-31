@@ -4,13 +4,17 @@ import com.backendchallenge.plazoletaservice.domain.api.IDishServicePort;
 import com.backendchallenge.plazoletaservice.domain.exceptions.dishexceptions.*;
 import com.backendchallenge.plazoletaservice.domain.exceptions.restaurantexceptions.OwnerNotFoundException;
 import com.backendchallenge.plazoletaservice.domain.exceptions.restaurantexceptions.RestaurantNotFoundException;
+import com.backendchallenge.plazoletaservice.domain.model.Category;
 import com.backendchallenge.plazoletaservice.domain.model.Dish;
+import com.backendchallenge.plazoletaservice.domain.spi.ICategoryPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IDishPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IRestaurantPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IUserPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.until.ConstTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -21,13 +25,15 @@ class DishCaseTest {
     private IRestaurantPersistencePort restaurantPersistencePort;
     private IUserPersistencePort userPersistencePort;
     private IDishServicePort dishServicePort;
+    private ICategoryPersistencePort categoryPersistencePort;
 
     @BeforeEach
     void setUp() {
         dishPersistencePort = mock(IDishPersistencePort.class);
         restaurantPersistencePort = mock(IRestaurantPersistencePort.class);
         userPersistencePort = mock(IUserPersistencePort.class);
-        dishServicePort = new DishCase(dishPersistencePort, restaurantPersistencePort, userPersistencePort);
+        categoryPersistencePort = mock(ICategoryPersistencePort.class);
+        dishServicePort = new DishCase(dishPersistencePort, restaurantPersistencePort, userPersistencePort, categoryPersistencePort);
     }
 
     @Test
@@ -38,7 +44,7 @@ class DishCaseTest {
         dish.setPrice(ConstTest.DISH_PRICE_TEST);
         dish.setDescription(ConstTest.DISH_DESCRIPTION_TEST);
         dish.setUrlImage(ConstTest.DISH_URL_IMAGE_TEST);
-        dish.setCategory(ConstTest.DISH_CATEGORY_TEST);
+        dish.setCategories(List.of(new Category(ConstTest.ID_TEST,ConstTest.CATEGORY_NAME_TEST, ConstTest.CATEGORY_DESCRIPTION_TEST)));
 
         when(userPersistencePort.findOwnerById(ConstTest.ID_TEST)).thenReturn(true);
         when(restaurantPersistencePort.existsRestaurantByIdAndOwner(ConstTest.ID_TEST, ConstTest.ID_TEST)).thenReturn(true);
@@ -119,7 +125,8 @@ class DishCaseTest {
         dish.setUrlImage(ConstTest.DISH_URL_IMAGE_EMPTY);
 
         when(userPersistencePort.findOwnerById(ConstTest.ID_TEST)).thenReturn(true);
-        when(restaurantPersistencePort.existsRestaurantByIdAndOwner(ConstTest.ID_TEST, ConstTest.ID_TEST)).thenReturn(true);
+        when(restaurantPersistencePort.existsRestaurantByIdAndOwner(ConstTest.ID_TEST, ConstTest.ID_TEST))
+                .thenReturn(true);
 
         assertThrows(DishUrlImageEmptyException.class, () -> dishServicePort.createDish(dish, ConstTest.ID_TEST));
     }
@@ -132,10 +139,11 @@ class DishCaseTest {
         dish.setPrice(ConstTest.DISH_PRICE_TEST);
         dish.setDescription(ConstTest.DISH_DESCRIPTION_TEST);
         dish.setUrlImage(ConstTest.DISH_URL_IMAGE_TEST);
-        dish.setCategory(ConstTest.DISH_CATEGORY_EMPTY);
+        dish.setCategories(null);
 
         when(userPersistencePort.findOwnerById(ConstTest.ID_TEST)).thenReturn(true);
-        when(restaurantPersistencePort.existsRestaurantByIdAndOwner(ConstTest.ID_TEST, ConstTest.ID_TEST)).thenReturn(true);
+        when(restaurantPersistencePort.existsRestaurantByIdAndOwner(ConstTest.ID_TEST, ConstTest.ID_TEST))
+                .thenReturn(true);
 
         assertThrows(DishCategoryEmptyException.class, () -> dishServicePort.createDish(dish, ConstTest.ID_TEST));
     }
@@ -148,10 +156,12 @@ class DishCaseTest {
         dish.setPrice(ConstTest.DISH_PRICE_INVALID);
         dish.setDescription(ConstTest.DISH_DESCRIPTION_TEST);
         dish.setUrlImage(ConstTest.DISH_URL_IMAGE_TEST);
-        dish.setCategory(ConstTest.DISH_CATEGORY_TEST);
+        dish.setCategories(List.of(new Category(ConstTest.ID_TEST,ConstTest.CATEGORY_NAME_TEST,
+                ConstTest.CATEGORY_DESCRIPTION_TEST)));
 
         when(userPersistencePort.findOwnerById(ConstTest.ID_TEST)).thenReturn(true);
-        when(restaurantPersistencePort.existsRestaurantByIdAndOwner(ConstTest.ID_TEST, ConstTest.ID_TEST)).thenReturn(true);
+        when(restaurantPersistencePort.existsRestaurantByIdAndOwner(ConstTest.ID_TEST, ConstTest.ID_TEST)).
+                thenReturn(true);
 
         assertThrows(DishPriceInvalidValueException.class, () -> dishServicePort.createDish(dish, ConstTest.ID_TEST));
     }
@@ -164,10 +174,12 @@ class DishCaseTest {
         dish.setPrice(ConstTest.DISH_PRICE_TEST);
         dish.setDescription(ConstTest.DISH_DESCRIPTION_TEST);
         dish.setUrlImage(ConstTest.DISH_URL_IMAGE_TEST);
-        dish.setCategory(ConstTest.DISH_CATEGORY_TEST);
+        dish.setCategories(List.of(new Category(ConstTest.ID_TEST,ConstTest.CATEGORY_NAME_TEST,
+                ConstTest.CATEGORY_DESCRIPTION_TEST)));
 
         when(userPersistencePort.findOwnerById(ConstTest.ID_TEST)).thenReturn(true);
-        when(restaurantPersistencePort.existsRestaurantByIdAndOwner(ConstTest.ID_TEST, ConstTest.ID_TEST)).thenReturn(true);
+        when(restaurantPersistencePort.existsRestaurantByIdAndOwner(ConstTest.ID_TEST, ConstTest.ID_TEST))
+                .thenReturn(true);
         when(dishPersistencePort.createDish(dish)).thenReturn(false);
 
         assertThrows(RestaurantNotFoundException.class, () -> dishServicePort.createDish(dish, ConstTest.ID_TEST));

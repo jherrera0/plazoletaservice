@@ -5,10 +5,13 @@ import com.backendchallenge.plazoletaservice.application.jpa.entity.RestaurantEn
 import com.backendchallenge.plazoletaservice.application.jpa.mapper.IDishEntityMapper;
 import com.backendchallenge.plazoletaservice.application.jpa.repository.IDishRepository;
 import com.backendchallenge.plazoletaservice.application.jpa.repository.IRestaurantRepository;
+import com.backendchallenge.plazoletaservice.domain.model.Category;
 import com.backendchallenge.plazoletaservice.domain.model.Dish;
 import com.backendchallenge.plazoletaservice.domain.until.ConstTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -30,7 +33,9 @@ class DishJpaAdapterTest {
 
     @Test
     void createDish_savesDishSuccessfully() {
-        Dish dish = new Dish(ConstTest.ID_TEST, ConstTest.ID_TEST, ConstTest.DISH_NAME_TEST, ConstTest.DISH_PRICE_TEST, ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_URL_IMAGE_TEST, ConstTest.DISH_CATEGORY_TEST);
+        Dish dish = new Dish(ConstTest.ID_TEST, ConstTest.ID_TEST, ConstTest.DISH_NAME_TEST, ConstTest.DISH_PRICE_TEST,
+                ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_URL_IMAGE_TEST,
+                List.of(new Category(ConstTest.ID_TEST,ConstTest.CATEGORY_NAME_TEST, ConstTest.CATEGORY_DESCRIPTION_TEST)));
         DishEntity dishEntity = new DishEntity();
         RestaurantEntity restaurantEntity = new RestaurantEntity();
         restaurantEntity.setId(ConstTest.ID_TEST);
@@ -46,7 +51,11 @@ class DishJpaAdapterTest {
 
     @Test
     void createDish_returnsFalseWhenRestaurantNotFound() {
-        Dish dish = new Dish(ConstTest.ID_TEST, ConstTest.ID_TEST, ConstTest.DISH_NAME_TEST, ConstTest.DISH_PRICE_TEST, ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_URL_IMAGE_TEST, ConstTest.DISH_CATEGORY_TEST);
+        Dish dish = new Dish(ConstTest.ID_TEST, ConstTest.ID_TEST, ConstTest.DISH_NAME_TEST, ConstTest.DISH_PRICE_TEST
+                , ConstTest.DISH_DESCRIPTION_TEST,
+                ConstTest.DISH_URL_IMAGE_TEST,
+                List.of(new Category(ConstTest.ID_TEST,ConstTest.CATEGORY_NAME_TEST,
+                        ConstTest.CATEGORY_DESCRIPTION_TEST)));
         DishEntity dishEntity = new DishEntity();
 
         when(dishEntityMapper.toEntity(dish)).thenReturn(dishEntity);

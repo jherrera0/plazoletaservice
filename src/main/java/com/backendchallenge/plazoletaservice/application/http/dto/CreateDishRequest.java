@@ -26,5 +26,8 @@ public class CreateDishRequest {
     private String urlImage;
     @NotBlank
     @NotNull
-    private String category;
+    private String categoryName;
+    @NotBlank
+    @NotNull
+    private String categoryDescription;
 }

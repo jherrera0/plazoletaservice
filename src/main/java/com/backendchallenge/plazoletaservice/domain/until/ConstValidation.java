@@ -5,6 +5,9 @@ public class ConstValidation {
     public static final String NIT_REGEX = "\\d+";
     public static final String NAME_REGEX = "^(?!\\d+$)[a-zA-Z0-9\\s]+$";
     public static final Integer ZERO = 0;
+    public static final String COMMA = ",";
+    public static final short TWO = 2;
+    public static final int ONE = 1;
 
     private ConstValidation() {
     }

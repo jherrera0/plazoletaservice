@@ -3,10 +3,13 @@ package com.backendchallenge.plazoletaservice.application.http.handler;
 import com.backendchallenge.plazoletaservice.application.http.dto.CreateDishRequest;
 import com.backendchallenge.plazoletaservice.application.http.mapper.ICreateDishRequestMapper;
 import com.backendchallenge.plazoletaservice.domain.api.IDishServicePort;
+import com.backendchallenge.plazoletaservice.domain.model.Category;
 import com.backendchallenge.plazoletaservice.domain.model.Dish;
 import com.backendchallenge.plazoletaservice.domain.until.ConstTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -26,7 +29,10 @@ class DishHandlerTest {
     @Test
     void createDish_Success() {
         CreateDishRequest request = new CreateDishRequest();
-        Dish dish = new Dish(ConstTest.ID_TEST, ConstTest.ID_TEST, ConstTest.DISH_NAME_TEST, ConstTest.DISH_PRICE_TEST, ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_URL_IMAGE_TEST, ConstTest.DISH_CATEGORY_TEST);
+        Dish dish = new Dish(ConstTest.ID_TEST, ConstTest.ID_TEST,
+                ConstTest.DISH_NAME_TEST, ConstTest.DISH_PRICE_TEST,
+                ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_URL_IMAGE_TEST,
+                List.of(new Category(ConstTest.ID_TEST,ConstTest.CATEGORY_NAME_TEST, ConstTest.CATEGORY_DESCRIPTION_TEST)));
 
         when(createDishRequestMapper.toDomain(request)).thenReturn(dish);
 
