@@ -26,6 +26,6 @@ public class RestaurantHandler implements IRestaurantHandler {
 
     @Override
     public PageResponse<RestaurantCustomResponse> listRestaurants(ListRestaurantsRequest request) {
-        return pageResponseMapper.toPageResponseOfCustomRestaurant(restaurantServicePort.listRestaurants(request.getLimitForPage(),request.getOrderDirection()));
+        return pageResponseMapper.toPageResponseOfCustomRestaurant(restaurantServicePort.listRestaurants(request.getLimitForPage(),request.getOrderDirection(),request.getCurrentPage()));
     }
 }

@@ -2,11 +2,13 @@ package com.backendchallenge.plazoletaservice.domain.usecase;
 
 import com.backendchallenge.plazoletaservice.domain.api.IRestaurantServicePort;
 import com.backendchallenge.plazoletaservice.domain.exceptions.restaurantexceptions.*;
-import com.backendchallenge.plazoletaservice.domain.model.Page;
+import com.backendchallenge.plazoletaservice.domain.model.PageCustom;
 import com.backendchallenge.plazoletaservice.domain.model.Restaurant;
 import com.backendchallenge.plazoletaservice.domain.spi.IUserPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IRestaurantPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.until.ConstValidation;
+
+import java.util.Objects;
 
 public class RestaurantCase implements IRestaurantServicePort {
     private final IRestaurantPersistencePort restaurantPersistencePort;
@@ -18,8 +20,24 @@ public class RestaurantCase implements IRestaurantServicePort {
     }
 
     @Override
-    public Page<Restaurant> listRestaurants(Integer pageSize, String orderDirection) {
-        return restaurantPersistencePort.listRestaurants(pageSize, orderDirection);
+    public PageCustom<Restaurant> listRestaurants(Integer pageSize, String orderDirection, Integer currentPage) {
+        if(pageSize == null || pageSize <= ConstValidation.ZERO){
+            throw new RestaurantPageSizeInvalidException();
+        }
+        if(currentPage == null || currentPage < ConstValidation.ZERO){
+            throw new RestaurantCurrentPageInvalidException();
+        }
+        if(orderDirection == null || orderDirection.isBlank()){
+            throw new RestaurantOrderDirectionEmptyException();
+        }
+        if(!orderDirection.equals(ConstValidation.ASC) && !orderDirection.equals(ConstValidation.DESC)){
+            throw new RestaurantOrderDirectionInvalidException();
+        }
+        PageCustom<Restaurant> result = restaurantPersistencePort.listRestaurants(pageSize, orderDirection,currentPage);
+        if(Objects.equals(result.getCurrentPage(), ConstValidation.MINUS_ONE)){
+            throw new RestaurantCurrentPageInvalidException();
+        }
+        return result;
     }
 
     @Override

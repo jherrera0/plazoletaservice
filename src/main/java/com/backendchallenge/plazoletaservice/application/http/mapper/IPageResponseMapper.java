@@ -2,9 +2,10 @@ package com.backendchallenge.plazoletaservice.application.http.mapper;
 
 import com.backendchallenge.plazoletaservice.application.http.dto.response.PageResponse;
 import com.backendchallenge.plazoletaservice.application.http.dto.response.RestaurantCustomResponse;
-import com.backendchallenge.plazoletaservice.domain.model.Page;
+import com.backendchallenge.plazoletaservice.domain.model.PageCustom;
 import com.backendchallenge.plazoletaservice.domain.model.Restaurant;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring",
@@ -14,5 +15,6 @@ import org.mapstruct.ReportingPolicy;
 
 
 public interface IPageResponseMapper {
-    PageResponse<RestaurantCustomResponse> toPageResponseOfCustomRestaurant(Page<Restaurant> page);
+    @Mapping(target = "items", source = "items")
+    PageResponse<RestaurantCustomResponse> toPageResponseOfCustomRestaurant(PageCustom<Restaurant> pageCustom);
 }

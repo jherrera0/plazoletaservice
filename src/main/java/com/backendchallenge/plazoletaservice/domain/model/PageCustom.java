@@ -2,16 +2,16 @@ package com.backendchallenge.plazoletaservice.domain.model;
 
 import java.util.List;
 
-public class Page<T> {
+public class PageCustom<T> {
     private Integer currentPage;
     private Integer pageSize;
     private Integer totalPages;
     private List<T> items;
 
-    public Page() {
+    public PageCustom() {
     }
 
-    public Page(Integer currentPage, Integer pageSize, Integer totalPages, List<T> items) {
+    public PageCustom(Integer currentPage, Integer pageSize, Integer totalPages, List<T> items) {
         this.currentPage = currentPage;
         this.pageSize = pageSize;
         this.totalPages = totalPages;
