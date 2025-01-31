@@ -49,6 +49,9 @@ public class ConstTest {
     public static final @Positive Integer LIMIT_FOR_PAGE_TEST = 3;
     public static final int PAGE_SIZE_TEST = 10;
     public static final Integer PAGE_SIZE_TEST_EXCEEDED = 11;
+    public static final int INVALID_PAGE_SIZE_TEST = 0;
+    public static final int INVALID_CURRENT_PAGE_TEST = -1;
+    public static final Integer TOTAL_PAGES = 5;
 
 
     private ConstTest() {
