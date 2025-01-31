@@ -1,11 +1,11 @@
 package com.backendchallenge.plazoletaservice.application.http.handler;
 
 import com.backendchallenge.plazoletaservice.application.http.dto.request.CreateRestaurantRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.request.ListRestaurantsRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.response.PageResponse;
 import com.backendchallenge.plazoletaservice.application.http.dto.response.RestaurantCustomResponse;
 import com.backendchallenge.plazoletaservice.application.http.handler.interfaces.IRestaurantHandler;
 import com.backendchallenge.plazoletaservice.application.http.mapper.ICreateRestaurantRequestMapper;
-import com.backendchallenge.plazoletaservice.application.http.mapper.ICustomResponseMapper;
 import com.backendchallenge.plazoletaservice.application.http.mapper.IPageResponseMapper;
 import com.backendchallenge.plazoletaservice.domain.api.IRestaurantServicePort;
 import com.backendchallenge.plazoletaservice.domain.until.TokenHolder;
@@ -25,7 +25,7 @@ public class RestaurantHandler implements IRestaurantHandler {
     }
 
     @Override
-    public PageResponse<RestaurantCustomResponse> listRestaurants() {
-        return pageResponseMapper.toPageResponseOfCustomRestaurant(restaurantServicePort.listRestaurants());
+    public PageResponse<RestaurantCustomResponse> listRestaurants(ListRestaurantsRequest request) {
+        return pageResponseMapper.toPageResponseOfCustomRestaurant(restaurantServicePort.listRestaurants(request.getLimitForPage(),request.getOrderDirection()));
     }
 }

@@ -2,6 +2,7 @@ package com.backendchallenge.plazoletaservice.domain.usecase;
 
 import com.backendchallenge.plazoletaservice.domain.api.IRestaurantServicePort;
 import com.backendchallenge.plazoletaservice.domain.exceptions.restaurantexceptions.*;
+import com.backendchallenge.plazoletaservice.domain.model.Page;
 import com.backendchallenge.plazoletaservice.domain.model.Restaurant;
 import com.backendchallenge.plazoletaservice.domain.spi.IUserPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IRestaurantPersistencePort;
@@ -14,6 +15,11 @@ public class RestaurantCase implements IRestaurantServicePort {
     public RestaurantCase(IRestaurantPersistencePort restaurantPersistencePort, IUserPersistencePort userPersistencePort) {
         this.restaurantPersistencePort = restaurantPersistencePort;
         this.userPersistencePort = userPersistencePort;
+    }
+
+    @Override
+    public Page<Restaurant> listRestaurants(Integer pageSize, String orderDirection) {
+        return null;
     }
 
     @Override
