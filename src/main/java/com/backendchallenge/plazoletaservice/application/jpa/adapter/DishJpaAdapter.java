@@ -49,4 +49,16 @@ public class DishJpaAdapter implements IDishPersistencePort {
         }
         return ConstValidation.ZERO.longValue();
     }
+
+    @Override
+    public Dish getDishById(Long dishId) {
+        return dishEntityMapper.toDomain(dishRepository.findById(dishId).orElse(new DishEntity()));
+    }
+
+    @Override
+    public void changeDishStatus(Dish dish,Long idOwner) {
+        DishEntity dishEntity = dishEntityMapper.toEntity(dish);
+        dishEntity.setRestaurant(restaurantRepository.findById(dish.getIdRestaurant()).orElse(new RestaurantEntity()));
+        dishRepository.save(dishEntity);
+    }
 }

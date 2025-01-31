@@ -1,5 +1,6 @@
 package com.backendchallenge.plazoletaservice.application.http.handler;
 
+import com.backendchallenge.plazoletaservice.application.http.dto.ChangeStatusRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.CreateDishRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.UpdateDishRequest;
 import com.backendchallenge.plazoletaservice.application.http.handler.interfaces.IDishHandler;
@@ -25,5 +26,11 @@ public class DishHandler implements IDishHandler {
     public void updateDish(UpdateDishRequest request) {
         TokenHolder.getToken();
         dishServicePort.updateDish(request.getDishId(),request.getDescriptionUpdate(),request.getPriceUpdate());
+    }
+
+    @Override
+    public void changeDishStatus(ChangeStatusRequest request) {
+        TokenHolder.getToken();
+        dishServicePort.changeDishStatus(request.getDishId(),request.getStatus());
     }
 }
