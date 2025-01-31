@@ -1,5 +1,6 @@
 package com.backendchallenge.plazoletaservice.infrastructure.controller;
 
+import com.backendchallenge.plazoletaservice.application.http.dto.ChangeStatusRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.CreateDishRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.UpdateDishRequest;
 import com.backendchallenge.plazoletaservice.application.http.handler.interfaces.IDishHandler;
@@ -90,6 +91,26 @@ class DishRestControllerTest {
                                 ConstTest.ID_TEST,
                                 ConstTest.DISH_PRICE_TEST,
                                 ConstTest.DISH_DESCRIPTION_TEST)))
+                .andExpect(status().isCreated());
+    }
+    @Test
+    void changeDishStatus_withValidRequest_shouldReturnStatusCreated() throws Exception {
+        ChangeStatusRequest request = new ChangeStatusRequest();
+        request.setDishId(ConstTest.ID_TEST);
+        request.setStatus(ConstTest.DISH_STATUS_TEST);
+
+        doNothing().when(dishHandler).changeDishStatus(request);
+
+        mockMvc.perform(put(ConstRoute.DISH + ConstRoute.CHANGE_DISH_STATUS)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(String.format("""
+                                    {
+                                        "dishId": %d,
+                                        "status": %b
+                                    }
+                                    """,
+                                ConstTest.ID_TEST,
+                                ConstTest.DISH_STATUS_TEST)))
                 .andExpect(status().isCreated());
     }
 }

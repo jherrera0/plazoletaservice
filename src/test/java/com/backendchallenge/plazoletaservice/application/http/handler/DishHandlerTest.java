@@ -1,5 +1,6 @@
 package com.backendchallenge.plazoletaservice.application.http.handler;
 
+import com.backendchallenge.plazoletaservice.application.http.dto.ChangeStatusRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.CreateDishRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.UpdateDishRequest;
 import com.backendchallenge.plazoletaservice.application.http.mapper.ICreateDishRequestMapper;
@@ -46,4 +47,16 @@ class DishHandlerTest {
 
         verify(dishServicePort, times(1)).updateDish(ConstTest.ID_TEST, ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_PRICE_TEST);
     }
+    @Test
+    void changeDishStatus_withValidRequest_shouldInvokeServicePort() {
+        ChangeStatusRequest request = new ChangeStatusRequest();
+        request.setDishId(ConstTest.ID_TEST);
+        request.setStatus(ConstTest.DISH_STATUS_TEST);
+
+        dishHandler.changeDishStatus(request);
+
+        verify(dishServicePort, times(1)).changeDishStatus(ConstTest.ID_TEST, ConstTest.DISH_STATUS_TEST);
+    }
+
+
 }

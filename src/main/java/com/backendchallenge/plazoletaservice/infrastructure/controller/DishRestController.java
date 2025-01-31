@@ -1,5 +1,6 @@
 package com.backendchallenge.plazoletaservice.infrastructure.controller;
 
+import com.backendchallenge.plazoletaservice.application.http.dto.ChangeStatusRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.CreateDishRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.UpdateDishRequest;
 import com.backendchallenge.plazoletaservice.application.http.handler.interfaces.IDishHandler;
@@ -28,6 +29,7 @@ public class DishRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = ConstDocumentation.CODE_201, description = ConstDocumentation.CREATE_DISH_CODE_201),
             @ApiResponse(responseCode = ConstDocumentation.CODE_400, description = ConstDocumentation.CREATE_DISH_CODE_400),
+            @ApiResponse(responseCode = ConstDocumentation.CODE_403, description = ConstDocumentation.CREATE_DISH_CODE_403),
     })
     @PreAuthorize(ConstJwt.HAS_AUTHORITY_OWNER)
     @PostMapping(ConstRoute.CREATE_DISH)
@@ -40,11 +42,25 @@ public class DishRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = ConstDocumentation.CODE_201, description = ConstDocumentation.UPDATE_DISH_CODE_201),
             @ApiResponse(responseCode = ConstDocumentation.CODE_400, description = ConstDocumentation.UPDATE_DISH_CODE_400),
+            @ApiResponse(responseCode = ConstDocumentation.CODE_403, description = ConstDocumentation.UPDATE_DISH_CODE_403),
     })
     @PreAuthorize(ConstJwt.HAS_AUTHORITY_OWNER)
     @PutMapping(ConstRoute.UPDATE_DISH)
     public ResponseEntity<Object> updateDish(@RequestBody @Valid UpdateDishRequest request) {
         dishHandler.updateDish(request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @Operation(summary = ConstDocumentation.CHANGE_DISH_STATUS_OPERATION)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = ConstDocumentation.CODE_201, description = ConstDocumentation.CHANGE_DISH_STATUS_CODE_201),
+            @ApiResponse(responseCode = ConstDocumentation.CODE_400, description = ConstDocumentation.CHANGE_DISH_STATUS_CODE_400),
+            @ApiResponse(responseCode = ConstDocumentation.CODE_403, description = ConstDocumentation.CHANGE_DISH_STATUS_CODE_403),
+    })
+    @PreAuthorize(ConstJwt.HAS_AUTHORITY_OWNER)
+    @PutMapping(ConstRoute.CHANGE_DISH_STATUS)
+    public ResponseEntity<Object> changeDishStatus(@RequestBody @Valid ChangeStatusRequest request) {
+        dishHandler.changeDishStatus(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
