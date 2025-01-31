@@ -1,8 +1,8 @@
 package com.backendchallenge.plazoletaservice.infrastructure.controller;
 
-import com.backendchallenge.plazoletaservice.application.http.dto.ChangeStatusRequest;
-import com.backendchallenge.plazoletaservice.application.http.dto.CreateDishRequest;
-import com.backendchallenge.plazoletaservice.application.http.dto.UpdateDishRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.request.ChangeStatusRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.request.CreateDishRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.request.UpdateDishRequest;
 import com.backendchallenge.plazoletaservice.application.http.handler.interfaces.IDishHandler;
 import com.backendchallenge.plazoletaservice.domain.until.ConstJwt;
 import com.backendchallenge.plazoletaservice.domain.until.ConstRoute;

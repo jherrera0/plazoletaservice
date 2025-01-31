@@ -138,6 +138,45 @@ class RestaurantExceptionHandlerTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals(exception.getMessage(), response.getBody());
     }
+    @Test
+    void handleRestaurantPageSizeInvalidException_ReturnsBadRequest() {
+        RestaurantPageSizeInvalidException exception = new RestaurantPageSizeInvalidException();
+
+        ResponseEntity<Object> response = handler.handleRestaurantPageSizeInvalidException(exception);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(ConstExceptions.RESTAURANT_PAGE_SIZE_INVALID, response.getBody());
+    }
+
+    @Test
+    void handleRestaurantOrderDirectionInvalidException_ReturnsBadRequest() {
+        RestaurantOrderDirectionInvalidException exception = new RestaurantOrderDirectionInvalidException();
+
+        ResponseEntity<Object> response = handler.handleRestaurantOrderDirectionInvalidException(exception);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(ConstExceptions.RESTAURANT_ORDER_DIRECTION_INVALID, response.getBody());
+    }
+
+    @Test
+    void handleRestaurantOrderDirectionEmptyException_ReturnsBadRequest() {
+        RestaurantOrderDirectionEmptyException exception = new RestaurantOrderDirectionEmptyException();
+
+        ResponseEntity<Object> response = handler.handleRestaurantOrderDirectionEmptyException(exception);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(ConstExceptions.RESTAURANT_ORDER_DIRECTION_EMPTY, response.getBody());
+    }
+
+    @Test
+    void handleRestaurantCurrentPageInvalidException_ReturnsBadRequest() {
+        RestaurantCurrentPageInvalidException exception = new RestaurantCurrentPageInvalidException();
+
+        ResponseEntity<Object> response = handler.handleRestaurantCurrentPageInvalidException(exception);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(ConstExceptions.RESTAURANT_CURRENT_PAGE_INVALID, response.getBody());
+    }
 
     @Test
     void handleMethodArgumentNotValid() {
@@ -162,4 +201,5 @@ class RestaurantExceptionHandlerTest {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals(errors, response.getBody());
     }
+
 }

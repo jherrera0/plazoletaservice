@@ -36,6 +36,10 @@ public class ConstExceptions {
 
     public static final String INVALID_TOKEN = "Invalid token";
     public static final String USER_NOT_FOUND = "User not found";
+    public static final String RESTAURANT_PAGE_SIZE_INVALID = "Restaurant page size is invalid";
+    public static final String RESTAURANT_ORDER_DIRECTION_EMPTY = "Restaurant order direction is empty";
+    public static final String RESTAURANT_CURRENT_PAGE_INVALID = "Restaurant current page is invalid";
+    public static final String RESTAURANT_ORDER_DIRECTION_INVALID = "Restaurant order direction is invalid";
 
     private ConstExceptions() {
     }

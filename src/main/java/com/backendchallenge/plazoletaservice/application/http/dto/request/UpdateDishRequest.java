@@ -1,4 +1,4 @@
-package com.backendchallenge.plazoletaservice.application.http.dto;
+package com.backendchallenge.plazoletaservice.application.http.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -6,6 +6,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
+import java.util.List;
+
 @Mapper (componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
@@ -13,4 +15,6 @@ import org.mapstruct.ReportingPolicy;
 public interface IRestaurantEntityMapper {
     @Mapping(target = "id", ignore = true)
     RestaurantEntity toEntity(Restaurant restaurant);
+    Restaurant toModel(RestaurantEntity restaurantEntity);
+    List<Restaurant> toModelList(List<RestaurantEntity> content);
 }

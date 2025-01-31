@@ -18,6 +18,26 @@ import java.util.Map;
 @RestControllerAdvice
 public class RestaurantExceptionHandler extends ResponseEntityExceptionHandler {
 
+    @ExceptionHandler(RestaurantPageSizeInvalidException.class)
+    public ResponseEntity<Object> handleRestaurantPageSizeInvalidException(RestaurantPageSizeInvalidException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(RestaurantOrderDirectionInvalidException.class)
+    public ResponseEntity<Object> handleRestaurantOrderDirectionInvalidException(RestaurantOrderDirectionInvalidException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(RestaurantOrderDirectionEmptyException.class)
+    public ResponseEntity<Object> handleRestaurantOrderDirectionEmptyException(RestaurantOrderDirectionEmptyException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(RestaurantCurrentPageInvalidException.class)
+    public ResponseEntity<Object> handleRestaurantCurrentPageInvalidException(RestaurantCurrentPageInvalidException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
     @ExceptionHandler(InvalidRestaurantDocumentFormatException.class)
     public ResponseEntity<Object> handleInvalidRestaurantDocumentFormatException(InvalidRestaurantDocumentFormatException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
