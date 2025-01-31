@@ -126,4 +126,43 @@ class DishJpaAdapterTest {
 
         assertEquals(ConstValidation.ZERO.longValue(), result);
     }
+    @Test
+    void changeDishStatus_updatesStatusSuccessfully() {
+        Dish dish = new Dish(ConstTest.ID_TEST, ConstTest.ID_TEST, ConstTest.DISH_NAME_TEST, ConstTest.DISH_PRICE_TEST, ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_URL_IMAGE_TEST, ConstTest.DISH_CATEGORY_TEST);
+        DishEntity dishEntity = new DishEntity();
+        RestaurantEntity restaurantEntity = new RestaurantEntity();
+        restaurantEntity.setId(ConstTest.ID_TEST);
+
+        when(dishEntityMapper.toEntity(dish)).thenReturn(dishEntity);
+        when(restaurantRepository.findById(ConstTest.ID_TEST)).thenReturn(java.util.Optional.of(restaurantEntity));
+
+        dishJpaAdapter.changeDishStatus(dish, ConstTest.ID_TEST);
+
+        verify(dishRepository, times(1)).save(dishEntity);
+    }
+
+    @Test
+    void getDishById_returnsDishSuccessfully() {
+        DishEntity dishEntity = new DishEntity();
+        dishEntity.setId(ConstTest.ID_TEST);
+
+        when(dishRepository.findById(ConstTest.ID_TEST)).thenReturn(java.util.Optional.of(dishEntity));
+        when(dishEntityMapper.toDomain(dishEntity)).thenReturn(new Dish(ConstTest.ID_TEST, ConstTest.ID_TEST, ConstTest.DISH_NAME_TEST, ConstTest.DISH_PRICE_TEST, ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_URL_IMAGE_TEST, ConstTest.DISH_CATEGORY_TEST));
+
+        Dish result = dishJpaAdapter.getDishById(ConstTest.ID_TEST);
+
+        assertNotNull(result);
+        assertEquals(ConstTest.ID_TEST, result.getId());
+    }
+
+    @Test
+    void getDishById_returnsEmptyDishWhenNotFound() {
+        when(dishRepository.findById(ConstTest.ID_TEST)).thenReturn(java.util.Optional.empty());
+        when(dishEntityMapper.toDomain(any(DishEntity.class))).thenReturn(new Dish());
+
+        Dish result = dishJpaAdapter.getDishById(ConstTest.ID_TEST);
+
+        assertNotNull(result);
+        assertNull(result.getId());
+    }
 }
