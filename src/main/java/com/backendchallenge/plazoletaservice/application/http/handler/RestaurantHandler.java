@@ -1,6 +1,6 @@
 package com.backendchallenge.plazoletaservice.application.http.handler;
 
-import com.backendchallenge.plazoletaservice.application.http.dto.CreateRestaurantRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.request.CreateRestaurantRequest;
 import com.backendchallenge.plazoletaservice.application.http.handler.interfaces.IRestaurantHandler;
 import com.backendchallenge.plazoletaservice.application.http.mapper.ICreateRestaurantRequestMapper;
 import com.backendchallenge.plazoletaservice.domain.api.IRestaurantServicePort;

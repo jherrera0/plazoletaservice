@@ -25,6 +25,9 @@ public class ConstDocumentation {
     public static final String CHANGE_DISH_STATUS_CODE_403 = "User not authorized to change dish status";
     public static final String UPDATE_DISH_CODE_403 = "User not authorized to update dish";
     public static final String CREATE_DISH_CODE_403 = "User not authorized to create dish";
+    public static final String CREATE_RESTAURANT_CODE_403 = "User not authorized to create restaurant";
+    public static final String LIST_RESTAURANTS_OPERATION = "List all restaurants";
+    public static final String LIST_RESTAURANTS_CODE_201 = "Restaurants listed successfully";
 
     private ConstDocumentation() {
     }

@@ -1,6 +1,6 @@
 package com.backendchallenge.plazoletaservice.application.http.mapper;
 
-import com.backendchallenge.plazoletaservice.application.http.dto.CreateDishRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.request.CreateDishRequest;
 import com.backendchallenge.plazoletaservice.domain.model.Dish;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

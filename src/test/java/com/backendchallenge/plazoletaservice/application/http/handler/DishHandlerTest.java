@@ -1,8 +1,8 @@
 package com.backendchallenge.plazoletaservice.application.http.handler;
 
-import com.backendchallenge.plazoletaservice.application.http.dto.ChangeStatusRequest;
-import com.backendchallenge.plazoletaservice.application.http.dto.CreateDishRequest;
-import com.backendchallenge.plazoletaservice.application.http.dto.UpdateDishRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.request.ChangeStatusRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.request.CreateDishRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.request.UpdateDishRequest;
 import com.backendchallenge.plazoletaservice.application.http.mapper.ICreateDishRequestMapper;
 import com.backendchallenge.plazoletaservice.domain.api.IDishServicePort;
 import com.backendchallenge.plazoletaservice.domain.model.Dish;
