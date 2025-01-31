@@ -1,5 +1,7 @@
 package com.backendchallenge.plazoletaservice.domain.model;
 
+import java.util.List;
+
 public class Dish {
     private Long id;
     private Long idRestaurant;
@@ -7,20 +9,21 @@ public class Dish {
     private Integer price;
     private String description;
     private String urlImage;
-    private String category;
     private Boolean available;
+    private List<Category> categories;
 
     public Dish() {
     }
 
-    public Dish(Long id, Long idRestaurant, String name, Integer price, String description, String urlImage, String category) {
+    public Dish(Long id, Long idRestaurant, String name, Integer price, String description, String urlImage,
+                List<Category> categories) {
         this.id = id;
         this.idRestaurant = idRestaurant;
         this.name = name;
         this.price = price;
         this.description = description;
         this.urlImage = urlImage;
-        this.category = category;
+        this.categories = categories;
     }
 
     public Long getId() {
@@ -71,19 +74,19 @@ public class Dish {
         this.urlImage = urlImage;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
     public Boolean getAvailable() {
         return available;
     }
 
     public void setAvailable(Boolean available) {
         this.available = available;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 }

@@ -4,7 +4,9 @@ import com.backendchallenge.plazoletaservice.domain.api.IDishServicePort;
 import com.backendchallenge.plazoletaservice.domain.exceptions.dishexceptions.*;
 import com.backendchallenge.plazoletaservice.domain.exceptions.restaurantexceptions.OwnerNotFoundException;
 import com.backendchallenge.plazoletaservice.domain.exceptions.restaurantexceptions.RestaurantNotFoundException;
+import com.backendchallenge.plazoletaservice.domain.model.Category;
 import com.backendchallenge.plazoletaservice.domain.model.Dish;
+import com.backendchallenge.plazoletaservice.domain.spi.ICategoryPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IDishPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IJwtPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IRestaurantPersistencePort;
@@ -14,9 +16,9 @@ import com.backendchallenge.plazoletaservice.domain.until.TokenHolder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -26,6 +28,7 @@ class DishCaseTest {
     private IRestaurantPersistencePort restaurantPersistencePort;
     private IUserPersistencePort userPersistencePort;
     private IDishServicePort dishServicePort;
+    private ICategoryPersistencePort categoryPersistencePort;
     private IJwtPersistencePort jwtPersistencePort;
     private MockedStatic<TokenHolder> mockedTokenHolder;
 
@@ -34,6 +37,8 @@ class DishCaseTest {
         dishPersistencePort = mock(IDishPersistencePort.class);
         restaurantPersistencePort = mock(IRestaurantPersistencePort.class);
         userPersistencePort = mock(IUserPersistencePort.class);
+        categoryPersistencePort = mock(ICategoryPersistencePort.class);
+        dishServicePort = new DishCase(dishPersistencePort, restaurantPersistencePort, userPersistencePort, categoryPersistencePort);
         jwtPersistencePort = mock(IJwtPersistencePort.class);
         dishServicePort = new DishCase(dishPersistencePort, restaurantPersistencePort, userPersistencePort, jwtPersistencePort);
 
@@ -53,7 +58,7 @@ class DishCaseTest {
         dish.setPrice(ConstTest.DISH_PRICE_TEST);
         dish.setDescription(ConstTest.DISH_DESCRIPTION_TEST);
         dish.setUrlImage(ConstTest.DISH_URL_IMAGE_TEST);
-        dish.setCategory(ConstTest.DISH_CATEGORY_TEST);
+        dish.setCategories(List.of(new Category(ConstTest.ID_TEST,ConstTest.CATEGORY_NAME_TEST, ConstTest.CATEGORY_DESCRIPTION_TEST)));
         when(jwtPersistencePort.getUserId(ConstTest.VALID_TOKEN)).thenReturn(ConstTest.ID_TEST);
         when(userPersistencePort.findOwnerById(ConstTest.ID_TEST)).thenReturn(true);
         when(restaurantPersistencePort.existsRestaurantByIdAndOwner(ConstTest.ID_TEST, ConstTest.ID_TEST)).thenReturn(true);

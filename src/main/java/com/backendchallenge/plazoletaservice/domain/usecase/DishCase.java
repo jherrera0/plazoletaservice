@@ -5,6 +5,7 @@ import com.backendchallenge.plazoletaservice.domain.exceptions.dishexceptions.*;
 import com.backendchallenge.plazoletaservice.domain.exceptions.restaurantexceptions.OwnerNotFoundException;
 import com.backendchallenge.plazoletaservice.domain.exceptions.restaurantexceptions.RestaurantNotFoundException;
 import com.backendchallenge.plazoletaservice.domain.model.Dish;
+import com.backendchallenge.plazoletaservice.domain.spi.ICategoryPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IDishPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IJwtPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IRestaurantPersistencePort;
@@ -17,16 +18,20 @@ public class DishCase implements IDishServicePort {
     private final IDishPersistencePort dishPersistencePort;
     private final IRestaurantPersistencePort restaurantPersistencePort;
     private final IUserPersistencePort userPersistencePort;
+    private final ICategoryPersistencePort categoryPersistencePort;
     private final IJwtPersistencePort jwtPersistencePort;
 
     public DishCase(IDishPersistencePort dishPersistencePort,
                     IRestaurantPersistencePort restaurantPersistencePort,
+                    IUserPersistencePort userPersistencePort,
+                    ICategoryPersistencePort categoryPersistencePort
                     IUserPersistencePort userPersistencePort,
                     IJwtPersistencePort jwtPersistencePort
     ) {
         this.restaurantPersistencePort = restaurantPersistencePort;
         this.dishPersistencePort = dishPersistencePort;
         this.userPersistencePort = userPersistencePort;
+        this.categoryPersistencePort = categoryPersistencePort;
         this.jwtPersistencePort = jwtPersistencePort;
     }
 
@@ -41,6 +46,7 @@ public class DishCase implements IDishServicePort {
             throw new RestaurantNotFoundException();
         }
         validatedDishParams(dish);
+        dish.setCategories(categoryPersistencePort.getCategoriesByNames(dish.getCategories()));
         dish.setAvailable(true);
         if (!Boolean.TRUE.equals(dishPersistencePort.createDish(dish))) {
             throw new RestaurantNotFoundException();
@@ -62,7 +68,7 @@ public class DishCase implements IDishServicePort {
         if (!restaurantPersistencePort.existsRestaurantByIdAndOwner(dishPersistencePort.getRestaurantIdByDishId(idDish), idOwner)) {
             throw new RestaurantNotFoundException();
         }
-        
+
         updateValidatedParams(descriptionUpdate, priceUpdate);
         dishPersistencePort.updateDish(idDish, descriptionUpdate, priceUpdate);
     }
@@ -104,7 +110,7 @@ public class DishCase implements IDishServicePort {
         if (dish.getUrlImage() == null || dish.getUrlImage().isBlank()) {
             throw new DishUrlImageEmptyException();
         }
-        if(dish.getCategory() == null || dish.getCategory().isBlank()) {
+        if(dish.getCategories() == null) {
             throw new DishCategoryEmptyException();
         }
         dishPriceValidValue(dish.getPrice());

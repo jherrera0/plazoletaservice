@@ -1,5 +1,9 @@
 package com.backendchallenge.plazoletaservice.domain.until;
 
+import com.backendchallenge.plazoletaservice.domain.model.Category;
+
+import java.util.List;
+
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -34,6 +38,9 @@ public class ConstTest {
     public static final String DISH_CATEGORY_EMPTY = "";
     public static final Integer DISH_PRICE_INVALID = -1;
     public static final Boolean AVAILABLE_TEST = true;
+    public static final String CATEGORY_DESCRIPTION_TEST = "Test Category Description";
+    public static final String CATEGORY_NAME_TEST = "Test Category Name";
+    public static final List<Category> CATEGORIES_TEST = List.of(new Category(CATEGORY_NAME_TEST, CATEGORY_DESCRIPTION_TEST));
 
     public static final String FIELD1 = "field1";
     public static final String FIELD2 = "field2";
