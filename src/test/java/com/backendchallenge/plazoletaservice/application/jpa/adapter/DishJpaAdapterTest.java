@@ -7,6 +7,7 @@ import com.backendchallenge.plazoletaservice.application.jpa.repository.IDishRep
 import com.backendchallenge.plazoletaservice.application.jpa.repository.IRestaurantRepository;
 import com.backendchallenge.plazoletaservice.domain.model.Dish;
 import com.backendchallenge.plazoletaservice.domain.until.ConstTest;
+import com.backendchallenge.plazoletaservice.domain.until.ConstValidation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -101,5 +102,28 @@ class DishJpaAdapterTest {
         dishJpaAdapter.updateDish(ConstTest.ID_TEST, ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_PRICE_TEST);
 
         verify(dishRepository, never()).save(any(DishEntity.class));
+    }
+
+    @Test
+    void getRestaurantIdByDishId_returnsRestaurantIdSuccessfully() {
+        RestaurantEntity restaurantEntity = new RestaurantEntity();
+        restaurantEntity.setId(ConstTest.ID_TEST);
+        DishEntity dishEntity = new DishEntity();
+        dishEntity.setId(ConstTest.ID_TEST);
+        dishEntity.setRestaurant(restaurantEntity);
+
+        when(dishRepository.findById(ConstTest.ID_TEST)).thenReturn(java.util.Optional.of(dishEntity));
+
+        Long result = dishJpaAdapter.getRestaurantIdByDishId(ConstTest.ID_TEST);
+
+        assertEquals(ConstTest.ID_TEST, result);
+    }
+    @Test
+    void getRestaurantIdByDishId_returnsZeroWhenDishNotFound() {
+        when(dishRepository.findById(ConstTest.ID_TEST)).thenReturn(java.util.Optional.empty());
+
+        Long result = dishJpaAdapter.getRestaurantIdByDishId(ConstTest.ID_TEST);
+
+        assertEquals(ConstValidation.ZERO.longValue(), result);
     }
 }

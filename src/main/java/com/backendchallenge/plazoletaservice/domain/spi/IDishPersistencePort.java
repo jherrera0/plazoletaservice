@@ -7,4 +7,6 @@ public interface IDishPersistencePort {
     boolean findDishById(Long idDish);
 
     void updateDish(Long idDish, String descriptionUpdate, Integer priceUpdate);
+
+    Long getRestaurantIdByDishId(Long idDish);
 }

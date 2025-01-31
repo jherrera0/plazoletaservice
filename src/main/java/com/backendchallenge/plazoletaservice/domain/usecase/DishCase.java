@@ -52,6 +52,17 @@ public class DishCase implements IDishServicePort {
         if (!dishPersistencePort.findDishById(idDish)){
             throw new DishNotFoundException();
         }
+        String token = TokenHolder.getToken().replace(ConstJwt.BEARER, ConstJwt.SPLITERSTRING);
+        Long idOwner = jwtPersistencePort.getUserId(token);
+
+        if(dishPersistencePort.getRestaurantIdByDishId(idDish)== 0 ){
+            throw new DishNotFoundException();
+        }
+
+        if (!restaurantPersistencePort.existsRestaurantByIdAndOwner(dishPersistencePort.getRestaurantIdByDishId(idDish), idOwner)) {
+            throw new RestaurantNotFoundException();
+        }
+        
         updateValidatedParams(descriptionUpdate, priceUpdate);
         dishPersistencePort.updateDish(idDish, descriptionUpdate, priceUpdate);
     }
