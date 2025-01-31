@@ -1,5 +1,7 @@
 package com.backendchallenge.plazoletaservice.domain.until;
 
+import jakarta.validation.constraints.NotNull;
+
 public class ConstTest {
 
     public static final Long ID_TEST = 1L;
@@ -42,6 +44,7 @@ public class ConstTest {
     public static final String ROLE_NAME_TEST = "RoleTest";
     public static final String EXPIRED_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiT1dORVIiLCJJZCI6MSwic3ViIjoiam9zZWhlcnJlcmFAUHJhZ21hLmNvIiwiaWF0IjoxNzM4MjY2NDE5LCJleHAiOjE3MzgyNjgyMTl9.HVRo6zv82_Hwo1GTZtwoybTSpeIJRReLr-CIhuW_zVI";
     public static final String UNSUPPORTED_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTYifQ";
+    public static final @NotNull Boolean DISH_STATUS_TEST = true;
 
 
     private ConstTest() {
