@@ -19,7 +19,7 @@ public class RestaurantCase implements IRestaurantServicePort {
 
     @Override
     public Page<Restaurant> listRestaurants(Integer pageSize, String orderDirection) {
-        return null;
+        return restaurantPersistencePort.listRestaurants(pageSize, orderDirection);
     }
 
     @Override

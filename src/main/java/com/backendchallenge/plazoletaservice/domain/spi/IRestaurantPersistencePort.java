@@ -6,5 +6,5 @@ import com.backendchallenge.plazoletaservice.domain.model.Restaurant;
 public interface IRestaurantPersistencePort {
     void createRestaurant(Restaurant restaurant);
     boolean existsRestaurantByIdAndOwner(Long idRestaurant, Long idOwner);
-    Page<Restaurant> listRestaurants();
+    Page<Restaurant> listRestaurants(Integer pageSize, String orderDirection);
 }
