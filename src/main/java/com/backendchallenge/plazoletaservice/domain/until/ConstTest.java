@@ -1,6 +1,8 @@
 package com.backendchallenge.plazoletaservice.domain.until;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 public class ConstTest {
 
@@ -45,6 +47,8 @@ public class ConstTest {
     public static final String EXPIRED_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiT1dORVIiLCJJZCI6MSwic3ViIjoiam9zZWhlcnJlcmFAUHJhZ21hLmNvIiwiaWF0IjoxNzM4MjY2NDE5LCJleHAiOjE3MzgyNjgyMTl9.HVRo6zv82_Hwo1GTZtwoybTSpeIJRReLr-CIhuW_zVI";
     public static final String UNSUPPORTED_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTYifQ";
     public static final @NotNull Boolean DISH_STATUS_TEST = true;
+    public static final @PositiveOrZero Integer CURRENT_PAGE_TEST = 0;
+    public static final @Positive Integer LIMIT_FOR_PAGE_TEST = 3;
 
 
     private ConstTest() {

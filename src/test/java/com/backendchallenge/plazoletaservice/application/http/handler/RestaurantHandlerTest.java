@@ -2,6 +2,7 @@ package com.backendchallenge.plazoletaservice.application.http.handler;
 
 import com.backendchallenge.plazoletaservice.application.http.dto.request.CreateRestaurantRequest;
 import com.backendchallenge.plazoletaservice.application.http.mapper.ICreateRestaurantRequestMapper;
+import com.backendchallenge.plazoletaservice.application.http.mapper.IPageResponseMapper;
 import com.backendchallenge.plazoletaservice.domain.api.IRestaurantServicePort;
 import com.backendchallenge.plazoletaservice.domain.model.Restaurant;
 import com.backendchallenge.plazoletaservice.domain.until.ConstTest;
@@ -14,13 +15,16 @@ class RestaurantHandlerTest {
 
     private IRestaurantServicePort restaurantServicePort;
     private ICreateRestaurantRequestMapper createRestaurantRequestMapper;
+    private IPageResponseMapper pageResponseMapper;
     private RestaurantHandler restaurantHandler;
 
     @BeforeEach
     void setUp() {
         restaurantServicePort = mock(IRestaurantServicePort.class);
         createRestaurantRequestMapper = mock(ICreateRestaurantRequestMapper.class);
-        restaurantHandler = new RestaurantHandler(restaurantServicePort, createRestaurantRequestMapper);
+        restaurantHandler = new RestaurantHandler(restaurantServicePort,
+                createRestaurantRequestMapper,
+                pageResponseMapper);
     }
 
     @Test
