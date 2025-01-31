@@ -7,6 +7,7 @@ public class ConstRoute {
     public static final String DISH = "/dish";
     public static final String CREATE_DISH = "/CREATE_DISH";
     public static final String UPDATE_DISH = "/UPDATE_DISH";
+    public static final String CHANGE_DISH_STATUS = "/CHANGE_DISH_STATUS";
 
     private ConstRoute() {
     }

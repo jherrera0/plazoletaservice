@@ -11,6 +11,8 @@ import org.mapstruct.ReportingPolicy;
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
 
 public interface IDishEntityMapper {
-    @Mapping(target = "id", ignore = true)
     DishEntity toEntity(Dish dish);
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "idRestaurant", source = "restaurant.id")
+    Dish toDomain(DishEntity dishEntity);
 }

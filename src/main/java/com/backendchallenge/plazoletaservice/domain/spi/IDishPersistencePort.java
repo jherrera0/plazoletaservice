@@ -9,4 +9,8 @@ public interface IDishPersistencePort {
     void updateDish(Long idDish, String descriptionUpdate, Integer priceUpdate);
 
     Long getRestaurantIdByDishId(Long idDish);
+
+    Dish getDishById(Long dishId);
+
+    void changeDishStatus(Dish dish, Long idOwner);
 }

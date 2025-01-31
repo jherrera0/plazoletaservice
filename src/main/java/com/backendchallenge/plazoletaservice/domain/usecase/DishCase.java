@@ -67,6 +67,21 @@ public class DishCase implements IDishServicePort {
         dishPersistencePort.updateDish(idDish, descriptionUpdate, priceUpdate);
     }
 
+    @Override
+    public void changeDishStatus(Long dishId, Boolean status) {
+        if (!dishPersistencePort.findDishById(dishId)){
+            throw new DishNotFoundException();
+        }
+        String token = TokenHolder.getToken().replace(ConstJwt.BEARER, ConstJwt.SPLITERSTRING);
+        Long idOwner = jwtPersistencePort.getUserId(token);
+        if (!restaurantPersistencePort.existsRestaurantByIdAndOwner(dishPersistencePort.getRestaurantIdByDishId(dishId), idOwner)) {
+            throw new RestaurantNotFoundException();
+        }
+        Dish dish = dishPersistencePort.getDishById(dishId);
+        dish.setAvailable(status);
+        dishPersistencePort.changeDishStatus(dish, idOwner);
+    }
+
     private static void updateValidatedParams(String descriptionUpdate,Integer priceUpdate) {
         if(descriptionUpdate == null || descriptionUpdate.isBlank()) {
             throw new DishDescriptionUpdateEmptyException();
