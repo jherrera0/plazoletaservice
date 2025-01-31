@@ -7,6 +7,7 @@ import com.backendchallenge.plazoletaservice.application.jpa.repository.IDishRep
 import com.backendchallenge.plazoletaservice.application.jpa.repository.IRestaurantRepository;
 import com.backendchallenge.plazoletaservice.domain.model.Dish;
 import com.backendchallenge.plazoletaservice.domain.spi.IDishPersistencePort;
+import com.backendchallenge.plazoletaservice.domain.until.ConstValidation;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -38,5 +39,14 @@ public class DishJpaAdapter implements IDishPersistencePort {
             dishEntity.setPrice(priceUpdate);
             dishRepository.save(dishEntity);
         }
+    }
+
+    @Override
+    public Long getRestaurantIdByDishId(Long idDish) {
+        DishEntity dishEntity = dishRepository.findById(idDish).orElse(new DishEntity());
+        if(dishEntity.getId() != null) {
+            return dishEntity.getRestaurant().getId();
+        }
+        return ConstValidation.ZERO.longValue();
     }
 }

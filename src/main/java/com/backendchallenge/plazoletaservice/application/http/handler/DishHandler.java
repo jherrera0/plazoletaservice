@@ -23,6 +23,7 @@ public class DishHandler implements IDishHandler {
 
     @Override
     public void updateDish(UpdateDishRequest request) {
+        TokenHolder.getToken();
         dishServicePort.updateDish(request.getDishId(),request.getDescriptionUpdate(),request.getPriceUpdate());
     }
 }

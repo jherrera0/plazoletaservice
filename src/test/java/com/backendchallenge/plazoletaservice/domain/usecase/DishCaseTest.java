@@ -192,6 +192,8 @@ class DishCaseTest {
     @Test
     void updateDish_withValidParams_shouldSucceed() {
         when(dishPersistencePort.findDishById(ConstTest.ID_TEST)).thenReturn(true);
+        when(dishPersistencePort.getRestaurantIdByDishId(ConstTest.ID_TEST)).thenReturn(ConstTest.ID_TEST);
+        when(restaurantPersistencePort.existsRestaurantByIdAndOwner(ConstTest.ID_TEST, ConstTest.ID_TEST)).thenReturn(true);
         when(jwtPersistencePort.getUserId(ConstTest.VALID_TOKEN)).thenReturn(ConstTest.ID_TEST);
         assertDoesNotThrow(() -> dishServicePort.updateDish(ConstTest.ID_TEST, ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_PRICE_TEST));
     }
@@ -206,6 +208,8 @@ class DishCaseTest {
     @Test
     void updateDish_withEmptyDescription_shouldThrowDishDescriptionUpdateEmptyException() {
         when(dishPersistencePort.findDishById(ConstTest.ID_TEST)).thenReturn(true);
+        when(dishPersistencePort.getRestaurantIdByDishId(ConstTest.ID_TEST)).thenReturn(ConstTest.ID_TEST);
+        when(restaurantPersistencePort.existsRestaurantByIdAndOwner(ConstTest.ID_TEST, ConstTest.ID_TEST)).thenReturn(true);
         when(jwtPersistencePort.getUserId(ConstTest.VALID_TOKEN)).thenReturn(ConstTest.ID_TEST);
         assertThrows(DishDescriptionUpdateEmptyException.class, () -> dishServicePort.updateDish(ConstTest.ID_TEST, ConstTest.DISH_DESCRIPTION_EMPTY, ConstTest.DISH_PRICE_TEST));
     }
@@ -213,7 +217,26 @@ class DishCaseTest {
     @Test
     void updateDish_withNullPrice_shouldThrowDishPriceUpdateEmptyException() {
         when(dishPersistencePort.findDishById(ConstTest.ID_TEST)).thenReturn(true);
+        when(dishPersistencePort.getRestaurantIdByDishId(ConstTest.ID_TEST)).thenReturn(ConstTest.ID_TEST);
+        when(restaurantPersistencePort.existsRestaurantByIdAndOwner(ConstTest.ID_TEST, ConstTest.ID_TEST)).thenReturn(true);
         when(jwtPersistencePort.getUserId(ConstTest.VALID_TOKEN)).thenReturn(ConstTest.ID_TEST);
         assertThrows(DishPriceUpdateEmptyException.class, () -> dishServicePort.updateDish(ConstTest.ID_TEST, ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_PRICE_NULL));
+    }
+
+    @Test
+    void updateDish_withInvalidRestaurantId_shouldThrowRestaurantNotFoundException() {
+        when(dishPersistencePort.findDishById(ConstTest.ID_TEST)).thenReturn(true);
+        when(dishPersistencePort.getRestaurantIdByDishId(ConstTest.ID_TEST)).thenReturn(0L);
+        when(jwtPersistencePort.getUserId(ConstTest.VALID_TOKEN)).thenReturn(ConstTest.ID_TEST);
+        assertThrows(DishNotFoundException.class, () -> dishServicePort.updateDish(ConstTest.ID_TEST, ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_PRICE_TEST));
+    }
+
+    @Test
+    void updateDish_withInvalidRestaurantOwner_shouldThrowRestaurantNotFoundException() {
+        when(dishPersistencePort.findDishById(ConstTest.ID_TEST)).thenReturn(true);
+        when(dishPersistencePort.getRestaurantIdByDishId(ConstTest.ID_TEST)).thenReturn(ConstTest.ID_TEST);
+        when(restaurantPersistencePort.existsRestaurantByIdAndOwner(ConstTest.ID_TEST, ConstTest.ID_TEST)).thenReturn(false);
+        when(jwtPersistencePort.getUserId(ConstTest.VALID_TOKEN)).thenReturn(ConstTest.ID_TEST);
+        assertThrows(RestaurantNotFoundException.class, () -> dishServicePort.updateDish(ConstTest.ID_TEST, ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_PRICE_TEST));
     }
 }
