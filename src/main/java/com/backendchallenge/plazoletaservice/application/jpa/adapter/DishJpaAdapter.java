@@ -73,7 +73,7 @@ public class DishJpaAdapter implements IDishPersistencePort {
     public PageCustom<Dish> getDishesByRestaurant(Long restaurantId, Integer currentPage, Integer pageSize, String filterBy, String orderDirection) {
         Pageable pageable = PageRequest.of(currentPage, pageSize, Sort.by(Sort.Direction.fromString(orderDirection),ConstValidation.NAME));
         Page<DishEntity> dishEntities = dishRepository.findAllDishesByRestaurantAndFilter(restaurantId, Arrays.stream(filterBy.split(ConstValidation.COMMA)).toList() ,pageable);
-        if(dishEntities.getTotalPages()>=currentPage) {
+        if(dishEntities.getTotalPages()>=currentPage+ConstValidation.ONE) {
             return new PageCustom<>(dishEntities.getNumber(),dishEntities.getSize(), dishEntities.getTotalPages(),dishEntityMapper.toDomainList(dishEntities.getContent()));
         }
         return new PageCustom<>(ConstValidation.MINUS_ONE,null,null,null);

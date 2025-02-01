@@ -10,6 +10,7 @@ public interface IDishPersistencePort {
     Long getRestaurantIdByDishId(Long idDish);
     Dish getDishById(Long dishId);
     void changeDishStatus(Dish dish, Long idOwner);
-    PageCustom<Dish> getDishesByRestaurant(Long restaurantId, Integer currentPage, Integer pageSize, String filterBy, String orderDirection);
+    PageCustom<Dish> getDishesByRestaurant(Long restaurantId, Integer currentPage, Integer pageSize,
+                                           String filterBy, String orderDirection);
 
 }

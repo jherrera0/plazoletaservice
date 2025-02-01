@@ -33,7 +33,7 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
     public PageCustom<Restaurant> listRestaurants(Integer pageSize, String sortDirection, Integer currentPage) {
         Pageable pageable = PageRequest.of(currentPage, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), ConstValidation.NAME));
         Page<RestaurantEntity> restaurantEntityPage = restaurantRepository.findAll(pageable);
-        if(restaurantEntityPage.getTotalPages()>=restaurantEntityPage.getNumber()){
+        if(restaurantEntityPage.getTotalPages()>=restaurantEntityPage.getNumber()+ConstValidation.ONE){
             return new PageCustom<>(restaurantEntityPage.getNumber(),restaurantEntityPage.getSize(),restaurantEntityPage.getTotalPages(),restaurantEntityMapper.toModelList(restaurantEntityPage.getContent()));
         }
         return new PageCustom<>(ConstValidation.MINUS_ONE,null,null,null);
