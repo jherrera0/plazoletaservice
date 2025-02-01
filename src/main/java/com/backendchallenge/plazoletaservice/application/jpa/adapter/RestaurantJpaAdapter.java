@@ -38,4 +38,9 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
         }
         return new PageCustom<>(ConstValidation.MINUS_ONE,null,null,null);
     }
+
+    @Override
+    public boolean existsRestaurantById(Long restaurantId) {
+        return restaurantRepository.existsById(restaurantId);
+    }
 }

@@ -43,6 +43,7 @@ public class ConstExceptions {
     public static final String DISHES_PAGE_SIZE_INVALID = "Dishes page size is invalid";
     public static final String DISHES_CURRENT_PAGE_INVALID = "Dishes current page is invalid";
     public static final String DISHES_ORDER_DIRECTION_EMPTY = "Dishes order direction is empty";
+    public static final String DISHES_ORDER_DIRECTION_INVALID = "Dishes order direction is invalid";
 
     private ConstExceptions() {
     }
