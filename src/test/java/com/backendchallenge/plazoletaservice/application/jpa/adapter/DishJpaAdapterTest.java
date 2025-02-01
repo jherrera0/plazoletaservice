@@ -7,10 +7,13 @@ import com.backendchallenge.plazoletaservice.application.jpa.repository.IDishRep
 import com.backendchallenge.plazoletaservice.application.jpa.repository.IRestaurantRepository;
 import com.backendchallenge.plazoletaservice.domain.model.Category;
 import com.backendchallenge.plazoletaservice.domain.model.Dish;
+import com.backendchallenge.plazoletaservice.domain.model.PageCustom;
 import com.backendchallenge.plazoletaservice.domain.until.ConstTest;
 import com.backendchallenge.plazoletaservice.domain.until.ConstValidation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -176,5 +179,84 @@ class DishJpaAdapterTest {
 
         assertNotNull(result);
         assertNull(result.getId());
+    }
+
+    @Test
+    void getDishesByRestaurant_returnsDishesPageSuccessfully() {
+        Long restaurantId = ConstTest.ID_TEST;
+        Integer currentPage = ConstTest.CURRENT_PAGE_TEST;
+        Integer pageSize = ConstTest.PAGE_SIZE_TEST;
+        String filterBy = ConstTest.FILTER_BY_TEST;
+        String orderDirection = ConstTest.ORDER_DIRECTION_TEST;
+        List<DishEntity> dishEntities = List.of(new DishEntity());
+        Page<DishEntity> page = mock(Page.class);
+
+        when(page.getNumber()).thenReturn(currentPage);
+        when(page.getSize()).thenReturn(pageSize);
+        when(page.getTotalPages()).thenReturn(1);
+        when(page.getContent()).thenReturn(dishEntities);
+        when(dishRepository.findAllDishesByRestaurantAndFilter(eq(restaurantId), anyList(), any(Pageable.class))).thenReturn(page);
+        when(dishEntityMapper.toDomainList(dishEntities)).thenReturn(List.of(new Dish()));
+
+        PageCustom<Dish> result = dishJpaAdapter.getDishesByRestaurant(restaurantId, currentPage, pageSize, filterBy, orderDirection);
+
+        assertNotNull(result);
+        assertEquals(currentPage, result.getCurrentPage());
+        assertEquals(pageSize, result.getPageSize());
+        assertEquals(ConstValidation.ONE, result.getTotalPages());
+        assertNotNull(result.getItems());
+        assertFalse(result.getItems().isEmpty());
+    }
+
+    @Test
+    void getDishesByRestaurant_returnsEmptyPageWhenNoDishesFound() {
+        Long restaurantId = ConstTest.ID_TEST;
+        Integer currentPage = ConstTest.CURRENT_PAGE_TEST;
+        Integer pageSize = ConstTest.PAGE_SIZE_TEST;
+        String filterBy = ConstTest.FILTER_BY_TEST;
+        String orderDirection = ConstTest.ORDER_DIRECTION_TEST;
+        List<DishEntity> emptyList = List.of();
+        Page<DishEntity> page = mock(Page.class);
+
+        when(page.getNumber()).thenReturn(currentPage);
+        when(page.getSize()).thenReturn(pageSize);
+        when(page.getTotalPages()).thenReturn(ConstValidation.ZERO);
+        when(page.getContent()).thenReturn(emptyList);
+        when(dishRepository.findAllDishesByRestaurantAndFilter(eq(restaurantId), anyList(), any(Pageable.class)))
+                .thenReturn(page);
+        when(dishEntityMapper.toDomainList(emptyList)).thenReturn(List.of());
+
+        PageCustom<Dish> result = dishJpaAdapter.getDishesByRestaurant(restaurantId,
+                currentPage, pageSize, filterBy, orderDirection);
+
+        assertNotNull(result);
+        assertEquals(currentPage, result.getCurrentPage());
+        assertEquals(pageSize, result.getPageSize());
+        assertEquals(ConstValidation.ZERO, result.getTotalPages());
+        assertNotNull(result.getItems());
+        assertTrue(result.getItems().isEmpty());
+    }
+
+    @Test
+    void getDishesByRestaurant_handlesInvalidPageRequest() {
+        Long restaurantId = ConstTest.ID_TEST;
+        Integer currentPage = 10;
+        Integer pageSize = 5;
+        String filterBy = ConstTest.FILTER_BY_TEST;
+        String orderDirection = ConstTest.ORDER_DIRECTION_TEST;
+        Page<DishEntity> page = mock(Page.class);
+
+        when(page.getTotalPages()).thenReturn(ConstValidation.ONE);
+        when(dishRepository.findAllDishesByRestaurantAndFilter(eq(restaurantId), anyList(), any(Pageable.class))).
+                thenReturn(page);
+
+        PageCustom<Dish> result = dishJpaAdapter.getDishesByRestaurant(restaurantId, currentPage, pageSize, filterBy,
+                orderDirection);
+
+        assertNotNull(result);
+        assertEquals(ConstValidation.MINUS_ONE, result.getCurrentPage().intValue());
+        assertNull(result.getPageSize());
+        assertNull(result.getTotalPages());
+        assertNull(result.getItems());
     }
 }

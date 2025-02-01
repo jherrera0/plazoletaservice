@@ -2,18 +2,23 @@ package com.backendchallenge.plazoletaservice.application.http.handler;
 
 import com.backendchallenge.plazoletaservice.application.http.dto.request.ChangeStatusRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.CreateDishRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.request.ListDishesRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.UpdateDishRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.response.DishResponse;
+import com.backendchallenge.plazoletaservice.application.http.dto.response.PageResponse;
 import com.backendchallenge.plazoletaservice.application.http.mapper.ICreateDishRequestMapper;
 import com.backendchallenge.plazoletaservice.application.http.mapper.IPageResponseMapper;
 import com.backendchallenge.plazoletaservice.domain.api.IDishServicePort;
 import com.backendchallenge.plazoletaservice.domain.model.Category;
 import com.backendchallenge.plazoletaservice.domain.model.Dish;
 import com.backendchallenge.plazoletaservice.domain.until.ConstTest;
+import com.backendchallenge.plazoletaservice.domain.until.ConstValidation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class DishHandlerTest {
@@ -67,5 +72,30 @@ class DishHandlerTest {
         verify(dishServicePort, times(1)).changeDishStatus(ConstTest.ID_TEST, ConstTest.DISH_STATUS_TEST);
     }
 
+    @Test
+    void getDishesByRestaurant_Success() {
+        ListDishesRequest request = new ListDishesRequest(
+                ConstTest.ID_TEST,
+                ConstTest.CURRENT_PAGE_TEST,
+                ConstTest.PAGE_SIZE_TEST, ConstTest.FILTER_BY_TEST,
+                ConstTest.ORDER_DIRECTION_TEST);
+        PageResponse<DishResponse> pageResponse = new PageResponse<>();
 
+        when(dishServicePort.getDishesByRestaurant(ConstTest.ID_TEST, ConstTest.CURRENT_PAGE_TEST,
+                ConstTest.PAGE_SIZE_TEST,
+                ConstTest.FILTER_BY_TEST,
+                ConstTest.ORDER_DIRECTION_TEST
+        )).thenReturn(null);
+        when(pageResponseMapper.toPageResponseOfDishResponse(null)).thenReturn(pageResponse);
+
+        PageResponse<DishResponse> result = dishHandler.getDishesByRestaurant(request);
+
+        verify(dishServicePort, times(ConstValidation.ONE))
+                .getDishesByRestaurant(ConstTest.ID_TEST, ConstTest.CURRENT_PAGE_TEST,
+                        ConstTest.PAGE_SIZE_TEST,
+                        ConstTest.FILTER_BY_TEST,
+                        ConstTest.ORDER_DIRECTION_TEST);
+        verify(pageResponseMapper, times(ConstValidation.ONE)).toPageResponseOfDishResponse(null);
+        assertEquals(pageResponse, result);
+    }
 }

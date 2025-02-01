@@ -126,4 +126,22 @@ class RestaurantJpaAdapterTest {
         assertNull(result.getTotalPages());
         assertNull(result.getItems());
     }
+
+    @Test
+    void existsRestaurantById_returnsTrueWhenExists() {
+        when(restaurantRepository.existsById(ConstTest.ID_TEST)).thenReturn(true);
+
+        boolean result = restaurantJpaAdapter.existsRestaurantById(ConstTest.ID_TEST);
+
+        assertTrue(result);
+    }
+
+    @Test
+    void existsRestaurantById_returnsFalseWhenNotExists() {
+        when(restaurantRepository.existsById(ConstTest.ID_TEST)).thenReturn(false);
+
+        boolean result = restaurantJpaAdapter.existsRestaurantById(ConstTest.ID_TEST);
+
+        assertFalse(result);
+    }
 }
