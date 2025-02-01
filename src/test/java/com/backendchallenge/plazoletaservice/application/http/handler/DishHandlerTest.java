@@ -4,6 +4,7 @@ import com.backendchallenge.plazoletaservice.application.http.dto.request.Change
 import com.backendchallenge.plazoletaservice.application.http.dto.request.CreateDishRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.UpdateDishRequest;
 import com.backendchallenge.plazoletaservice.application.http.mapper.ICreateDishRequestMapper;
+import com.backendchallenge.plazoletaservice.application.http.mapper.IPageResponseMapper;
 import com.backendchallenge.plazoletaservice.domain.api.IDishServicePort;
 import com.backendchallenge.plazoletaservice.domain.model.Category;
 import com.backendchallenge.plazoletaservice.domain.model.Dish;
@@ -20,12 +21,14 @@ class DishHandlerTest {
     private IDishServicePort dishServicePort;
     private ICreateDishRequestMapper createDishRequestMapper;
     private DishHandler dishHandler;
+    private IPageResponseMapper pageResponseMapper;
 
     @BeforeEach
     void setUp() {
         dishServicePort = mock(IDishServicePort.class);
         createDishRequestMapper = mock(ICreateDishRequestMapper.class);
-        dishHandler = new DishHandler(dishServicePort, createDishRequestMapper);
+        pageResponseMapper = mock(IPageResponseMapper.class);
+        dishHandler = new DishHandler(dishServicePort, createDishRequestMapper, pageResponseMapper);
     }
 
     @Test

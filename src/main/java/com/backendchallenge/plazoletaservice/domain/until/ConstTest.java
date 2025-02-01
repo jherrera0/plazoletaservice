@@ -59,6 +59,9 @@ public class ConstTest {
     public static final int INVALID_PAGE_SIZE_TEST = 0;
     public static final int INVALID_CURRENT_PAGE_TEST = -1;
     public static final Integer TOTAL_PAGES = 5;
+    public static final String FILTER_BY_TEST = "category,category2";
+    public static final String ORDER_DIRECTION_TEST = "asc";
+    public static final String ORDER_DIRECTION_INVALID = "invalid";
 
 
     private ConstTest() {
