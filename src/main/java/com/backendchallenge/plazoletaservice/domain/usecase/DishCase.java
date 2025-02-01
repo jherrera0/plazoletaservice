@@ -5,6 +5,7 @@ import com.backendchallenge.plazoletaservice.domain.exceptions.dishexceptions.*;
 import com.backendchallenge.plazoletaservice.domain.exceptions.restaurantexceptions.OwnerNotFoundException;
 import com.backendchallenge.plazoletaservice.domain.exceptions.restaurantexceptions.RestaurantNotFoundException;
 import com.backendchallenge.plazoletaservice.domain.model.Dish;
+import com.backendchallenge.plazoletaservice.domain.model.PageCustom;
 import com.backendchallenge.plazoletaservice.domain.spi.ICategoryPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IDishPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IJwtPersistencePort;
@@ -13,6 +14,8 @@ import com.backendchallenge.plazoletaservice.domain.spi.IUserPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.until.ConstJwt;
 import com.backendchallenge.plazoletaservice.domain.until.ConstValidation;
 import com.backendchallenge.plazoletaservice.domain.until.TokenHolder;
+
+import java.util.Objects;
 
 public class DishCase implements IDishServicePort {
     private final IDishPersistencePort dishPersistencePort;
@@ -85,6 +88,30 @@ public class DishCase implements IDishServicePort {
         Dish dish = dishPersistencePort.getDishById(dishId);
         dish.setAvailable(status);
         dishPersistencePort.changeDishStatus(dish, idOwner);
+    }
+
+    @Override
+    public PageCustom<Dish> getDishesByRestaurant(Long restaurantId, Integer currentPage, Integer pageSize, String filterBy,String orderDirection) {
+        if (!restaurantPersistencePort.existsRestaurantById(restaurantId)) {
+            throw new RestaurantNotFoundException();
+        }
+        if (pageSize == null || pageSize <= ConstValidation.ZERO) {
+            throw new DishesPageSizeInvalidException();
+        }
+        if (currentPage == null || currentPage < ConstValidation.ZERO) {
+            throw new DishesCurrentPageInvalidException();
+        }
+        if (orderDirection == null || orderDirection.isBlank()) {
+            throw new DishesOrderDirectionEmptyException();
+        }
+        PageCustom<Dish> dishes =
+                dishPersistencePort.getDishesByRestaurant(restaurantId, currentPage, pageSize, filterBy, orderDirection);
+
+        if (Objects.equals(dishes.getCurrentPage(), ConstValidation.MINUS_ONE)) {
+            throw new DishesCurrentPageInvalidException();
+        }
+
+        return dishes;
     }
 
     private static void updateValidatedParams(String descriptionUpdate,Integer priceUpdate) {

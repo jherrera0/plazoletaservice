@@ -33,11 +33,11 @@ public class RestaurantCase implements IRestaurantServicePort {
         if(!orderDirection.equals(ConstValidation.ASC) && !orderDirection.equals(ConstValidation.DESC)){
             throw new RestaurantOrderDirectionInvalidException();
         }
-        PageCustom<Restaurant> result = restaurantPersistencePort.listRestaurants(pageSize, orderDirection,currentPage);
-        if(Objects.equals(result.getCurrentPage(), ConstValidation.MINUS_ONE)){
+        PageCustom<Restaurant> restaurantPage = restaurantPersistencePort.listRestaurants(pageSize, orderDirection,currentPage);
+        if(Objects.equals(restaurantPage.getCurrentPage(), ConstValidation.MINUS_ONE)){
             throw new RestaurantCurrentPageInvalidException();
         }
-        return result;
+        return restaurantPage;
     }
 
     @Override

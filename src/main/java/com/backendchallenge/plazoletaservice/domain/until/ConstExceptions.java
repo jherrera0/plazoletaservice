@@ -40,6 +40,9 @@ public class ConstExceptions {
     public static final String RESTAURANT_ORDER_DIRECTION_EMPTY = "Restaurant order direction is empty";
     public static final String RESTAURANT_CURRENT_PAGE_INVALID = "Restaurant current page is invalid";
     public static final String RESTAURANT_ORDER_DIRECTION_INVALID = "Restaurant order direction is invalid";
+    public static final String DISHES_PAGE_SIZE_INVALID = "Dishes page size is invalid";
+    public static final String DISHES_CURRENT_PAGE_INVALID = "Dishes current page is invalid";
+    public static final String DISHES_ORDER_DIRECTION_EMPTY = "Dishes order direction is empty";
 
     private ConstExceptions() {
     }
