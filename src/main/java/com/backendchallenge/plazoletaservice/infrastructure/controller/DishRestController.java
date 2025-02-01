@@ -2,7 +2,10 @@ package com.backendchallenge.plazoletaservice.infrastructure.controller;
 
 import com.backendchallenge.plazoletaservice.application.http.dto.request.ChangeStatusRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.CreateDishRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.request.ListDishesRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.UpdateDishRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.response.DishResponse;
+import com.backendchallenge.plazoletaservice.application.http.dto.response.PageResponse;
 import com.backendchallenge.plazoletaservice.application.http.handler.interfaces.IDishHandler;
 import com.backendchallenge.plazoletaservice.domain.until.ConstDocumentation;
 import com.backendchallenge.plazoletaservice.domain.until.ConstJwt;
@@ -62,5 +65,18 @@ public class DishRestController {
     public ResponseEntity<Object> changeDishStatus(@RequestBody @Valid ChangeStatusRequest request) {
         dishHandler.changeDishStatus(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @Operation(summary = ConstDocumentation.LIST_DISHES_OPERATION)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = ConstDocumentation.CODE_201, description = ConstDocumentation.LIST_DISHES_CODE_201),
+            @ApiResponse(responseCode = ConstDocumentation.CODE_400, description = ConstDocumentation.LIST_DISHES_CODE_400),
+            @ApiResponse(responseCode = ConstDocumentation.CODE_403, description = ConstDocumentation.LIST_DISHES_CODE_403),
+    })
+    @PreAuthorize(ConstJwt.PERMIT_ALL)
+    @GetMapping(ConstRoute.LIST_DISHES)
+    public ResponseEntity<PageResponse<DishResponse>> listDishes(@RequestBody @Valid ListDishesRequest request) {
+        PageResponse<DishResponse> response = dishHandler.getDishesByRestaurant(request);
+        return ResponseEntity.ok(response);
     }
 }

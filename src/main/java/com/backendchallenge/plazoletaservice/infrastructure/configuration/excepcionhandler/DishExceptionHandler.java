@@ -17,6 +17,26 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class DishExceptionHandler  extends ResponseEntityExceptionHandler {
+    @ExceptionHandler(DishesCurrentPageInvalidException.class)
+    public ResponseEntity<Object> handleDishesCurrentPageInvalidException(DishesCurrentPageInvalidException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(DishesOrderDirectionEmptyException.class)
+    public ResponseEntity<Object> handleDishesOrderDirectionEmptyException(DishesOrderDirectionEmptyException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(DishesOrderDirectionInvalidException.class)
+    public ResponseEntity<Object> handleDishesOrderDirectionInvalidException(DishesOrderDirectionInvalidException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(DishesPageSizeInvalidException.class)
+    public ResponseEntity<Object> handleDishesPageSizeInvalidException(DishesPageSizeInvalidException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
     @ExceptionHandler(DishPriceUpdateEmptyException.class)
     public ResponseEntity<Object> handleDishPriceUpdateEmptyException(DishPriceUpdateEmptyException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage());

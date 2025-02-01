@@ -104,7 +104,7 @@ public class DishCase implements IDishServicePort {
         if (orderDirection == null || orderDirection.isBlank()) {
             throw new DishesOrderDirectionEmptyException();
         }
-        if(orderDirection.equals(ConstValidation.ASC) || orderDirection.equals(ConstValidation.DESC)) {
+        if(!orderDirection.equals(ConstValidation.ASC) && !orderDirection.equals(ConstValidation.DESC)) {
             throw new DishesOrderDirectionInvalidException();
         }
         PageCustom<Dish> dishes =
