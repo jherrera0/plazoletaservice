@@ -137,7 +137,8 @@ class DishJpaAdapterTest {
     }
     @Test
     void changeDishStatus_updatesStatusSuccessfully() {
-        Dish dish = new Dish(ConstTest.ID_TEST, ConstTest.ID_TEST, ConstTest.DISH_NAME_TEST, ConstTest.DISH_PRICE_TEST, ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_URL_IMAGE_TEST, ConstTest.DISH_CATEGORY_TEST);
+        Dish dish = new Dish(ConstTest.ID_TEST, ConstTest.ID_TEST, ConstTest.DISH_NAME_TEST, ConstTest.DISH_PRICE_TEST,
+                ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_URL_IMAGE_TEST, ConstTest.CATEGORIES_TEST);
         DishEntity dishEntity = new DishEntity();
         RestaurantEntity restaurantEntity = new RestaurantEntity();
         restaurantEntity.setId(ConstTest.ID_TEST);
@@ -156,7 +157,9 @@ class DishJpaAdapterTest {
         dishEntity.setId(ConstTest.ID_TEST);
 
         when(dishRepository.findById(ConstTest.ID_TEST)).thenReturn(java.util.Optional.of(dishEntity));
-        when(dishEntityMapper.toDomain(dishEntity)).thenReturn(new Dish(ConstTest.ID_TEST, ConstTest.ID_TEST, ConstTest.DISH_NAME_TEST, ConstTest.DISH_PRICE_TEST, ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_URL_IMAGE_TEST, ConstTest.DISH_CATEGORY_TEST));
+        when(dishEntityMapper.toDomain(dishEntity)).thenReturn(new Dish(ConstTest.ID_TEST, ConstTest.ID_TEST,
+                ConstTest.DISH_NAME_TEST, ConstTest.DISH_PRICE_TEST,
+                ConstTest.DISH_DESCRIPTION_TEST, ConstTest.DISH_URL_IMAGE_TEST, ConstTest.CATEGORIES_TEST));
 
         Dish result = dishJpaAdapter.getDishById(ConstTest.ID_TEST);
 

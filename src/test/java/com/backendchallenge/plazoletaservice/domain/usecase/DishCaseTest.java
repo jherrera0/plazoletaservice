@@ -16,9 +16,11 @@ import com.backendchallenge.plazoletaservice.domain.until.TokenHolder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -38,9 +40,9 @@ class DishCaseTest {
         restaurantPersistencePort = mock(IRestaurantPersistencePort.class);
         userPersistencePort = mock(IUserPersistencePort.class);
         categoryPersistencePort = mock(ICategoryPersistencePort.class);
-        dishServicePort = new DishCase(dishPersistencePort, restaurantPersistencePort, userPersistencePort, categoryPersistencePort);
+
         jwtPersistencePort = mock(IJwtPersistencePort.class);
-        dishServicePort = new DishCase(dishPersistencePort, restaurantPersistencePort, userPersistencePort, jwtPersistencePort);
+        dishServicePort = new DishCase(dishPersistencePort, restaurantPersistencePort, userPersistencePort,categoryPersistencePort, jwtPersistencePort);
 
         mockedTokenHolder = mockStatic(TokenHolder.class);
         mockedTokenHolder.when(TokenHolder::getToken).thenReturn(ConstTest.VALID_TOKEN);
@@ -153,7 +155,7 @@ class DishCaseTest {
         dish.setPrice(ConstTest.DISH_PRICE_TEST);
         dish.setDescription(ConstTest.DISH_DESCRIPTION_TEST);
         dish.setUrlImage(ConstTest.DISH_URL_IMAGE_TEST);
-        dish.setCategory(ConstTest.DISH_CATEGORY_EMPTY);
+        dish.setCategories(null);
         when(jwtPersistencePort.getUserId(ConstTest.VALID_TOKEN)).thenReturn(ConstTest.ID_TEST);
         when(userPersistencePort.findOwnerById(ConstTest.ID_TEST)).thenReturn(true);
         when(restaurantPersistencePort.existsRestaurantByIdAndOwner(ConstTest.ID_TEST, ConstTest.ID_TEST)).thenReturn(true);
@@ -169,7 +171,7 @@ class DishCaseTest {
         dish.setPrice(ConstTest.DISH_PRICE_INVALID);
         dish.setDescription(ConstTest.DISH_DESCRIPTION_TEST);
         dish.setUrlImage(ConstTest.DISH_URL_IMAGE_TEST);
-        dish.setCategory(ConstTest.DISH_CATEGORY_TEST);
+        dish.setCategories(ConstTest.CATEGORIES_TEST);
         when(jwtPersistencePort.getUserId(ConstTest.VALID_TOKEN)).thenReturn(ConstTest.ID_TEST);
         when(userPersistencePort.findOwnerById(ConstTest.ID_TEST)).thenReturn(true);
         when(restaurantPersistencePort.existsRestaurantByIdAndOwner(ConstTest.ID_TEST, ConstTest.ID_TEST)).thenReturn(true);
@@ -185,7 +187,7 @@ class DishCaseTest {
         dish.setPrice(ConstTest.DISH_PRICE_TEST);
         dish.setDescription(ConstTest.DISH_DESCRIPTION_TEST);
         dish.setUrlImage(ConstTest.DISH_URL_IMAGE_TEST);
-        dish.setCategory(ConstTest.DISH_CATEGORY_TEST);
+        dish.setCategories(ConstTest.CATEGORIES_TEST);
         when(jwtPersistencePort.getUserId(ConstTest.VALID_TOKEN)).thenReturn(ConstTest.ID_TEST);
         when(userPersistencePort.findOwnerById(ConstTest.ID_TEST)).thenReturn(true);
         when(restaurantPersistencePort.existsRestaurantByIdAndOwner(ConstTest.ID_TEST, ConstTest.ID_TEST)).thenReturn(true);

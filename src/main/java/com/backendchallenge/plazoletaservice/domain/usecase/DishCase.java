@@ -24,8 +24,7 @@ public class DishCase implements IDishServicePort {
     public DishCase(IDishPersistencePort dishPersistencePort,
                     IRestaurantPersistencePort restaurantPersistencePort,
                     IUserPersistencePort userPersistencePort,
-                    ICategoryPersistencePort categoryPersistencePort
-                    IUserPersistencePort userPersistencePort,
+                    ICategoryPersistencePort categoryPersistencePort,
                     IJwtPersistencePort jwtPersistencePort
     ) {
         this.restaurantPersistencePort = restaurantPersistencePort;

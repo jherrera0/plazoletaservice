@@ -57,7 +57,8 @@ class DishRestControllerTest {
                                             "price": %d,
                                             "description": "%s",
                                             "urlImage": "%s",
-                                            "category": "%s"
+                                            "categoryName": "%s",
+                                            "categoryDescription": "%s"
                                         }
                                         """,
                                 ConstTest.ID_TEST,
@@ -65,7 +66,8 @@ class DishRestControllerTest {
                                 ConstTest.DISH_PRICE_TEST,
                                 ConstTest.DISH_DESCRIPTION_TEST,
                                 ConstTest.DISH_URL_IMAGE_TEST,
-                                ConstTest.DISH_CATEGORY_TEST))
+                                ConstTest.CATEGORY_NAME_TEST,
+                                ConstTest.CATEGORY_DESCRIPTION_TEST))
                         .param(ConstTest.OWNER_NAME_LABEL, ConstTest.OWNER_ID_TEST))
                 .andExpect(status().isCreated());
     }
