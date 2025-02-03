@@ -98,7 +98,7 @@ class RestaurantJpaAdapterTest {
                 Sort.by(Direction.ASC, ConstValidation.NAME))))
                 .thenReturn(restaurantPage);
         when(restaurantPage.getContent()).thenReturn(List.of());
-        when(restaurantPage.getTotalPages()).thenReturn(ConstValidation.ZERO);
+        when(restaurantPage.getTotalPages()).thenReturn(ConstTest.TOTAL_PAGES);
         when(restaurantPage.getNumber()).thenReturn(ConstTest.CURRENT_PAGE_TEST);
         when(restaurantPage.getSize()).thenReturn(ConstTest.PAGE_SIZE_TEST);
 
@@ -106,7 +106,7 @@ class RestaurantJpaAdapterTest {
                 ConstValidation.ASC, ConstTest.CURRENT_PAGE_TEST);
         assertEquals(ConstTest.CURRENT_PAGE_TEST, result.getCurrentPage());
         assertEquals(ConstTest.PAGE_SIZE_TEST, result.getPageSize());
-        assertEquals(ConstValidation.ZERO, result.getTotalPages());
+        assertEquals(ConstTest.TOTAL_PAGES, result.getTotalPages());
         assertTrue(result.getItems().isEmpty());
     }
 

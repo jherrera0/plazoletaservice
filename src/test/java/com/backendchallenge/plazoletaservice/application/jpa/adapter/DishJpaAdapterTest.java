@@ -220,7 +220,7 @@ class DishJpaAdapterTest {
 
         when(page.getNumber()).thenReturn(currentPage);
         when(page.getSize()).thenReturn(pageSize);
-        when(page.getTotalPages()).thenReturn(ConstValidation.ZERO);
+        when(page.getTotalPages()).thenReturn(ConstTest.TOTAL_PAGES);
         when(page.getContent()).thenReturn(emptyList);
         when(dishRepository.findAllDishesByRestaurantAndFilter(eq(restaurantId), anyList(), any(Pageable.class)))
                 .thenReturn(page);
@@ -232,7 +232,7 @@ class DishJpaAdapterTest {
         assertNotNull(result);
         assertEquals(currentPage, result.getCurrentPage());
         assertEquals(pageSize, result.getPageSize());
-        assertEquals(ConstValidation.ZERO, result.getTotalPages());
+        assertEquals(ConstTest.TOTAL_PAGES, result.getTotalPages());
         assertNotNull(result.getItems());
         assertTrue(result.getItems().isEmpty());
     }
