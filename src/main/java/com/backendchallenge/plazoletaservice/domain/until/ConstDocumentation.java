@@ -28,6 +28,10 @@ public class ConstDocumentation {
     public static final String CREATE_RESTAURANT_CODE_403 = "User not authorized to create restaurant";
     public static final String LIST_RESTAURANTS_OPERATION = "List all restaurants";
     public static final String LIST_RESTAURANTS_CODE_201 = "Restaurants listed successfully";
+    public static final String LIST_DISHES_OPERATION = "List all dishes of a restaurant";
+    public static final String LIST_DISHES_CODE_201 = "Dishes listed successfully";
+    public static final String LIST_DISHES_CODE_400 = "Invalid data to request list dishes";
+    public static final String LIST_DISHES_CODE_403 = "User not authorized to list dishes";
 
     private ConstDocumentation() {
     }

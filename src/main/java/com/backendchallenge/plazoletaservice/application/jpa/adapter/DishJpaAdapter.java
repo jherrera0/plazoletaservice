@@ -6,9 +6,16 @@ import com.backendchallenge.plazoletaservice.application.jpa.mapper.IDishEntityM
 import com.backendchallenge.plazoletaservice.application.jpa.repository.IDishRepository;
 import com.backendchallenge.plazoletaservice.application.jpa.repository.IRestaurantRepository;
 import com.backendchallenge.plazoletaservice.domain.model.Dish;
+import com.backendchallenge.plazoletaservice.domain.model.PageCustom;
 import com.backendchallenge.plazoletaservice.domain.spi.IDishPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.until.ConstValidation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
+import java.util.Arrays;
 
 @RequiredArgsConstructor
 public class DishJpaAdapter implements IDishPersistencePort {
@@ -60,5 +67,15 @@ public class DishJpaAdapter implements IDishPersistencePort {
         DishEntity dishEntity = dishEntityMapper.toEntity(dish);
         dishEntity.setRestaurant(restaurantRepository.findById(dish.getIdRestaurant()).orElse(new RestaurantEntity()));
         dishRepository.save(dishEntity);
+    }
+
+    @Override
+    public PageCustom<Dish> getDishesByRestaurant(Long restaurantId, Integer currentPage, Integer pageSize, String filterBy, String orderDirection) {
+        Pageable pageable = PageRequest.of(currentPage, pageSize, Sort.by(Sort.Direction.fromString(orderDirection),ConstValidation.NAME));
+        Page<DishEntity> dishEntities = dishRepository.findAllDishesByRestaurantAndFilter(restaurantId, Arrays.stream(filterBy.split(ConstValidation.COMMA)).toList() ,pageable);
+        if(dishEntities.getTotalPages()>=currentPage+ConstValidation.ONE) {
+            return new PageCustom<>(dishEntities.getNumber(),dishEntities.getSize(), dishEntities.getTotalPages(),dishEntityMapper.toDomainList(dishEntities.getContent()));
+        }
+        return new PageCustom<>(ConstValidation.MINUS_ONE,null,null,null);
     }
 }

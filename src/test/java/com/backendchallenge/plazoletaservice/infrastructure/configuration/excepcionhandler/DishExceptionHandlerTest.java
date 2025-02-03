@@ -1,6 +1,7 @@
 package com.backendchallenge.plazoletaservice.infrastructure.configuration.excepcionhandler;
 
 import com.backendchallenge.plazoletaservice.domain.exceptions.dishexceptions.*;
+import com.backendchallenge.plazoletaservice.domain.until.ConstExceptions;
 import com.backendchallenge.plazoletaservice.domain.until.ConstTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -96,6 +97,45 @@ class DishExceptionHandlerTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals(exception.getMessage(), response.getBody());
+    }
+    @Test
+    void handleDishesCurrentPageInvalidException_ReturnsBadRequest() {
+        DishesCurrentPageInvalidException exception = new DishesCurrentPageInvalidException();
+
+        ResponseEntity<Object> response = handler.handleDishesCurrentPageInvalidException(exception);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(ConstExceptions.DISHES_CURRENT_PAGE_INVALID, response.getBody());
+    }
+
+    @Test
+    void handleDishesOrderDirectionEmptyException_ReturnsBadRequest() {
+        DishesOrderDirectionEmptyException exception = new DishesOrderDirectionEmptyException();
+
+        ResponseEntity<Object> response = handler.handleDishesOrderDirectionEmptyException(exception);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(ConstExceptions.DISHES_ORDER_DIRECTION_EMPTY, response.getBody());
+    }
+
+    @Test
+    void handleDishesOrderDirectionInvalidException_ReturnsBadRequest() {
+        DishesOrderDirectionInvalidException exception = new DishesOrderDirectionInvalidException();
+
+        ResponseEntity<Object> response = handler.handleDishesOrderDirectionInvalidException(exception);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(ConstExceptions.DISHES_ORDER_DIRECTION_INVALID, response.getBody());
+    }
+
+    @Test
+    void handleDishesPageSizeInvalidException_ReturnsBadRequest() {
+        DishesPageSizeInvalidException exception = new DishesPageSizeInvalidException();
+
+        ResponseEntity<Object> response = handler.handleDishesPageSizeInvalidException(exception);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(ConstExceptions.DISHES_PAGE_SIZE_INVALID, response.getBody());
     }
     @Test
     void handleMethodArgumentNotValid() {
