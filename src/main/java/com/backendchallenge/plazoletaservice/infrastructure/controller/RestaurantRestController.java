@@ -47,4 +47,16 @@ public class RestaurantRestController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = ConstDocumentation.CREATE_EMPLOYEE_OPERATION)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = ConstDocumentation.CODE_201, description = ConstDocumentation.CREATE_EMPLOYEE_CODE_201),
+            @ApiResponse(responseCode = ConstDocumentation.CODE_400, description = ConstDocumentation.CREATE_EMPLOYEE_CODE_400),
+            @ApiResponse(responseCode = ConstDocumentation.CODE_403, description = ConstDocumentation.CREATE_EMPLOYEE_CODE_403),
+    })
+    @PreAuthorize(ConstJwt.HAS_AUTHORITY_OWNER)
+    @PostMapping(ConstRoute.CREATE_EMPLOYEE)
+    public void createEmployee(@RequestParam Long userId, @RequestParam Long restaurantId) {
+        restaurantHandler.createEmployee(userId, restaurantId);
+    }
+
 }

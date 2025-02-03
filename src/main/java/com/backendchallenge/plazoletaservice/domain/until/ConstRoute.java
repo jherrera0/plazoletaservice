@@ -12,6 +12,7 @@ public class ConstRoute {
     public static final String LIST_DISHES = "/LIST_DISHES";
     public static final String ORDER = "/order";
     public static final String CREATE_ORDER = "/CREATE_ORDER";
+    public static final String CREATE_EMPLOYEE = "/CREATE_EMPLOYEE";
 
     private ConstRoute() {
     }

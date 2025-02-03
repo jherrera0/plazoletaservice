@@ -1,22 +1,31 @@
 package com.backendchallenge.plazoletaservice.domain.usecase;
 
 import com.backendchallenge.plazoletaservice.domain.api.IRestaurantServicePort;
+import com.backendchallenge.plazoletaservice.domain.exceptions.employeeexcepcion.EmployeeAlreadyExist;
+import com.backendchallenge.plazoletaservice.domain.exceptions.employeeexcepcion.RestaurantIdEmptyException;
+import com.backendchallenge.plazoletaservice.domain.exceptions.employeeexcepcion.RestaurantUserIdEmptyException;
 import com.backendchallenge.plazoletaservice.domain.exceptions.restaurantexceptions.*;
 import com.backendchallenge.plazoletaservice.domain.model.PageCustom;
 import com.backendchallenge.plazoletaservice.domain.model.Restaurant;
+import com.backendchallenge.plazoletaservice.domain.spi.IJwtPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IUserPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IRestaurantPersistencePort;
+import com.backendchallenge.plazoletaservice.domain.until.ConstJwt;
 import com.backendchallenge.plazoletaservice.domain.until.ConstValidation;
+import com.backendchallenge.plazoletaservice.domain.until.TokenHolder;
 
 import java.util.Objects;
 
 public class RestaurantCase implements IRestaurantServicePort {
     private final IRestaurantPersistencePort restaurantPersistencePort;
     private final IUserPersistencePort userPersistencePort;
+    private final IJwtPersistencePort jwtPersistencePort;
 
-    public RestaurantCase(IRestaurantPersistencePort restaurantPersistencePort, IUserPersistencePort userPersistencePort) {
+    public RestaurantCase(IRestaurantPersistencePort restaurantPersistencePort, IUserPersistencePort userPersistencePort,
+                           IJwtPersistencePort jwtPersistencePort) {
         this.restaurantPersistencePort = restaurantPersistencePort;
         this.userPersistencePort = userPersistencePort;
+        this.jwtPersistencePort = jwtPersistencePort;
     }
 
     @Override
@@ -47,6 +56,25 @@ public class RestaurantCase implements IRestaurantServicePort {
             throw new OwnerNotFoundException();
         }
         restaurantPersistencePort.createRestaurant(restaurant);
+    }
+
+    @Override
+    public void createEmployee(Long userId, Long restaurantId) {
+        String token = TokenHolder.getTokenValue().substring(ConstJwt.LINESTRING_INDEX);
+        Long ownerId = jwtPersistencePort.getUserId(token);
+        if (userId == null || userId <= ConstValidation.ZERO) {
+            throw new RestaurantUserIdEmptyException();
+        }
+        if (restaurantId == null|| restaurantId <= ConstValidation.ZERO) {
+            throw new RestaurantIdEmptyException();
+        }
+        if (userPersistencePort.findEmployeeByIds(userId, restaurantId)) {
+            throw new EmployeeAlreadyExist();
+        }
+        if (!restaurantPersistencePort.existsRestaurantByIdAndOwner(restaurantId,ownerId)) {
+            throw new RestaurantNotFoundException();
+        }
+        userPersistencePort.createEmployee(userId, restaurantId);
     }
 
     private static void validatedRestaurantParams(Restaurant restaurant) {

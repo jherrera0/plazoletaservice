@@ -33,10 +33,11 @@ public class BeanConfiguration {
     private final IOrderRepository orderRepository;
     private final IOrderedDishRepository orderedDishRepository;
     private final JwtService jwtService;
+    private final IRestaurantsWorkersRepository restaurantsWorkersRepository;
 
     @Bean
     public IUserPersistencePort userPersistencePort() {
-        return new IUserJpaAdapter(feignUserClient);
+        return new IUserJpaAdapter(feignUserClient, restaurantsWorkersRepository);
     }
 
     @Bean
@@ -66,7 +67,7 @@ public class BeanConfiguration {
 
     @Bean
     public IRestaurantServicePort restaurantServicePort() {
-        return new RestaurantCase(restaurantPersistencePort(), userPersistencePort());
+        return new RestaurantCase(restaurantPersistencePort(), userPersistencePort(), jwtPersistencePort());
     }
 
     @Bean

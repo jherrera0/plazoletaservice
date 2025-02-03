@@ -8,4 +8,5 @@ import com.backendchallenge.plazoletaservice.application.http.dto.response.Resta
 public interface IRestaurantHandler {
     void createRestaurant(CreateRestaurantRequest request);
     PageResponse<RestaurantCustomResponse> listRestaurants(ListRestaurantsRequest request);
+    void createEmployee(Long userId, Long restaurantId);
 }
