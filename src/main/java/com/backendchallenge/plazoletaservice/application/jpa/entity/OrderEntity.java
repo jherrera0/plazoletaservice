@@ -23,6 +23,6 @@ public class OrderEntity {
     @OneToOne(cascade = CascadeType.ALL)
     private RestaurantEntity restaurant;
 
-    @OneToMany(mappedBy = "OrderEntity", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<OrderedDishEntity> orderedDishes;
 }

@@ -32,6 +32,11 @@ public class ConstDocumentation {
     public static final String LIST_DISHES_CODE_201 = "Dishes listed successfully";
     public static final String LIST_DISHES_CODE_400 = "Invalid data to request list dishes";
     public static final String LIST_DISHES_CODE_403 = "User not authorized to list dishes";
+    public static final String ORDER_TAG_NAME = "Order Rest API";
+    public static final String ORDER_TAG_DESCRIPTION = "API to manage order creation requests";
+    public static final String CREATE_ORDER_OPERATION = "Create a new order";
+    public static final String CREATE_ORDER_CODE_201 = "Order created successfully";
+    public static final String CREATE_ORDER_CODE_400 = "Invalid data to request create order";
 
     private ConstDocumentation() {
     }

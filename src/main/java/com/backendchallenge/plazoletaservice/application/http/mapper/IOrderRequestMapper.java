@@ -15,6 +15,6 @@ public interface IOrderRequestMapper {
     @Mapping(target = "idClient", ignore = true)
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "idEmployee", ignore = true)
-    @Mapping(target = "orderedDishes", source = "orderedDishes")
+    @Mapping(target = "dishes", source = "dishes")
     Order toDomain(OrderRequest orderRequest);
 }
