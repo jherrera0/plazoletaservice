@@ -13,6 +13,8 @@ public class ConstValidation {
     public static final String DESC = "desc";
     public static final Integer MINUS_ONE = -1;
     public static final Integer TWO = 2;
+    public static final String PENDING = "PENDING";
+    public static final String IN_PROCESS = "IN PROCESS";
 
     private ConstValidation() {
     }

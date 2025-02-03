@@ -1,7 +1,7 @@
 package com.backendchallenge.plazoletaservice.application.jpa.adapter;
 
 import com.backendchallenge.plazoletaservice.domain.until.ConstTest;
-import com.backendchallenge.plazoletaservice.infrastructure.configuration.security.filter.JwtService;
+import com.backendchallenge.plazoletaservice.application.jwt.JwtService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

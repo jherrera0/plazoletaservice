@@ -62,6 +62,7 @@ public class ConstTest {
     public static final String FILTER_BY_TEST = "category,category2";
     public static final String ORDER_DIRECTION_TEST = "asc";
     public static final String ORDER_DIRECTION_INVALID = "invalid";
+    public static final Long INVALID_ID = -1L;
 
 
     private ConstTest() {
