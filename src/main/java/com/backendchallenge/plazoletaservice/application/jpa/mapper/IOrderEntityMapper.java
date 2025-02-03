@@ -13,6 +13,5 @@ import org.mapstruct.ReportingPolicy;
 public interface IOrderEntityMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "restaurant", ignore = true)
-    @Mapping(target = "orderedDishes", ignore = true)
     OrderEntity toEntity(Order order);
 }

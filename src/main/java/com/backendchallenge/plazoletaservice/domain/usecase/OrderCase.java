@@ -8,6 +8,7 @@ import com.backendchallenge.plazoletaservice.domain.spi.IDishPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IJwtPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IOrderPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IRestaurantPersistencePort;
+import com.backendchallenge.plazoletaservice.domain.until.ConstJwt;
 import com.backendchallenge.plazoletaservice.domain.until.ConstValidation;
 import com.backendchallenge.plazoletaservice.domain.until.TokenHolder;
 
@@ -30,7 +31,7 @@ public class OrderCase implements IOrderServicePort {
 
     @Override
     public void createOrder(Order order) {
-        String token = TokenHolder.getTokenValue();
+        String token = TokenHolder.getTokenValue().substring(ConstJwt.LINESTRING_INDEX);
         order.setIdClient(jwtPersistencePort.getUserId(token));
         if (orderPersistencePort.findOrderByClientId(order.getIdClient())) {
             throw new OrderAlreadyExistsException();
@@ -46,10 +47,10 @@ public class OrderCase implements IOrderServicePort {
             throw new OrderDishesNotEmptyException();
         }
         order.getDishes().forEach(dish -> {
-            if (!order.getIdRestaurant().equals(dishPersistencePort.getRestaurantIdByDishId(dish.getId()))) {
+            if (!order.getIdRestaurant().equals(dishPersistencePort.getRestaurantIdByDishId(dish.getIdDish()))) {
                 throw new DishNotFoundInRestaurantException();
             }
-            if (dish.getDishId() == null || dish.getDishId() <= ConstValidation.ZERO) {
+            if (dish.getIdDish() == null || dish.getIdDish() <= ConstValidation.ZERO) {
                 throw new OrderDishIdInvalidException();
             }
             if(dish.getQuantity() <= ConstValidation.ZERO) {

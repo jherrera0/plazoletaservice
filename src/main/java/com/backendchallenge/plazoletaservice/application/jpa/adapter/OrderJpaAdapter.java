@@ -6,6 +6,7 @@ import com.backendchallenge.plazoletaservice.application.jpa.entity.RestaurantEn
 import com.backendchallenge.plazoletaservice.application.jpa.mapper.IOrderEntityMapper;
 import com.backendchallenge.plazoletaservice.application.jpa.repository.IDishRepository;
 import com.backendchallenge.plazoletaservice.application.jpa.repository.IOrderRepository;
+import com.backendchallenge.plazoletaservice.application.jpa.repository.IOrderedDishRepository;
 import com.backendchallenge.plazoletaservice.application.jpa.repository.IRestaurantRepository;
 import com.backendchallenge.plazoletaservice.domain.model.Order;
 import com.backendchallenge.plazoletaservice.domain.spi.IOrderPersistencePort;
@@ -19,36 +20,38 @@ import java.util.List;
 public class OrderJpaAdapter implements IOrderPersistencePort {
     private final IOrderRepository orderRepository;
     private final IRestaurantRepository restaurantRepository;
-    private final IDishRepository dishRepository;
     private final IOrderEntityMapper orderEntityMapper;
+    private final IDishRepository dishRepository;
+    private final IOrderedDishRepository orderedDishRepository;
 
     @Override
     public boolean createOrder(Order order) {
         OrderEntity orderEntity = orderEntityMapper.toEntity(order);
         orderEntity.setRestaurant(restaurantRepository.findById(order.getIdRestaurant()).orElse(new RestaurantEntity()));
-        if (orderEntity.getRestaurant().equals(new RestaurantEntity())){
+        if (orderEntity.getRestaurant().equals(new RestaurantEntity())) {
             return false;
         }
-        List<OrderedDishEntity> orderedDishEntities = new ArrayList<>();
+        orderRepository.save(orderEntity);
+         List<OrderedDishEntity> orderedDishEntities = new ArrayList<>();
         order.getDishes().forEach(dish -> {
             OrderedDishEntity orderedDishEntity = new OrderedDishEntity();
-            orderedDishEntity.setDish(dishRepository.findById(dish.getDishId()).orElse(null));
-            if (orderedDishEntity.getDish() == null){
+            orderedDishEntity.setDish(dishRepository.findById(dish.getIdDish()).orElse(null));
+            if (orderedDishEntity.getDish() == null) {
                 return;
             }
             orderedDishEntity.setQuantity(dish.getQuantity());
+            orderedDishEntity.setOrder(orderEntity);
             orderedDishEntities.add(orderedDishEntity);
         });
-        if (orderedDishEntities.isEmpty()){
+        if (orderedDishEntities.isEmpty()) {
             return false;
         }
-        orderEntity.setOrderedDishes(orderedDishEntities);
-        orderRepository.save(orderEntity);
+        orderedDishRepository.saveAll(orderedDishEntities);
         return true;
     }
 
     @Override
     public boolean findOrderByClientId(Long idClient) {
-        return false;
+        return orderRepository.existsByIdClientAndStatusIsLikeOrStatusIsLike(idClient, ConstValidation.PENDING,ConstValidation.IN_PROCESS);
     }
 }

@@ -2,15 +2,15 @@ package com.backendchallenge.plazoletaservice.domain.model;
 
 public class OrderedDish {
     private Long id;
-    private Long dishId;
+    private Long idDish;
     private Integer quantity;
 
     public OrderedDish() {
     }
 
-    public OrderedDish(Long id, Long dishId, Integer quantity) {
+    public OrderedDish(Long id, Long idDish, Integer quantity) {
         this.id = id;
-        this.dishId = dishId;
+        this.idDish = idDish;
         this.quantity = quantity;
     }
 
@@ -22,12 +22,12 @@ public class OrderedDish {
         this.id = id;
     }
 
-    public Long getDishId() {
-        return dishId;
+    public Long getIdDish() {
+        return idDish;
     }
 
-    public void setDishId(Long dishId) {
-        this.dishId = dishId;
+    public void setIdDish(Long idDish) {
+        this.idDish = idDish;
     }
 
     public Integer getQuantity() {

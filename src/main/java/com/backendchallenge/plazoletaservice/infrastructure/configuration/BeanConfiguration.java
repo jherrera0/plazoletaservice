@@ -6,10 +6,7 @@ import com.backendchallenge.plazoletaservice.application.jpa.mapper.ICategoryEnt
 import com.backendchallenge.plazoletaservice.application.jpa.mapper.IDishEntityMapper;
 import com.backendchallenge.plazoletaservice.application.jpa.mapper.IOrderEntityMapper;
 import com.backendchallenge.plazoletaservice.application.jpa.mapper.IRestaurantEntityMapper;
-import com.backendchallenge.plazoletaservice.application.jpa.repository.ICategoryRepository;
-import com.backendchallenge.plazoletaservice.application.jpa.repository.IDishRepository;
-import com.backendchallenge.plazoletaservice.application.jpa.repository.IOrderRepository;
-import com.backendchallenge.plazoletaservice.application.jpa.repository.IRestaurantRepository;
+import com.backendchallenge.plazoletaservice.application.jpa.repository.*;
 import com.backendchallenge.plazoletaservice.domain.api.IDishServicePort;
 import com.backendchallenge.plazoletaservice.domain.api.IOrderServicePort;
 import com.backendchallenge.plazoletaservice.domain.api.IRestaurantServicePort;
@@ -34,6 +31,7 @@ public class BeanConfiguration {
     private final ICategoryEntityMapper categoryEntityMapper;
     private final IOrderEntityMapper orderEntityMapper;
     private final IOrderRepository orderRepository;
+    private final IOrderedDishRepository orderedDishRepository;
     private final JwtService jwtService;
 
     @Bean
@@ -79,6 +77,6 @@ public class BeanConfiguration {
 
     @Bean
     public IOrderPersistencePort orderPersistencePort() {
-        return new OrderJpaAdapter(orderRepository,restaurantRepository,dishRepository, orderEntityMapper);
+        return new OrderJpaAdapter(orderRepository,restaurantRepository,orderEntityMapper,dishRepository, orderedDishRepository);
     }
 }

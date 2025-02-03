@@ -23,4 +23,6 @@ public class RestaurantEntity implements Serializable {
 
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
     private List<DishEntity> dishes;
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    private transient List<OrderEntity> orders;
 }

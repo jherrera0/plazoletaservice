@@ -7,18 +7,18 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@IdClass(OrderedDishId.class)
+@Table(name = "ordered_dish")
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderedDishEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dish_id")
     private DishEntity dish;
-
+    @Id
     @ManyToOne
-    @JoinColumn(name = "order.id")
+    @JoinColumn(name = "order_id")
     private OrderEntity order;
 
     private int quantity;

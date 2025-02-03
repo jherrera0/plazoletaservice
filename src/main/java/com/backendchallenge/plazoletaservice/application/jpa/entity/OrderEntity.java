@@ -5,24 +5,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderEntity {
+public class OrderEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long idClient;
     private LocalDate date;
     private Long idEmployee;
+    private String status;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id")
     private RestaurantEntity restaurant;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<OrderedDishEntity> orderedDishes;
 }
