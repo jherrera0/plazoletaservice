@@ -45,6 +45,13 @@ public class ConstExceptions {
     public static final String DISHES_ORDER_DIRECTION_EMPTY = "Dishes order direction is empty";
     public static final String DISHES_ORDER_DIRECTION_INVALID = "Dishes order direction is invalid";
 
+    public static final String DISH_NOT_FOUND_IN_RESTAURANT = "Dish not found in restaurant";
+    public static final String ORDER_ALREADY_EXISTS = "Order already exists";
+    public static final String ORDER_DISHES_NOT_EMPTY = "Order dishes cannot be empty";
+    public static final String ORDER_ID_RESTAURANT_INVALID = "Order id restaurant is invalid";
+    public static final String ORDER_DISH_ID_INVALID = "Order dish id is invalid";
+    public static final String ORDER_DISH_QUANTITY_INVALID = "Order dish quantity is invalid";
+
     private ConstExceptions() {
     }
 }
