@@ -41,8 +41,8 @@ public class OrderRestController {
     })
     @PreAuthorize(ConstJwt.HAS_AUTHORITY_CLIENT)
     @GetMapping(ConstRoute.LIST_ORDERS)
-    public ResponseEntity<String> listOrders() {
-        return ResponseEntity.ok(orderHandler.listOrders());
+    public ResponseEntity<String> listOrders(@RequestBody @Valid ListOrdersRequest listOrdersRequest) {
+        return ResponseEntity.ok(orderHandler.listOrders(listOrdersRequest));
     }
 
 
