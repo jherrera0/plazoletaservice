@@ -41,6 +41,8 @@ public class ConstDocumentation {
     public static final String CREATE_EMPLOYEE_CODE_201 = "Employee user created successfully";
     public static final String CREATE_EMPLOYEE_CODE_400 = "Invalid data to request create employee user";
     public static final String CREATE_EMPLOYEE_CODE_403 = "User not authorized to create employee user";
+    public static final String LIST_ORDERS_OPERATION = "List all orders";
+    public static final String LIST_ORDERS_CODE_201 = "Orders listed successfully";
 
     private ConstDocumentation() {
     }
