@@ -30,7 +30,7 @@ class OrderHandlerTest {
 
     AutoCloseable closeable;
 
-    private static final String VALID_TOKEN = "validToken";
+    private static final String VALID_TOKEN = ConstTest.VALID_TOKEN;
     private MockedStatic<TokenHolder> mockedTokenHolder;
 
     @BeforeEach
