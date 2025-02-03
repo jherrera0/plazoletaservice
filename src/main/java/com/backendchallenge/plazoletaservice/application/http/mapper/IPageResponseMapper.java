@@ -1,6 +1,7 @@
 package com.backendchallenge.plazoletaservice.application.http.mapper;
 
 import com.backendchallenge.plazoletaservice.application.http.dto.response.DishResponse;
+import com.backendchallenge.plazoletaservice.application.http.dto.response.OrderResponse;
 import com.backendchallenge.plazoletaservice.application.http.dto.response.PageResponse;
 import com.backendchallenge.plazoletaservice.application.http.dto.response.RestaurantCustomResponse;
 import com.backendchallenge.plazoletaservice.domain.model.Dish;
@@ -20,4 +21,5 @@ public interface IPageResponseMapper {
     @Mapping(target = "items", source = "items")
     PageResponse<RestaurantCustomResponse> toPageResponseOfCustomRestaurant(PageCustom<Restaurant> pageCustom);
     PageResponse<DishResponse> toPageResponseOfDishResponse(PageCustom<Dish> dishesByRestaurant);
+    PageResponse<OrderResponse> toPageResponseOfOrderResponse(PageCustom<OrderResponse> ordersByRestaurant);
 }
