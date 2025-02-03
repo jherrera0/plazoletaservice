@@ -1,6 +1,7 @@
 package com.backendchallenge.plazoletaservice.application.jpa.adapter;
 
 import com.backendchallenge.plazoletaservice.application.feign.IFeignUserClient;
+import com.backendchallenge.plazoletaservice.application.jpa.repository.IRestaurantsWorkersRepository;
 import com.backendchallenge.plazoletaservice.domain.until.ConstTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,11 +13,12 @@ class IUserJpaAdapterTest {
 
     private IFeignUserClient feignUserClient;
     private IUserJpaAdapter userJpaAdapter;
+    private IRestaurantsWorkersRepository restaurantsWorkersRepository;
 
     @BeforeEach
     void setUp() {
         feignUserClient = mock(IFeignUserClient.class);
-        userJpaAdapter = new IUserJpaAdapter(feignUserClient);
+        userJpaAdapter = new IUserJpaAdapter(feignUserClient, restaurantsWorkersRepository);
     }
 
     @Test

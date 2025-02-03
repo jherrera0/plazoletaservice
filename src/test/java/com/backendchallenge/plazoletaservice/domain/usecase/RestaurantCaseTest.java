@@ -3,6 +3,7 @@ package com.backendchallenge.plazoletaservice.domain.usecase;
 import com.backendchallenge.plazoletaservice.domain.exceptions.restaurantexceptions.*;
 import com.backendchallenge.plazoletaservice.domain.model.PageCustom;
 import com.backendchallenge.plazoletaservice.domain.model.Restaurant;
+import com.backendchallenge.plazoletaservice.domain.spi.IJwtPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IRestaurantPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.spi.IUserPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.until.ConstTest;
@@ -19,12 +20,13 @@ class RestaurantCaseTest {
     private IRestaurantPersistencePort restaurantPersistencePort;
     private IUserPersistencePort userPersistencePort;
     private RestaurantCase restaurantCase;
+    private IJwtPersistencePort jwtPersistencePort;
 
     @BeforeEach
     void setUp() {
         restaurantPersistencePort = mock(IRestaurantPersistencePort.class);
         userPersistencePort = mock(IUserPersistencePort.class);
-        restaurantCase = new RestaurantCase(restaurantPersistencePort, userPersistencePort);
+        restaurantCase = new RestaurantCase(restaurantPersistencePort, userPersistencePort, jwtPersistencePort);
     }
 
     @Test

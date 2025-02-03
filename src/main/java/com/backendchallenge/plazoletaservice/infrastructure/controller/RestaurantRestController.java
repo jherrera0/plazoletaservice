@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -55,8 +56,9 @@ public class RestaurantRestController {
     })
     @PreAuthorize(ConstJwt.HAS_AUTHORITY_OWNER)
     @PostMapping(ConstRoute.CREATE_EMPLOYEE)
-    public void createEmployee(@RequestParam Long userId, @RequestParam Long restaurantId) {
+    public ResponseEntity<Object> createEmployee(@RequestParam Long userId, @RequestParam Long restaurantId) {
         restaurantHandler.createEmployee(userId, restaurantId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 }
