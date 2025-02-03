@@ -53,6 +53,10 @@ public class ConstExceptions {
     public static final String ORDER_DISH_QUANTITY_INVALID = "Order dish quantity is invalid";
     public static final String ORDER_NOT_CREATED = "Order not created, maybe the restaurant or someone dish is not found";
 
+    public static final String RESTAURANT_USER_ID_EMPTY = "user id is empty";
+    public static final String RESTAURANT_ID_EMPTY = "restaurant id is empty";
+    public static final String EMPLOYEE_ALREADY_EXIST = "Employee already exist";
+
     private ConstExceptions() {
     }
 }

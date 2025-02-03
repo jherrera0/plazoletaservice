@@ -6,4 +6,5 @@ import com.backendchallenge.plazoletaservice.domain.model.Restaurant;
 public interface IRestaurantServicePort {
     PageCustom<Restaurant> listRestaurants(Integer pageSize, String orderDirection, Integer currentPage);
     void createRestaurant(Restaurant restaurant);
+    void createEmployee(Long userId,Long restaurantId);
 }

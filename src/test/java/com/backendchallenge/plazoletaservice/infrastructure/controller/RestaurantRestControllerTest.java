@@ -83,4 +83,19 @@ class RestaurantRestControllerTest {
                         .content(requestBody))
                 .andExpect(status().isOk());
     }
+    
+
+    @Test
+    void createEmployee_withValidRequest_shouldReturnStatusCreated() throws Exception {
+        Long userId = ConstTest.ID_TEST;
+        Long restaurantId = ConstTest.ID_TEST;
+
+        doNothing().when(restaurantHandler).createEmployee(userId, restaurantId);
+
+        mockMvc.perform(post(ConstRoute.RESTAURANT + ConstRoute.CREATE_EMPLOYEE)
+                        .param("userId", userId.toString())
+                        .param("restaurantId", restaurantId.toString()))
+                .andExpect(status().isCreated());
+    }
+
 }

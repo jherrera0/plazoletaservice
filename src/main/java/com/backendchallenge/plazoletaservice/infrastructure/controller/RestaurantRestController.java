@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +46,19 @@ public class RestaurantRestController {
     public ResponseEntity<PageResponse<RestaurantCustomResponse>> listRestaurants(@RequestBody @Valid ListRestaurantsRequest request) {
         PageResponse<RestaurantCustomResponse> response = restaurantHandler.listRestaurants(request);
         return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = ConstDocumentation.CREATE_EMPLOYEE_OPERATION)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = ConstDocumentation.CODE_201, description = ConstDocumentation.CREATE_EMPLOYEE_CODE_201),
+            @ApiResponse(responseCode = ConstDocumentation.CODE_400, description = ConstDocumentation.CREATE_EMPLOYEE_CODE_400),
+            @ApiResponse(responseCode = ConstDocumentation.CODE_403, description = ConstDocumentation.CREATE_EMPLOYEE_CODE_403),
+    })
+    @PreAuthorize(ConstJwt.HAS_AUTHORITY_OWNER)
+    @PostMapping(ConstRoute.CREATE_EMPLOYEE)
+    public ResponseEntity<Object> createEmployee(@RequestParam Long userId, @RequestParam Long restaurantId) {
+        restaurantHandler.createEmployee(userId, restaurantId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 }

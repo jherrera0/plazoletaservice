@@ -75,4 +75,13 @@ class RestaurantHandlerTest {
         assertEquals(expectedResponse, actualResponse);
     }
 
+    @Test
+    void createEmployee_withValidRequest_shouldCallServicePort() {
+        Long userId = ConstTest.ID_TEST;
+        Long restaurantId = ConstTest.ID_TEST;
+
+        restaurantHandler.createEmployee(userId, restaurantId);
+
+        verify(restaurantServicePort, times(ConstValidation.ONE)).createEmployee(userId, restaurantId);
+    }
 }
