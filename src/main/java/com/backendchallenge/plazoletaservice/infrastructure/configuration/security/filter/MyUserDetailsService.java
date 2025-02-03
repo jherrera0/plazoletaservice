@@ -1,6 +1,7 @@
 package com.backendchallenge.plazoletaservice.infrastructure.configuration.security.filter;
 
 
+import com.backendchallenge.plazoletaservice.application.jwt.JwtService;
 import com.backendchallenge.plazoletaservice.domain.until.ConstExceptions;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

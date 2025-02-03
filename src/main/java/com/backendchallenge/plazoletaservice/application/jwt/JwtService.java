@@ -1,4 +1,4 @@
-package com.backendchallenge.plazoletaservice.infrastructure.configuration.security.filter;
+package com.backendchallenge.plazoletaservice.application.jwt;
 
 import com.backendchallenge.plazoletaservice.domain.until.ConstJwt;
 import io.jsonwebtoken.*;

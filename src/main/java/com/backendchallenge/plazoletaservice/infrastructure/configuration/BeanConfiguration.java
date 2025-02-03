@@ -21,7 +21,7 @@ import com.backendchallenge.plazoletaservice.domain.spi.IRestaurantPersistencePo
 import com.backendchallenge.plazoletaservice.domain.spi.IUserPersistencePort;
 import com.backendchallenge.plazoletaservice.domain.usecase.DishCase;
 import com.backendchallenge.plazoletaservice.domain.usecase.RestaurantCase;
-import com.backendchallenge.plazoletaservice.infrastructure.configuration.security.filter.JwtService;
+import com.backendchallenge.plazoletaservice.application.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

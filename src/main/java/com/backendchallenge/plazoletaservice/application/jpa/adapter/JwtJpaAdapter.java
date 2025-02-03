@@ -1,7 +1,7 @@
 package com.backendchallenge.plazoletaservice.application.jpa.adapter;
 
 import com.backendchallenge.plazoletaservice.domain.spi.IJwtPersistencePort;
-import com.backendchallenge.plazoletaservice.infrastructure.configuration.security.filter.JwtService;
+import com.backendchallenge.plazoletaservice.application.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

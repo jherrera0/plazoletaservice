@@ -57,6 +57,8 @@ public class OrderCase implements IOrderServicePort {
             }
         });
         order.setStatus(ConstValidation.PENDING);
-        orderPersistencePort.createOrder(order);
+        if(!orderPersistencePort.createOrder(order)){
+            throw new OrderNotCreatedException();
+        }
     }
 }

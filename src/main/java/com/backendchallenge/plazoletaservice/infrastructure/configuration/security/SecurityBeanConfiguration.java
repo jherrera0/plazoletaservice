@@ -1,6 +1,6 @@
 package com.backendchallenge.plazoletaservice.infrastructure.configuration.security;
 
-import com.backendchallenge.plazoletaservice.infrastructure.configuration.security.filter.JwtService;
+import com.backendchallenge.plazoletaservice.application.jwt.JwtService;
 import com.backendchallenge.plazoletaservice.infrastructure.configuration.security.filter.MyUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

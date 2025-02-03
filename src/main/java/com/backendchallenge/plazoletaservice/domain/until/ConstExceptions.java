@@ -51,6 +51,7 @@ public class ConstExceptions {
     public static final String ORDER_ID_RESTAURANT_INVALID = "Order id restaurant is invalid";
     public static final String ORDER_DISH_ID_INVALID = "Order dish id is invalid";
     public static final String ORDER_DISH_QUANTITY_INVALID = "Order dish quantity is invalid";
+    public static final String ORDER_NOT_CREATED = "Order not created, maybe the restaurant or someone dish is not found";
 
     private ConstExceptions() {
     }
