@@ -57,6 +57,12 @@ public class ConstExceptions {
     public static final String RESTAURANT_ID_EMPTY = "restaurant id is empty";
     public static final String EMPLOYEE_ALREADY_EXIST = "Employee already exist";
 
+    public static final String EMPLOYEE_NOT_BELONG_TO_RESTAURANT = "Employee not belong to restaurant";
+    public static final String ORDER_CURRENT_PAGE_INVALID = "Order current page is invalid";
+    public static final String ORDER_PAGE_SIZE_INVALID = "Order page size is invalid";
+    public static final String ORDER_FILTER_BY_INVALID = "Order filter by is invalid";
+    public static final String ORDER_ORDER_DIRECTION_INVALID = "Order order direction is invalid";
+
     private ConstExceptions() {
     }
 }
