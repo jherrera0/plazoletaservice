@@ -40,7 +40,7 @@ public class RestaurantRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = ConstDocumentation.CODE_201, description = ConstDocumentation.LIST_RESTAURANTS_CODE_201),
     })
-    @PreAuthorize(ConstJwt.PERMIT_ALL)
+    @PreAuthorize(ConstJwt.HAS_AUTHORITY_CLIENT)
     @GetMapping(ConstRoute.LIST_RESTAURANTS)
     public ResponseEntity<PageResponse<RestaurantCustomResponse>> listRestaurants(@RequestBody @Valid ListRestaurantsRequest request) {
         PageResponse<RestaurantCustomResponse> response = restaurantHandler.listRestaurants(request);
