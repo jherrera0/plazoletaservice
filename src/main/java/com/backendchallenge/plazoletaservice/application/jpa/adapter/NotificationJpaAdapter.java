@@ -12,4 +12,14 @@ public class NotificationJpaAdapter implements INotificationPersistencePort {
     public void sendNotification(String phoneNumber, Long idOrder) {
         notificationFeignClient.sendNotification(new NotificationRequest(idOrder,phoneNumber));
     }
+
+    @Override
+    public Boolean existPinByPhoneNumber(String phone) {
+        return notificationFeignClient.existPinByPhoneNumber(phone);
+    }
+
+    @Override
+    public String findPinByPhoneNumber(String phone) {
+        return notificationFeignClient.findPinByPhoneNumber(phone);
+    }
 }

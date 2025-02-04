@@ -115,7 +115,8 @@ public class OrderCase implements IOrderServicePort {
         if (!notificationPersistencePort.existPinByPhoneNumber(userPersistencePort.getPhone(order.getIdClient()))){
             throw new OrderPinNotFoundException();
         }
-        if (!notificationPersistencePort.findPinByPhoneNumber(userPersistencePort.getPhone(order.getIdClient())).equals(pin)) {
+        if (!notificationPersistencePort.findPinByPhoneNumber(userPersistencePort.getPhone(order.getIdClient()))
+                .equals(pin)) {
             throw new OrderPinInvalidException();
         }
         order.setStatus(ConstValidation.DELIVERED);
