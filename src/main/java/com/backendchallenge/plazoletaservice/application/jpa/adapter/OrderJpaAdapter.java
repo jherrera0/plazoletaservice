@@ -79,4 +79,24 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
         }
         return new PageCustom<>(ConstValidation.MINUS_ONE,null,null,null);
     }
+
+    @Override
+    public boolean existsOrderById(Long idOrder) {
+        return orderRepository.existsById(idOrder);
+    }
+
+    @Override
+    public Order getOrderById(Long idOrder) {
+        return orderEntityMapper.toDomain(orderRepository.findById(idOrder).orElse(new OrderEntity()));
+    }
+
+    @Override
+    public void updateOrder(Order order) {
+        OrderEntity orderEntity = orderEntityMapper.toEntity(order);
+        orderEntity.setRestaurant(restaurantRepository.findById(order.getIdRestaurant()).orElse(new RestaurantEntity()));
+        orderRepository.save(orderEntity);
+    }
+
+
+
 }

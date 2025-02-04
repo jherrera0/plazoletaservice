@@ -290,4 +290,79 @@ class OrderCaseTest {
                 ConstTest.VALID_FILTER_BY,
                 ConstTest.VALID_ORDER_DIRECTION));
     }
+    @Test
+    void assignEmployeeToOrder_successful() {
+        Long idOrder = ConstTest.ID_TEST;
+        Long idRestaurant = ConstTest.VALID_ID_RESTAURANT;
+        Long idUser = ConstTest.ID_TEST;
+        Order order = new Order();
+        order.setIdRestaurant(idRestaurant);
+        order.setStatus(ConstValidation.PENDING);
+
+        when(jwtPersistencePort.getUserId(anyString())).thenReturn(idUser);
+        when(restaurantPersistencePort.existsRestaurantById(idRestaurant)).thenReturn(true);
+        when(userPersistencePort.findEmployeeByIds(idUser, idRestaurant)).thenReturn(true);
+        when(orderPersistencePort.existsOrderById(idOrder)).thenReturn(true);
+        when(orderPersistencePort.getOrderById(idOrder)).thenReturn(order);
+
+        orderCase.assignEmployeeToOrder(idOrder, idRestaurant);
+
+        verify(orderPersistencePort, times(1)).updateOrder(order);
+    }
+
+    @Test
+    void assignEmployeeToOrder_restaurantNotFound() {
+        Long idOrder = ConstTest.ID_TEST;
+        Long idRestaurant = ConstTest.VALID_ID_RESTAURANT;
+
+        when(jwtPersistencePort.getUserId(anyString())).thenReturn(ConstTest.ID_TEST);
+        when(restaurantPersistencePort.existsRestaurantById(idRestaurant)).thenReturn(false);
+
+        assertThrows(RestaurantNotFoundException.class, () -> orderCase.assignEmployeeToOrder(idOrder, idRestaurant));
+    }
+
+    @Test
+    void assignEmployeeToOrder_employeeNotBelongToRestaurant() {
+        Long idOrder = ConstTest.ID_TEST;
+        Long idRestaurant = ConstTest.VALID_ID_RESTAURANT;
+        Long idUser = ConstTest.ID_TEST;
+
+        when(jwtPersistencePort.getUserId(anyString())).thenReturn(idUser);
+        when(restaurantPersistencePort.existsRestaurantById(idRestaurant)).thenReturn(true);
+        when(userPersistencePort.findEmployeeByIds(idUser, idRestaurant)).thenReturn(false);
+
+        assertThrows(EmployeeNotBelongToRestaurantException.class, () -> orderCase.assignEmployeeToOrder(idOrder, idRestaurant));
+    }
+
+    @Test
+    void assignEmployeeToOrder_orderNotFound() {
+        Long idOrder = ConstTest.ID_TEST;
+        Long idRestaurant = ConstTest.VALID_ID_RESTAURANT;
+        Long idUser = ConstTest.ID_TEST;
+
+        when(jwtPersistencePort.getUserId(anyString())).thenReturn(idUser);
+        when(restaurantPersistencePort.existsRestaurantById(idRestaurant)).thenReturn(true);
+        when(userPersistencePort.findEmployeeByIds(idUser, idRestaurant)).thenReturn(true);
+        when(orderPersistencePort.existsOrderById(idOrder)).thenReturn(false);
+
+        assertThrows(OrderNotFoundException.class, () -> orderCase.assignEmployeeToOrder(idOrder, idRestaurant));
+    }
+
+    @Test
+    void assignEmployeeToOrder_orderNotAssigned() {
+        Long idOrder = ConstTest.ID_TEST;
+        Long idRestaurant = ConstTest.VALID_ID_RESTAURANT;
+        Long idUser = ConstTest.ID_TEST;
+        Order order = new Order();
+        order.setIdRestaurant(idRestaurant);
+        order.setStatus(ConstValidation.COMPLETED);
+
+        when(jwtPersistencePort.getUserId(anyString())).thenReturn(idUser);
+        when(restaurantPersistencePort.existsRestaurantById(idRestaurant)).thenReturn(true);
+        when(userPersistencePort.findEmployeeByIds(idUser, idRestaurant)).thenReturn(true);
+        when(orderPersistencePort.existsOrderById(idOrder)).thenReturn(true);
+        when(orderPersistencePort.getOrderById(idOrder)).thenReturn(order);
+
+        assertThrows(OrderNotAssignedException.class, () -> orderCase.assignEmployeeToOrder(idOrder, idRestaurant));
+    }
 }

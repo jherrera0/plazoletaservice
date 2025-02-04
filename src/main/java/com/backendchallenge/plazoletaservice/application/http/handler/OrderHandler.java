@@ -1,5 +1,6 @@
 package com.backendchallenge.plazoletaservice.application.http.handler;
 
+import com.backendchallenge.plazoletaservice.application.http.dto.request.AssignEmployeeRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.ListOrderRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.OrderRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.response.OrderResponse;
@@ -31,5 +32,11 @@ public class OrderHandler implements IOrderHandler {
         return pageResponseMapper.toPageResponseOfOrderResponse(orderServicePort.getOrders(request.getIdRestaurant(),
                 request.getCurrentPage(),request.getPageSize(),request.getFilterBy(),
                 request.getOrderDirection()));
+    }
+
+    @Override
+    public void assignEmployee(AssignEmployeeRequest request) {
+        TokenHolder.getToken();
+        orderServicePort.assignEmployeeToOrder(request.getIdOrder(), request.getIdRestaurant());
     }
 }

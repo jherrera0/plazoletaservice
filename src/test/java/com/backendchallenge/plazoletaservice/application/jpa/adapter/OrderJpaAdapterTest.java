@@ -28,8 +28,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class OrderJpaAdapterTest {
 
@@ -198,5 +197,56 @@ class OrderJpaAdapterTest {
         assertNull(result.getTotalPages());
         assertNull(result.getItems());
     }
+    @Test
+    void existsOrderById_orderExists() {
+        when(orderRepository.existsById(any(Long.class))).thenReturn(true);
 
+        assertTrue(orderJpaAdapter.existsOrderById(ConstTest.ID_TEST));
+    }
+
+    @Test
+    void existsOrderById_orderDoesNotExist() {
+        when(orderRepository.existsById(any(Long.class))).thenReturn(false);
+
+        assertFalse(orderJpaAdapter.existsOrderById(ConstTest.ID_TEST));
+    }
+
+    @Test
+    void getOrderById_orderExists() {
+        OrderEntity orderEntity = new OrderEntity();
+        when(orderRepository.findById(any(Long.class))).thenReturn(Optional.of(orderEntity));
+        when(orderEntityMapper.toDomain(any(OrderEntity.class))).thenReturn(new Order());
+
+        Order order = orderJpaAdapter.getOrderById(ConstTest.ID_TEST);
+
+        assertNotNull(order);
+    }
+
+    @Test
+    void getOrderById_orderDoesNotExist() {
+        when(orderRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+        when(orderEntityMapper.toDomain(any(OrderEntity.class))).thenReturn(new Order());
+
+        Order order = orderJpaAdapter.getOrderById(ConstTest.ID_TEST);
+
+        assertNotNull(order);
+    }
+
+    @Test
+    void updateOrder_successful() {
+        Order order = new Order();
+        order.setIdRestaurant(ConstTest.ID_TEST);
+
+        OrderEntity orderEntity = new OrderEntity();
+        RestaurantEntity restaurantEntity = new RestaurantEntity();
+        restaurantEntity.setId(ConstTest.ID_TEST);
+        orderEntity.setRestaurant(restaurantEntity);
+
+        when(orderEntityMapper.toEntity(any(Order.class))).thenReturn(orderEntity);
+        when(restaurantRepository.findById(any(Long.class))).thenReturn(Optional.of(restaurantEntity));
+
+        orderJpaAdapter.updateOrder(order);
+
+        verify(orderRepository, times(ConstValidation.ONE)).save(orderEntity);
+    }
 }

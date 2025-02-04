@@ -1,5 +1,6 @@
 package com.backendchallenge.plazoletaservice.application.http.handler.interfaces;
 
+import com.backendchallenge.plazoletaservice.application.http.dto.request.AssignEmployeeRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.ListOrderRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.OrderRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.response.OrderResponse;
@@ -8,4 +9,5 @@ import com.backendchallenge.plazoletaservice.application.http.dto.response.PageR
 public interface IOrderHandler {
     void createOrder(OrderRequest request);
     PageResponse<OrderResponse> getOrders(ListOrderRequest request);
+    void assignEmployee(AssignEmployeeRequest request);
 }

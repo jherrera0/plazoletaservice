@@ -77,6 +77,26 @@ public class OrderCase implements IOrderServicePort {
         return orderPageCustom;
     }
 
+    @Override
+    public void assignEmployeeToOrder(Long idOrder, Long idRestaurant) {
+        String token = TokenHolder.getTokenValue().substring(ConstJwt.LINESTRING_INDEX);
+        Long idUser = jwtPersistencePort.getUserId(token);
+        if (!restaurantPersistencePort.existsRestaurantById(idRestaurant)) {
+            throw new RestaurantNotFoundException();
+        }
+        if(!userPersistencePort.findEmployeeByIds(idUser, idRestaurant)) {
+            throw new EmployeeNotBelongToRestaurantException();
+        }
+        if (!orderPersistencePort.existsOrderById(idOrder)) {
+            throw new OrderNotFoundException();
+        }
+        Order order = orderPersistencePort.getOrderById(idOrder);
+        if (validatedOrderParams(idRestaurant, order)) {
+            throw new OrderNotAssignedException();
+        }
+        orderPersistencePort.updateOrder(order);
+    }
+
     private void validatedParamToList(Long idRestaurant, Integer currentPage, Integer pageSize, String filterBy, String orderDirection, Long idUser) {
         if (!restaurantPersistencePort.existsRestaurantById(idRestaurant)) {
             throw new RestaurantNotFoundException();
@@ -96,5 +116,10 @@ public class OrderCase implements IOrderServicePort {
         if(!orderDirection.equals(ConstValidation.ASC) && !orderDirection.equals(ConstValidation.DESC)) {
             throw new OrderOrderDirectionInvalidException();
         }
+    }
+    private static boolean validatedOrderParams(Long idRestaurant, Order order) {
+        return order.equals(new Order()) || !(order.getIdRestaurant().equals(idRestaurant)) || order.getIdEmployee() != null ||
+                order.getStatus().equals(ConstValidation.IN_PROCESS) ||
+                order.getStatus().equals((ConstValidation.COMPLETED));
     }
 }

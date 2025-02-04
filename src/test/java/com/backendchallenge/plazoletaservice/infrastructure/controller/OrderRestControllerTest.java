@@ -1,5 +1,6 @@
 package com.backendchallenge.plazoletaservice.infrastructure.controller;
 
+import com.backendchallenge.plazoletaservice.application.http.dto.request.AssignEmployeeRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.ListOrderRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.OrderRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.response.OrderResponse;
@@ -49,5 +50,14 @@ class OrderRestControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(pageResponse, response.getBody());
         verify(orderHandler, times(ConstValidation.ONE)).getOrders(listOrderRequest);
+    }
+
+    @Test
+    void assignEmployeeToOrder_withValidRequest_returnsCreatedStatus() {
+        AssignEmployeeRequest assignEmployeeRequest = new AssignEmployeeRequest();
+        ResponseEntity<String> response = orderRestController.assignEmployeeToOrder(assignEmployeeRequest);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        verify(orderHandler, times(ConstValidation.ONE)).assignEmployee(assignEmployeeRequest);
     }
 }

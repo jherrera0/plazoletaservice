@@ -43,6 +43,13 @@ public class ConstDocumentation {
     public static final String CREATE_EMPLOYEE_CODE_403 = "User not authorized to create employee user";
     public static final String LIST_ORDERS_OPERATION = "List all orders";
     public static final String LIST_ORDERS_CODE_201 = "Orders listed successfully";
+    public static final String ASSIGN_EMPLOYEE_TO_ORDER_OPERATION = "Assign an employee to an order";
+    public static final String ASSIGN_EMPLOYEE_TO_ORDER_CODE_201 = "Employee assigned to order successfully";
+    public static final String ASSIGN_EMPLOYEE_TO_ORDER_CODE_400 = "Invalid data to request assign employee to order";
+    public static final String ASSIGN_EMPLOYEE_TO_ORDER_CODE_403 = "User not authorized to assign employee to order";
+    public static final String LIST_ORDERS_CODE_400 = "Invalid data to request list orders";
+    public static final String LIST_ORDERS_CODE_403 = "User not authorized to list orders";
+    public static final String CREATE_ORDER_CODE_403 = "User not authorized to create order";
 
     private ConstDocumentation() {
     }

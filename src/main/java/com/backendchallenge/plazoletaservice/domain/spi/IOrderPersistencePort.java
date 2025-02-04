@@ -9,4 +9,10 @@ public interface IOrderPersistencePort {
     boolean findOrderByClientId(Long idClient);
 
     PageCustom<Order> getOrders(Long idRestaurant, Integer currentPage, Integer pageSize, String filterBy, String orderDirection);
+
+    boolean existsOrderById(Long idOrder);
+
+    Order getOrderById(Long idOrder);
+
+    void updateOrder(Order order);
 }
