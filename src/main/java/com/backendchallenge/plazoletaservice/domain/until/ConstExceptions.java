@@ -63,6 +63,9 @@ public class ConstExceptions {
     public static final String ORDER_FILTER_BY_INVALID = "Order filter by is invalid";
     public static final String ORDER_ORDER_DIRECTION_INVALID = "Order order direction is invalid";
 
+    public static final String ORDER_NOT_FOUND = "Order not found";
+    public static final String ORDER_NOT_ASSIGNED = "Order not assigned";
+
     private ConstExceptions() {
     }
 }

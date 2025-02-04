@@ -77,6 +77,24 @@ public class OrderCase implements IOrderServicePort {
         return orderPageCustom;
     }
 
+    @Override
+    public void assignEmployeeToOrder(Long idOrder, Long idRestaurant) {
+        String token = TokenHolder.getTokenValue().substring(ConstJwt.LINESTRING_INDEX);
+        Long idUser = jwtPersistencePort.getUserId(token);
+        if (!restaurantPersistencePort.existsRestaurantById(idRestaurant)) {
+            throw new RestaurantNotFoundException();
+        }
+        if(!userPersistencePort.findEmployeeByIds(idUser, idRestaurant)) {
+            throw new EmployeeNotBelongToRestaurantException();
+        }
+        if (!orderPersistencePort.existsOrderById(idOrder)) {
+            throw new OrderNotFoundException();
+        }
+        if (!orderPersistencePort.assignEmployeeToOrder(idOrder, idUser)) {
+            throw new OrderNotAssignedException();
+        }
+    }
+
     private void validatedParamToList(Long idRestaurant, Integer currentPage, Integer pageSize, String filterBy, String orderDirection, Long idUser) {
         if (!restaurantPersistencePort.existsRestaurantById(idRestaurant)) {
             throw new RestaurantNotFoundException();
