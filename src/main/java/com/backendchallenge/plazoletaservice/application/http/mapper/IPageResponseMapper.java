@@ -5,10 +5,10 @@ import com.backendchallenge.plazoletaservice.application.http.dto.response.Order
 import com.backendchallenge.plazoletaservice.application.http.dto.response.PageResponse;
 import com.backendchallenge.plazoletaservice.application.http.dto.response.RestaurantCustomResponse;
 import com.backendchallenge.plazoletaservice.domain.model.Dish;
+import com.backendchallenge.plazoletaservice.domain.model.Order;
 import com.backendchallenge.plazoletaservice.domain.model.PageCustom;
 import com.backendchallenge.plazoletaservice.domain.model.Restaurant;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring",
@@ -18,8 +18,8 @@ import org.mapstruct.ReportingPolicy;
 
 
 public interface IPageResponseMapper {
-    @Mapping(target = "items", source = "items")
+
     PageResponse<RestaurantCustomResponse> toPageResponseOfCustomRestaurant(PageCustom<Restaurant> pageCustom);
     PageResponse<DishResponse> toPageResponseOfDishResponse(PageCustom<Dish> dishesByRestaurant);
-    PageResponse<OrderResponse> toPageResponseOfOrderResponse(PageCustom<OrderResponse> ordersByRestaurant);
+    PageResponse<OrderResponse> toPageResponseOfOrderResponse(PageCustom<Order> ordersByRestaurant);
 }

@@ -1,8 +1,11 @@
 package com.backendchallenge.plazoletaservice.application.jpa.repository;
 
 import com.backendchallenge.plazoletaservice.application.jpa.entity.OrderEntity;
-import com.backendchallenge.plazoletaservice.application.jpa.entity.RestaurantEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 
 public interface IOrderRepository extends JpaRepository<OrderEntity, Long> {
@@ -10,5 +13,13 @@ public interface IOrderRepository extends JpaRepository<OrderEntity, Long> {
 
     boolean existsByIdClientAndStatusIsLikeOrStatusIsLike(Long idClient, String status, String status1);
 
-    OrderEntity findByIdClientAndRestaurantAndStatusIsLike(Long idClient, RestaurantEntity restaurant, String status);
+    @Query("""
+    SELECT o FROM OrderEntity o
+    WHERE o.restaurant.id = :restaurantId
+    AND o.status = :filterBy
+""")
+    Page<OrderEntity> findAllByRestaurant_IdAndFilter(@Param("restaurantId") Long idRestaurant,
+                                                      @Param("filterBy") String filterBy,
+                                                      Pageable pageable);
+
 }
