@@ -2,6 +2,7 @@ package com.backendchallenge.plazoletaservice.infrastructure.controller;
 
 import com.backendchallenge.plazoletaservice.application.http.dto.request.EmployeeRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.ListOrderRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.request.OrderDeliveredRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.OrderRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.response.OrderResponse;
 import com.backendchallenge.plazoletaservice.application.http.dto.response.PageResponse;
@@ -68,5 +69,13 @@ class OrderRestControllerTest {
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         verify(orderHandler, times(ConstValidation.ONE)).orderReady(request);
+    }
+    @Test
+    void deliverOrder_withValidRequest_returnsCreatedStatus() {
+        OrderDeliveredRequest request = new OrderDeliveredRequest();
+        ResponseEntity<String> response = orderRestController.deliverOrder(request);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        verify(orderHandler, times(ConstValidation.ONE)).orderDelivered(request);
     }
 }
