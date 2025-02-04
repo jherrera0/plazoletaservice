@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderResponse {
+    private Long id;
     private Long idClient;
     private LocalDate date;
     private String status;
