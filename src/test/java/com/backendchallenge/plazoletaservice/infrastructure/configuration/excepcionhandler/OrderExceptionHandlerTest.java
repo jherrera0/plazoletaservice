@@ -18,6 +18,15 @@ class OrderExceptionHandlerTest {
     void setUp() {
         orderExceptionHandler = new OrderExceptionHandler();
     }
+
+    @Test
+    void handleOrderNotBelongToEmployeeException_returnsBadRequest() {
+        OrderNotBelongToEmployeeException exception = new OrderNotBelongToEmployeeException();
+        ResponseEntity<Object> response = orderExceptionHandler.handleOrderNotBelongToEmployeeException(exception);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(exception.getMessage(), response.getBody());
+    }
+
     @Test
     void handleOrderNotFoundException_returnsBadRequest() {
         OrderNotFoundException exception = new OrderNotFoundException();

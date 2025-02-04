@@ -16,7 +16,6 @@ public interface IOrderEntityMapper {
     @Mapping(target = "idRestaurant", source = "restaurant.id")
     Order toDomain(OrderEntity orderEntity);
     List<Order> toDomainList(List<OrderEntity> orderEntities);
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "restaurant", ignore = true)
     OrderEntity toEntity(Order order);
 }

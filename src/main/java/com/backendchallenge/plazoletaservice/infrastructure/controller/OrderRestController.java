@@ -1,6 +1,6 @@
 package com.backendchallenge.plazoletaservice.infrastructure.controller;
 
-import com.backendchallenge.plazoletaservice.application.http.dto.request.AssignEmployeeRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.request.EmployeeRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.ListOrderRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.OrderRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.response.OrderResponse;
@@ -42,6 +42,7 @@ public class OrderRestController {
     @Operation(summary = ConstDocumentation.LIST_ORDERS_OPERATION)
     @ApiResponses(value = {
             @ApiResponse(responseCode = ConstDocumentation.CODE_201, description = ConstDocumentation.LIST_ORDERS_CODE_201),
+            @ApiResponse(responseCode = ConstDocumentation.CODE_400, description = ConstDocumentation.LIST_ORDERS_CODE_400),
     })
     @PreAuthorize(ConstJwt.HAS_AUTHORITY_EMPLOYEE)
     @GetMapping(ConstRoute.LIST_ORDERS)
@@ -61,9 +62,23 @@ public class OrderRestController {
     })
     @PreAuthorize(ConstJwt.HAS_AUTHORITY_EMPLOYEE)
     @PostMapping(ConstRoute.ASSIGN_EMPLOYEE_TO_ORDER)
-    public ResponseEntity<String> assignEmployeeToOrder(@RequestBody @Valid AssignEmployeeRequest assignEmployeeRequest) {
-        orderHandler.assignEmployee(assignEmployeeRequest);
+    public ResponseEntity<String> assignEmployeeToOrder(@RequestBody @Valid EmployeeRequest employeeRequest) {
+        orderHandler.assignEmployee(employeeRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @Operation(summary = ConstDocumentation.ORDER_READY_OPERATION)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = ConstDocumentation.CODE_201, description = ConstDocumentation.ORDER_READY_CODE_201),
+            @ApiResponse(responseCode = ConstDocumentation.CODE_400, description = ConstDocumentation.ORDER_READY_CODE_400),
+            @ApiResponse(responseCode = ConstDocumentation.CODE_403, description = ConstDocumentation.ORDER_READY_CODE_403),
+    })
+    @PreAuthorize(ConstJwt.HAS_AUTHORITY_EMPLOYEE)
+    @PostMapping(ConstRoute.ORDER_READY)
+    public ResponseEntity<String> orderReady(@RequestBody @Valid EmployeeRequest request) {
+        orderHandler.orderReady(request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
 
 }

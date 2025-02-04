@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class OrderExceptionHandler{
+    @ExceptionHandler(OrderNotBelongToEmployeeException.class)
+    public ResponseEntity<Object> handleOrderNotBelongToEmployeeException(OrderNotBelongToEmployeeException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
     @ExceptionHandler(OrderNotFoundException.class)
     public ResponseEntity<Object> handleOrderNotFoundException(OrderNotFoundException ex){
         return ResponseEntity.badRequest().body(ex.getMessage());

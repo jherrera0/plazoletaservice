@@ -27,4 +27,9 @@ public class IUserJpaAdapter implements IUserPersistencePort {
         restaurantWorkersEntity.setRestaurantId(restaurantId);
         restaurantsWorkersRepository.save(restaurantWorkersEntity);
     }
+
+    @Override
+    public String getPhone(Long userId) {
+        return feignUserClient.getPhoneById(userId);
+    }
 }
