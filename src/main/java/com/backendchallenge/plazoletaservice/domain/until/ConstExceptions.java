@@ -31,8 +31,6 @@ public class ConstExceptions {
     public static final String DISH_NOT_FOUND = "Dish not found";
 
     public static final String MALFORMED_JWT = "Malformed JWT";
-    public static final String TOKEN_UNSUPPORTED = "Token is unsupported";
-    public static final String TOKEN_EXPIRED = "Token is expired";
 
     public static final String INVALID_TOKEN = "Invalid token";
     public static final String USER_NOT_FOUND = "User not found";
@@ -70,6 +68,9 @@ public class ConstExceptions {
     public static final String ORDER_IS_NOT_COMPLETED = "Order is not completed";
     public static final String ORDER_PIN_NOT_FOUND = "Order pin not found";
     public static final String ORDER_PIN_INVALID = "Order pin is invalid";
+
+    public static final String ORDER_NOT_BELONG_TO_CLIENT = "Order not belong to client";
+    public static final String ORDER_NOT_CANCELABLE = "Order not cancelable";
 
     private ConstExceptions() {
     }

@@ -48,8 +48,6 @@ public class ConstDocumentation {
     public static final String ASSIGN_EMPLOYEE_TO_ORDER_CODE_400 = "Invalid data to request assign employee to order";
     public static final String ASSIGN_EMPLOYEE_TO_ORDER_CODE_403 = "User not authorized to assign employee to order";
     public static final String LIST_ORDERS_CODE_400 = "Invalid data to request list orders";
-    public static final String LIST_ORDERS_CODE_403 = "User not authorized to list orders";
-    public static final String CREATE_ORDER_CODE_403 = "User not authorized to create order";
     public static final String ORDER_READY_OPERATION = "Order ready";
     public static final String ORDER_READY_CODE_201 = "Order status changed to ready successfully";
     public static final String ORDER_READY_CODE_400 = "Invalid data to request order ready";
@@ -59,6 +57,11 @@ public class ConstDocumentation {
     public static final String DELIVER_ORDER_CODE_201 = "Order status changed to delivered successfully";
     public static final String DELIVER_ORDER_CODE_400 = "Invalid data to request order delivered";
     public static final String DELIVER_ORDER_CODE_403 = "User not authorized to change order status to delivered";
+
+    public static final String CANCEL_ORDER_OPERATION = "Cancel an order";
+    public static final String CANCEL_ORDER_CODE_201 = "Order canceled successfully";
+    public static final String CANCEL_ORDER_CODE_400 = "Invalid data to request cancel order";
+    public static final String CANCEL_ORDER_CODE_403 = "User not authorized to cancel order";
 
 
     private ConstDocumentation() {

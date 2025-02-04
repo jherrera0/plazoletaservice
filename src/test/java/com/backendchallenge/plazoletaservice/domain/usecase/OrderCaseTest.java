@@ -273,6 +273,8 @@ class OrderCaseTest {
         when(jwtPersistencePort.getUserId(anyString())).thenReturn(ConstTest.ID_TEST);
         when(restaurantPersistencePort.existsRestaurantById(anyLong())).thenReturn(true);
         when(userPersistencePort.findEmployeeByIds(anyLong(), anyLong())).thenReturn(false);
+        when(orderPersistencePort.getOrders(anyLong(), anyInt(), anyInt(), anyString(), anyString()))
+                .thenReturn(new PageCustom<>(ConstTest.VALID_CURRENT_PAGE, ConstTest.VALID_PAGE_SIZE, ConstValidation.ONE, Collections.singletonList(new Order())));
 
         assertThrows(EmployeeNotBelongToRestaurantException.class, () -> orderCase.getOrders(ConstTest.VALID_ID_RESTAURANT,
                 ConstTest.VALID_CURRENT_PAGE, ConstTest.VALID_PAGE_SIZE,
@@ -333,9 +335,12 @@ class OrderCaseTest {
         when(jwtPersistencePort.getUserId(anyString())).thenReturn(idUser);
         when(restaurantPersistencePort.existsRestaurantById(idRestaurant)).thenReturn(true);
         when(userPersistencePort.findEmployeeByIds(idUser, idRestaurant)).thenReturn(false);
+        when(orderPersistencePort.existsOrderById(idOrder)).thenReturn(true);
+        when(orderPersistencePort.getOrderById(idOrder)).thenReturn(new Order());
 
         assertThrows(EmployeeNotBelongToRestaurantException.class, () -> orderCase.assignEmployeeToOrder(idOrder, idRestaurant));
     }
+
 
     @Test
     void assignEmployeeToOrder_orderNotFound() {
@@ -432,6 +437,8 @@ class OrderCaseTest {
         when(jwtPersistencePort.getUserId(anyString())).thenReturn(idUser);
         when(restaurantPersistencePort.existsRestaurantById(idRestaurant)).thenReturn(true);
         when(userPersistencePort.findEmployeeByIds(idUser, idRestaurant)).thenReturn(false);
+        when(orderPersistencePort.existsOrderById(idOrder)).thenReturn(true);
+        when(orderPersistencePort.getOrderById(idOrder)).thenReturn(new Order());
 
         assertThrows(EmployeeNotBelongToRestaurantException.class, () -> orderCase.notifyOrderReady(idOrder, idRestaurant));
     }
@@ -567,5 +574,63 @@ class OrderCaseTest {
         when(notificationPersistencePort.findPinByPhoneNumber(ConstTest.PHONE_TEST)).thenReturn(ConstTest.PIN_TEST);
 
         assertThrows(OrderPinInvalidException.class, () -> orderCase.deliverOrder(idOrder, idRestaurant, pin));
+    }
+    @Test
+    void cancelOrder_successful() {
+        Long idOrder = ConstTest.ID_TEST;
+        Long idRestaurant = ConstTest.VALID_ID_RESTAURANT;
+        Long idUser = ConstTest.ID_TEST;
+        Order order = new Order();
+        order.setId(idOrder);
+        order.setIdClient(idUser);
+        order.setIdRestaurant(idRestaurant);
+        order.setStatus(ConstValidation.PENDING);
+
+        when(jwtPersistencePort.getUserId(anyString())).thenReturn(idUser);
+        when(restaurantPersistencePort.existsRestaurantById(idRestaurant)).thenReturn(true);
+        when(orderPersistencePort.existsOrderById(idOrder)).thenReturn(true);
+        when(orderPersistencePort.getOrderById(idOrder)).thenReturn(order);
+
+        orderCase.cancelOrder(idOrder, idRestaurant);
+
+        verify(orderPersistencePort, times(ConstValidation.ONE)).updateOrder(order);
+    }
+
+    @Test
+    void cancelOrder_orderNotBelongToClient() {
+        Long idOrder = ConstTest.ID_TEST;
+        Long idRestaurant = ConstTest.VALID_ID_RESTAURANT;
+        Long idUser = ConstTest.ID_TEST;
+        Order order = new Order();
+        order.setId(idOrder);
+        order.setIdClient(idUser + ConstValidation.ONE);
+        order.setIdRestaurant(idRestaurant);
+        order.setStatus(ConstValidation.PENDING);
+
+        when(jwtPersistencePort.getUserId(anyString())).thenReturn(idUser);
+        when(restaurantPersistencePort.existsRestaurantById(idRestaurant)).thenReturn(true);
+        when(orderPersistencePort.existsOrderById(idOrder)).thenReturn(true);
+        when(orderPersistencePort.getOrderById(idOrder)).thenReturn(order);
+
+        assertThrows(OrderNotBelongToClientException.class, () -> orderCase.cancelOrder(idOrder, idRestaurant));
+    }
+
+    @Test
+    void cancelOrder_orderNotPending() {
+        Long idOrder = ConstTest.ID_TEST;
+        Long idRestaurant = ConstTest.VALID_ID_RESTAURANT;
+        Long idUser = ConstTest.ID_TEST;
+        Order order = new Order();
+        order.setId(idOrder);
+        order.setIdClient(idUser);
+        order.setIdRestaurant(idRestaurant);
+        order.setStatus(ConstValidation.COMPLETED);
+
+        when(jwtPersistencePort.getUserId(anyString())).thenReturn(idUser);
+        when(restaurantPersistencePort.existsRestaurantById(idRestaurant)).thenReturn(true);
+        when(orderPersistencePort.existsOrderById(idOrder)).thenReturn(true);
+        when(orderPersistencePort.getOrderById(idOrder)).thenReturn(order);
+
+        assertThrows(OrderNotCancelableException.class, () -> orderCase.cancelOrder(idOrder, idRestaurant));
     }
 }

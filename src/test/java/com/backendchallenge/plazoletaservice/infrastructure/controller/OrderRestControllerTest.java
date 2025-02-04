@@ -7,6 +7,7 @@ import com.backendchallenge.plazoletaservice.application.http.dto.request.OrderR
 import com.backendchallenge.plazoletaservice.application.http.dto.response.OrderResponse;
 import com.backendchallenge.plazoletaservice.application.http.dto.response.PageResponse;
 import com.backendchallenge.plazoletaservice.application.http.handler.interfaces.IOrderHandler;
+import com.backendchallenge.plazoletaservice.domain.until.ConstTest;
 import com.backendchallenge.plazoletaservice.domain.until.ConstValidation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -78,4 +79,14 @@ class OrderRestControllerTest {
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         verify(orderHandler, times(ConstValidation.ONE)).orderDelivered(request);
     }
+
+    @Test
+    void cancelOrder_withValidRequest_returnsCreatedStatus() {
+        EmployeeRequest request = new EmployeeRequest(ConstTest.ID_TEST, ConstTest.VALID_ID_RESTAURANT);
+        ResponseEntity<Void> response = orderRestController.cancelOrder(request);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        verify(orderHandler, times(ConstValidation.ONE)).cancelOrder(request);
+    }
+
 }

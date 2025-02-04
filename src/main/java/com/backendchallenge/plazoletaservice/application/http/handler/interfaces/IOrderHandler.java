@@ -13,4 +13,5 @@ public interface IOrderHandler {
     void assignEmployee(EmployeeRequest request);
     void orderReady(EmployeeRequest request);
     void orderDelivered(OrderDeliveredRequest request);
+    void cancelOrder(EmployeeRequest request);
 }

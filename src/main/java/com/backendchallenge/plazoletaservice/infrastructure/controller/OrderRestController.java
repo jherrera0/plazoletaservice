@@ -97,4 +97,20 @@ public class OrderRestController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @Operation(summary = ConstDocumentation.CANCEL_ORDER_OPERATION)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = ConstDocumentation.CODE_201,
+                    description = ConstDocumentation.CANCEL_ORDER_CODE_201),
+            @ApiResponse(responseCode = ConstDocumentation.CODE_400,
+                    description = ConstDocumentation.CANCEL_ORDER_CODE_400),
+            @ApiResponse(responseCode = ConstDocumentation.CODE_403,
+                    description = ConstDocumentation.CANCEL_ORDER_CODE_403),
+    })
+    @PreAuthorize(ConstJwt.HAS_AUTHORITY_CLIENT)
+    @PostMapping(ConstRoute.CANCEL_ORDER)
+    public ResponseEntity<Void> cancelOrder(@RequestBody @Valid EmployeeRequest request) {
+        orderHandler.cancelOrder(request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
 }
