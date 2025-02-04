@@ -449,4 +449,123 @@ class OrderCaseTest {
 
         assertThrows(OrderNotFoundException.class, () -> orderCase.notifyOrderReady(idOrder, idRestaurant));
     }
+    @Test
+    void deliverOrder_successful() {
+        Long idOrder = ConstTest.ID_TEST;
+        Long idRestaurant = ConstTest.VALID_ID_RESTAURANT;
+        Long idUser = ConstTest.ID_TEST;
+        String pin = ConstTest.PIN_TEST;
+        Order order = new Order();
+        order.setId(idOrder);
+        order.setIdClient(idUser);
+        order.setIdRestaurant(idRestaurant);
+        order.setIdEmployee(idUser);
+        order.setStatus(ConstValidation.COMPLETED);
+
+        when(jwtPersistencePort.getUserId(anyString())).thenReturn(idUser);
+        when(restaurantPersistencePort.existsRestaurantById(idRestaurant)).thenReturn(true);
+        when(userPersistencePort.findEmployeeByIds(idUser, idRestaurant)).thenReturn(true);
+        when(orderPersistencePort.existsOrderById(idOrder)).thenReturn(true);
+        when(orderPersistencePort.getOrderById(idOrder)).thenReturn(order);
+        when(userPersistencePort.getPhone(idUser)).thenReturn(ConstTest.PHONE_TEST);
+        when(notificationPersistencePort.existPinByPhoneNumber(ConstTest.PHONE_TEST)).thenReturn(true);
+        when(notificationPersistencePort.findPinByPhoneNumber(ConstTest.PHONE_TEST)).thenReturn(pin);
+
+        orderCase.deliverOrder(idOrder, idRestaurant, pin);
+
+        verify(orderPersistencePort, times(ConstValidation.ONE)).updateOrder(order);
+    }
+
+    @Test
+    void deliverOrder_orderNotBelongToEmployee() {
+        Long idOrder = ConstTest.ID_TEST;
+        Long idRestaurant = ConstTest.VALID_ID_RESTAURANT;
+        Long idUser = ConstTest.ID_TEST;
+        String pin = ConstTest.PIN_TEST;
+        Order order = new Order();
+        order.setId(idOrder);
+        order.setIdClient(idUser);
+        order.setIdRestaurant(idRestaurant);
+        order.setIdEmployee(idUser + ConstValidation.ONE);
+        order.setStatus(ConstValidation.COMPLETED);
+
+        when(jwtPersistencePort.getUserId(anyString())).thenReturn(idUser);
+        when(restaurantPersistencePort.existsRestaurantById(idRestaurant)).thenReturn(true);
+        when(userPersistencePort.findEmployeeByIds(idUser, idRestaurant)).thenReturn(true);
+        when(orderPersistencePort.existsOrderById(idOrder)).thenReturn(true);
+        when(orderPersistencePort.getOrderById(idOrder)).thenReturn(order);
+
+        assertThrows(OrderNotBelongToEmployeeException.class, () -> orderCase.deliverOrder(idOrder, idRestaurant, pin));
+    }
+
+    @Test
+    void deliverOrder_orderNotCompleted() {
+        Long idOrder = ConstTest.ID_TEST;
+        Long idRestaurant = ConstTest.VALID_ID_RESTAURANT;
+        Long idUser = ConstTest.ID_TEST;
+        String pin = ConstTest.PIN_TEST;
+        Order order = new Order();
+        order.setId(idOrder);
+        order.setIdClient(idUser);
+        order.setIdRestaurant(idRestaurant);
+        order.setIdEmployee(idUser);
+        order.setStatus(ConstValidation.IN_PROCESS);
+
+        when(jwtPersistencePort.getUserId(anyString())).thenReturn(idUser);
+        when(restaurantPersistencePort.existsRestaurantById(idRestaurant)).thenReturn(true);
+        when(userPersistencePort.findEmployeeByIds(idUser, idRestaurant)).thenReturn(true);
+        when(orderPersistencePort.existsOrderById(idOrder)).thenReturn(true);
+        when(orderPersistencePort.getOrderById(idOrder)).thenReturn(order);
+
+        assertThrows(OrderIsNotCompletedException.class, () -> orderCase.deliverOrder(idOrder, idRestaurant, pin));
+    }
+
+    @Test
+    void deliverOrder_pinNotFound() {
+        Long idOrder = ConstTest.ID_TEST;
+        Long idRestaurant = ConstTest.VALID_ID_RESTAURANT;
+        Long idUser = ConstTest.ID_TEST;
+        String pin = ConstTest.PIN_TEST;
+        Order order = new Order();
+        order.setId(idOrder);
+        order.setIdClient(idUser);
+        order.setIdRestaurant(idRestaurant);
+        order.setIdEmployee(idUser);
+        order.setStatus(ConstValidation.COMPLETED);
+
+        when(jwtPersistencePort.getUserId(anyString())).thenReturn(idUser);
+        when(restaurantPersistencePort.existsRestaurantById(idRestaurant)).thenReturn(true);
+        when(userPersistencePort.findEmployeeByIds(idUser, idRestaurant)).thenReturn(true);
+        when(orderPersistencePort.existsOrderById(idOrder)).thenReturn(true);
+        when(orderPersistencePort.getOrderById(idOrder)).thenReturn(order);
+        when(userPersistencePort.getPhone(idUser)).thenReturn(ConstTest.PHONE_TEST);
+        when(notificationPersistencePort.existPinByPhoneNumber(ConstTest.PHONE_TEST)).thenReturn(false);
+
+        assertThrows(OrderPinNotFoundException.class, () -> orderCase.deliverOrder(idOrder, idRestaurant, pin));
+    }
+
+    @Test
+    void deliverOrder_pinInvalid() {
+        Long idOrder = ConstTest.ID_TEST;
+        Long idRestaurant = ConstTest.VALID_ID_RESTAURANT;
+        Long idUser = ConstTest.ID_TEST;
+        String pin = ConstTest.PIN_TEST_INVALID;
+        Order order = new Order();
+        order.setId(idOrder);
+        order.setIdClient(idUser);
+        order.setIdRestaurant(idRestaurant);
+        order.setIdEmployee(idUser);
+        order.setStatus(ConstValidation.COMPLETED);
+
+        when(jwtPersistencePort.getUserId(anyString())).thenReturn(idUser);
+        when(restaurantPersistencePort.existsRestaurantById(idRestaurant)).thenReturn(true);
+        when(userPersistencePort.findEmployeeByIds(idUser, idRestaurant)).thenReturn(true);
+        when(orderPersistencePort.existsOrderById(idOrder)).thenReturn(true);
+        when(orderPersistencePort.getOrderById(idOrder)).thenReturn(order);
+        when(userPersistencePort.getPhone(idUser)).thenReturn(ConstTest.PHONE_TEST);
+        when(notificationPersistencePort.existPinByPhoneNumber(ConstTest.PHONE_TEST)).thenReturn(true);
+        when(notificationPersistencePort.findPinByPhoneNumber(ConstTest.PHONE_TEST)).thenReturn(ConstTest.PIN_TEST);
+
+        assertThrows(OrderPinInvalidException.class, () -> orderCase.deliverOrder(idOrder, idRestaurant, pin));
+    }
 }

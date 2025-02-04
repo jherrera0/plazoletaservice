@@ -76,6 +76,7 @@ public class ConstTest {
     public static final String INVALID_ORDER_DIRECTION = "invalid";
     public static final String INVALID_FILTER_BY = "invalid";
     public static final String PIN_TEST = "123456";
+    public static final String PIN_TEST_INVALID = "INVALID";
 
     private ConstTest() {
     }
