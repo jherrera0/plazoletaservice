@@ -69,6 +69,15 @@ public class OrderCase implements IOrderServicePort {
     public PageCustom<Order> getOrders(Long idRestaurant, Integer currentPage, Integer pageSize, String filterBy, String orderDirection) {
         String token = TokenHolder.getTokenValue().substring(ConstJwt.LINESTRING_INDEX);
         Long idUser = jwtPersistencePort.getUserId(token);
+        validatedParamToList(idRestaurant, currentPage, pageSize, filterBy, orderDirection, idUser);
+        PageCustom<Order> orderPageCustom = orderPersistencePort.getOrders(idRestaurant, currentPage, pageSize, filterBy, orderDirection);
+        if (orderPageCustom.getCurrentPage().equals(ConstValidation.MINUS_ONE)) {
+            throw new OrderCurrentPageInvalidException();
+        }
+        return orderPageCustom;
+    }
+
+    private void validatedParamToList(Long idRestaurant, Integer currentPage, Integer pageSize, String filterBy, String orderDirection, Long idUser) {
         if (!restaurantPersistencePort.existsRestaurantById(idRestaurant)) {
             throw new RestaurantNotFoundException();
         }
@@ -87,10 +96,5 @@ public class OrderCase implements IOrderServicePort {
         if(!orderDirection.equals(ConstValidation.ASC) && !orderDirection.equals(ConstValidation.DESC)) {
             throw new OrderOrderDirectionInvalidException();
         }
-        PageCustom<Order> orderPageCustom = orderPersistencePort.getOrders(idRestaurant, currentPage, pageSize, filterBy, orderDirection);
-        if (orderPageCustom.getCurrentPage().equals(ConstValidation.MINUS_ONE)) {
-            throw new OrderCurrentPageInvalidException();
-        }
-        return orderPageCustom;
     }
 }

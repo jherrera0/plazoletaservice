@@ -73,6 +73,8 @@ public class ConstTest {
     public static final String EMPTY_FILTER = "";
     public static final int INVALID_PAGE_SIZE = -1;
     public static final Integer CURRENT_PAGE_OVER_VALUE_TEST = 100;
+    public static final String INVALID_ORDER_DIRECTION = "invalid";
+    public static final String INVALID_FILTER_BY = "invalid";
 
     private ConstTest() {
     }
