@@ -1,9 +1,14 @@
 package com.backendchallenge.plazoletaservice.application.http.handler;
 
+import com.backendchallenge.plazoletaservice.application.http.dto.request.ListOrderRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.OrderRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.response.OrderResponse;
+import com.backendchallenge.plazoletaservice.application.http.dto.response.PageResponse;
 import com.backendchallenge.plazoletaservice.application.http.mapper.IOrderRequestMapper;
+import com.backendchallenge.plazoletaservice.application.http.mapper.IPageResponseMapper;
 import com.backendchallenge.plazoletaservice.domain.api.IOrderServicePort;
 import com.backendchallenge.plazoletaservice.domain.model.Order;
+import com.backendchallenge.plazoletaservice.domain.model.PageCustom;
 import com.backendchallenge.plazoletaservice.domain.until.ConstTest;
 import com.backendchallenge.plazoletaservice.domain.until.ConstValidation;
 import com.backendchallenge.plazoletaservice.domain.until.TokenHolder;
@@ -15,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.MockitoAnnotations;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class OrderHandlerTest {
@@ -24,6 +30,9 @@ class OrderHandlerTest {
 
     @Mock
     private IOrderServicePort orderServicePort;
+
+    @Mock
+    private IPageResponseMapper pageResponseMapper;
 
     @InjectMocks
     private OrderHandler orderHandler;
@@ -65,5 +74,31 @@ class OrderHandlerTest {
         verify(orderRequestMapper, never()).toDomain(any(OrderRequest.class));
         verify(orderServicePort, never()).createOrder(any(Order.class));
     }
+    @Test
+    void getOrders_withValidRequest() {
+        ListOrderRequest request = new ListOrderRequest(ConstTest.VALID_ID_RESTAURANT,
+                ConstTest.VALID_CURRENT_PAGE,
+                ConstTest.VALID_PAGE_SIZE,
+                ConstTest.VALID_FILTER_BY,
+                ConstTest.VALID_ORDER_DIRECTION);
+        PageCustom<Order> pageCustom = new PageCustom<>();
+        PageResponse<OrderResponse> pageResponse = new PageResponse<>();
 
+        when(orderServicePort.getOrders(ConstTest.VALID_ID_RESTAURANT,
+                ConstTest.VALID_CURRENT_PAGE,
+                ConstTest.VALID_PAGE_SIZE,
+                ConstTest.VALID_FILTER_BY,
+                ConstTest.VALID_ORDER_DIRECTION)).thenReturn(pageCustom);
+        when(pageResponseMapper.toPageResponseOfOrderResponse(pageCustom)).thenReturn(pageResponse);
+
+        PageResponse<OrderResponse> result = orderHandler.getOrders(request);
+
+        assertEquals(pageResponse, result);
+        verify(orderServicePort, times(ConstValidation.ONE)).getOrders(ConstTest.VALID_ID_RESTAURANT,
+                ConstTest.VALID_CURRENT_PAGE,
+                ConstTest.VALID_PAGE_SIZE,
+                ConstTest.VALID_FILTER_BY,
+                ConstTest.VALID_ORDER_DIRECTION);
+        verify(pageResponseMapper, times(ConstValidation.ONE)).toPageResponseOfOrderResponse(pageCustom);
+    }
 }
