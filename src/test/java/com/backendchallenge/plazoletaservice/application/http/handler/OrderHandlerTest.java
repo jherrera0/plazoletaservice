@@ -1,5 +1,6 @@
 package com.backendchallenge.plazoletaservice.application.http.handler;
 
+import com.backendchallenge.plazoletaservice.application.http.dto.request.AssignEmployeeRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.ListOrderRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.OrderRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.response.OrderResponse;
@@ -100,5 +101,15 @@ class OrderHandlerTest {
                 ConstTest.VALID_FILTER_BY,
                 ConstTest.VALID_ORDER_DIRECTION);
         verify(pageResponseMapper, times(ConstValidation.ONE)).toPageResponseOfOrderResponse(pageCustom);
+    }
+    @Test
+    void assignEmployee_withValidRequest() {
+        AssignEmployeeRequest request = new AssignEmployeeRequest(ConstTest.ID_TEST, ConstTest.VALID_ID_RESTAURANT);
+        when(TokenHolder.getToken()).thenReturn(ConstTest.VALID_TOKEN);
+
+        orderHandler.assignEmployee(request);
+
+        verify(orderServicePort, times(ConstValidation.ONE)).assignEmployeeToOrder(request.getIdOrder(),
+                request.getIdRestaurant());
     }
 }
