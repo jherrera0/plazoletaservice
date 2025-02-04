@@ -86,4 +86,13 @@ class IUserJpaAdapterTest {
 
         verify(restaurantsWorkersRepository, times(ConstValidation.ONE)).save(any(RestaurantWorkersEntity.class));
     }
+    @Test
+    void getPhone_returnsPhoneNumberWhenUserExists() {
+        when(feignUserClient.getPhoneById(ConstTest.ID_TEST)).thenReturn(ConstTest.PHONE_TEST);
+
+        String phoneNumber = userJpaAdapter.getPhone(ConstTest.ID_TEST);
+
+        assertEquals(ConstTest.PHONE_TEST, phoneNumber);
+        verify(feignUserClient, times(ConstValidation.ONE)).getPhoneById(ConstTest.ID_TEST);
+    }
 }

@@ -112,4 +112,13 @@ class OrderHandlerTest {
         verify(orderServicePort, times(ConstValidation.ONE)).assignEmployeeToOrder(request.getIdOrder(),
                 request.getIdRestaurant());
     }
+    @Test
+    void orderReady_withValidRequest() {
+        EmployeeRequest request = new EmployeeRequest(ConstTest.ID_TEST, ConstTest.VALID_ID_RESTAURANT);
+        when(TokenHolder.getToken()).thenReturn(ConstTest.VALID_TOKEN);
+
+        orderHandler.orderReady(request);
+
+        verify(orderServicePort, times(ConstValidation.ONE)).notifyOrderReady(request.getIdOrder(), request.getIdRestaurant());
+    }
 }
