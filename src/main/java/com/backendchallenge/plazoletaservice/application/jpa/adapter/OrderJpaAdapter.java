@@ -93,6 +93,7 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     @Override
     public void updateOrder(Order order) {
         OrderEntity orderEntity = orderEntityMapper.toEntity(order);
+        orderEntity.setRestaurant(restaurantRepository.findById(order.getIdRestaurant()).orElse(new RestaurantEntity()));
         orderRepository.save(orderEntity);
     }
 

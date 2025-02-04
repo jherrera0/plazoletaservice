@@ -18,6 +18,21 @@ class OrderExceptionHandlerTest {
     void setUp() {
         orderExceptionHandler = new OrderExceptionHandler();
     }
+    @Test
+    void handleOrderNotFoundException_returnsBadRequest() {
+        OrderNotFoundException exception = new OrderNotFoundException();
+        ResponseEntity<Object> response = orderExceptionHandler.handleOrderNotFoundException(exception);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(exception.getMessage(), response.getBody());
+    }
+
+    @Test
+    void handleOrderNotAssignedException_returnsBadRequest() {
+        OrderNotAssignedException exception = new OrderNotAssignedException();
+        ResponseEntity<Object> response = orderExceptionHandler.handleOrderNotAssignedException(exception);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(exception.getMessage(), response.getBody());
+    }
 
     @Test
     void handleDishNotFoundInRestaurantException_returnsBadRequest() {
