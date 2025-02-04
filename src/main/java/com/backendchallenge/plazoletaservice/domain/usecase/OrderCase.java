@@ -90,7 +90,7 @@ public class OrderCase implements IOrderServicePort {
         if (!orderPersistencePort.existsOrderById(idOrder)) {
             throw new OrderNotFoundException();
         }
-        if (!orderPersistencePort.assignEmployeeToOrder(idOrder, idUser)) {
+        if (!orderPersistencePort.assignEmployeeToOrder(idOrder, idUser, idRestaurant)) {
             throw new OrderNotAssignedException();
         }
     }

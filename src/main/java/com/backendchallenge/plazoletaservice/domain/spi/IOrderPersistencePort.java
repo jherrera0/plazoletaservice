@@ -12,5 +12,5 @@ public interface IOrderPersistencePort {
 
     boolean existsOrderById(Long idOrder);
 
-    boolean assignEmployeeToOrder(Long idOrder, Long idUser);
+    boolean assignEmployeeToOrder(Long idOrder, Long idUser, Long idRestaurant);
 }
