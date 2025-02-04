@@ -17,6 +17,7 @@ public class ConstRoute {
     public static final String ASSIGN_EMPLOYEE_TO_ORDER = "/ASSIGN_EMPLOYEE_TO_ORDER";
     public static final String ORDER_READY = "/ORDER_READY";
     public static final String DELIVER_ORDER = "/DELIVER_ORDER";
+    public static final String CANCEL_ORDER = "/CANCEL_ORDER";
 
     private ConstRoute() {
     }

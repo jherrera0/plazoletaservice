@@ -60,6 +60,11 @@ public class ConstDocumentation {
     public static final String DELIVER_ORDER_CODE_400 = "Invalid data to request order delivered";
     public static final String DELIVER_ORDER_CODE_403 = "User not authorized to change order status to delivered";
 
+    public static final String CANCEL_ORDER_OPERATION = "Cancel an order";
+    public static final String CANCEL_ORDER_CODE_201 = "Order canceled successfully";
+    public static final String CANCEL_ORDER_CODE_400 = "Invalid data to request cancel order";
+    public static final String CANCEL_ORDER_CODE_403 = "User not authorized to cancel order";
+
 
     private ConstDocumentation() {
     }
