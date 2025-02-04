@@ -112,7 +112,8 @@ public class OrderCase implements IOrderServicePort {
         if(!order.getStatus().equals(ConstValidation.COMPLETED)) {
             throw new OrderIsNotCompletedException();
         }
-        if (!notificationPersistencePort.existPinByPhoneNumber(userPersistencePort.getPhone(order.getIdClient()))){
+        if (Boolean.FALSE.equals(notificationPersistencePort.existPinByPhoneNumber(userPersistencePort
+                .getPhone(order.getIdClient())))){
             throw new OrderPinNotFoundException();
         }
         if (!notificationPersistencePort.findPinByPhoneNumber(userPersistencePort.getPhone(order.getIdClient()))
@@ -120,6 +121,19 @@ public class OrderCase implements IOrderServicePort {
             throw new OrderPinInvalidException();
         }
         order.setStatus(ConstValidation.DELIVERED);
+        orderPersistencePort.updateOrder(order);
+    }
+
+    @Override
+    public void cancelOrder(Long idOrder, Long idRestaurant) {
+        Order order = validatedUserParams(idOrder, idRestaurant);
+        if (!Objects.equals(order.getIdClient(), getIdUser())) {
+            throw new OrderNotBelongToClientException();
+        }
+        if (!order.getStatus().equals(ConstValidation.PENDING)) {
+            throw new OrderNotCancelableException();
+        }
+        order.setStatus(ConstValidation.CANCELED);
         orderPersistencePort.updateOrder(order);
     }
 

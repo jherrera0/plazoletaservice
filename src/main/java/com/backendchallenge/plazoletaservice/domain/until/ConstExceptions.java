@@ -71,6 +71,9 @@ public class ConstExceptions {
     public static final String ORDER_PIN_NOT_FOUND = "Order pin not found";
     public static final String ORDER_PIN_INVALID = "Order pin is invalid";
 
+    public static final String ORDER_NOT_BELONG_TO_CLIENT = "Order not belong to client";
+    public static final String ORDER_NOT_CANCELABLE = "Order not cancelable";
+
     private ConstExceptions() {
     }
 }

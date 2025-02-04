@@ -18,6 +18,7 @@ public class ConstValidation {
     public static final String COMPLETED = "COMPLETED";
     public static final String ID = "id";
     public static final String DELIVERED = "DELIVERED";
+    public static final String CANCELED = "CANCELED";
 
     private ConstValidation() {
     }
