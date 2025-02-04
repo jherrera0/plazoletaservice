@@ -52,4 +52,10 @@ public class OrderHandler implements IOrderHandler {
         TokenHolder.getToken();
         orderServicePort.deliverOrder(request.getIdOrder(), request.getIdRestaurant(),request.getPin());
     }
+
+    @Override
+    public void cancelOrder(EmployeeRequest request) {
+        TokenHolder.getToken();
+        orderServicePort.cancelOrder(request.getIdOrder(), request.getIdRestaurant());
+    }
 }
