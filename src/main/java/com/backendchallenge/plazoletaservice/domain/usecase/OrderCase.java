@@ -90,9 +90,11 @@ public class OrderCase implements IOrderServicePort {
         if (!orderPersistencePort.existsOrderById(idOrder)) {
             throw new OrderNotFoundException();
         }
-        if (!orderPersistencePort.assignEmployeeToOrder(idOrder, idUser, idRestaurant)) {
+        Order order = orderPersistencePort.getOrderById(idOrder);
+        if (validatedOrderParams(idRestaurant, order)) {
             throw new OrderNotAssignedException();
         }
+        orderPersistencePort.updateOrder(order);
     }
 
     private void validatedParamToList(Long idRestaurant, Integer currentPage, Integer pageSize, String filterBy, String orderDirection, Long idUser) {
@@ -114,5 +116,10 @@ public class OrderCase implements IOrderServicePort {
         if(!orderDirection.equals(ConstValidation.ASC) && !orderDirection.equals(ConstValidation.DESC)) {
             throw new OrderOrderDirectionInvalidException();
         }
+    }
+    private static boolean validatedOrderParams(Long idRestaurant, Order order) {
+        return order.equals(new Order()) || !(order.getIdRestaurant().equals(idRestaurant)) || order.getIdEmployee() != null ||
+                order.getStatus().equals(ConstValidation.IN_PROCESS) ||
+                order.getStatus().equals((ConstValidation.COMPLETED));
     }
 }

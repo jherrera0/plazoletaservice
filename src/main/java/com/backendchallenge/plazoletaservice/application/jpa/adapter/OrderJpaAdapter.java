@@ -86,15 +86,15 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     }
 
     @Override
-    public boolean assignEmployeeToOrder(Long idOrder, Long idUser) {
-        OrderEntity orderEntity = orderRepository.findById(idOrder).orElse(null);
-        if (orderEntity == null|| orderEntity.getIdEmployee() != null||
-                orderEntity.getStatus().equals(ConstValidation.IN_PROCESS)||
-                        orderEntity.getStatus().equals((ConstValidation.COMPLETED))) {
-            return false;
-        }
-        orderEntity.setIdEmployee(idUser);
-        orderRepository.save(orderEntity);
-        return true;
+    public Order getOrderById(Long idOrder) {
+        return orderEntityMapper.toDomain(orderRepository.findById(idOrder).orElse(new OrderEntity()));
     }
+
+    @Override
+    public void updateOrder(Order order) {
+        OrderEntity orderEntity = orderEntityMapper.toEntity(order);
+        orderRepository.save(orderEntity);
+    }
+
+
 }
