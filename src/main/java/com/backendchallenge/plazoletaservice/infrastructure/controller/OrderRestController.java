@@ -1,6 +1,6 @@
 package com.backendchallenge.plazoletaservice.infrastructure.controller;
 
-import com.backendchallenge.plazoletaservice.application.http.dto.request.AssignEmployeeRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.request.EmployeeRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.ListOrderRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.OrderRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.response.OrderResponse;
@@ -61,8 +61,8 @@ public class OrderRestController {
     })
     @PreAuthorize(ConstJwt.HAS_AUTHORITY_EMPLOYEE)
     @PostMapping(ConstRoute.ASSIGN_EMPLOYEE_TO_ORDER)
-    public ResponseEntity<String> assignEmployeeToOrder(@RequestBody @Valid AssignEmployeeRequest assignEmployeeRequest) {
-        orderHandler.assignEmployee(assignEmployeeRequest);
+    public ResponseEntity<String> assignEmployeeToOrder(@RequestBody @Valid EmployeeRequest employeeRequest) {
+        orderHandler.assignEmployee(employeeRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

@@ -1,6 +1,6 @@
 package com.backendchallenge.plazoletaservice.application.http.handler;
 
-import com.backendchallenge.plazoletaservice.application.http.dto.request.AssignEmployeeRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.request.EmployeeRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.ListOrderRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.OrderRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.response.OrderResponse;
@@ -104,7 +104,7 @@ class OrderHandlerTest {
     }
     @Test
     void assignEmployee_withValidRequest() {
-        AssignEmployeeRequest request = new AssignEmployeeRequest(ConstTest.ID_TEST, ConstTest.VALID_ID_RESTAURANT);
+        EmployeeRequest request = new EmployeeRequest(ConstTest.ID_TEST, ConstTest.VALID_ID_RESTAURANT);
         when(TokenHolder.getToken()).thenReturn(ConstTest.VALID_TOKEN);
 
         orderHandler.assignEmployee(request);

@@ -1,6 +1,6 @@
 package com.backendchallenge.plazoletaservice.application.http.handler;
 
-import com.backendchallenge.plazoletaservice.application.http.dto.request.AssignEmployeeRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.request.EmployeeRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.ListOrderRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.OrderRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.response.OrderResponse;
@@ -35,8 +35,14 @@ public class OrderHandler implements IOrderHandler {
     }
 
     @Override
-    public void assignEmployee(AssignEmployeeRequest request) {
+    public void assignEmployee(EmployeeRequest request) {
         TokenHolder.getToken();
         orderServicePort.assignEmployeeToOrder(request.getIdOrder(), request.getIdRestaurant());
+    }
+
+    @Override
+    public void orderReady(EmployeeRequest request) {
+        TokenHolder.getToken();
+        orderServicePort.notifyOrderReady(request.getIdOrder(), request.getIdRestaurant());
     }
 }
