@@ -73,6 +73,7 @@ public class OrderCase implements IOrderServicePort {
     @Override
     public PageCustom<Order> getOrders(Long idRestaurant, Integer currentPage, Integer pageSize, String filterBy, String orderDirection) {
         validatedParamToList(idRestaurant, currentPage, pageSize, filterBy, orderDirection);
+        validEmployeeOfRestaurant(idRestaurant, getIdUser());
         PageCustom<Order> orderPageCustom = orderPersistencePort.getOrders(idRestaurant, currentPage, pageSize, filterBy, orderDirection);
         if (orderPageCustom.getCurrentPage().equals(ConstValidation.MINUS_ONE)) {
             throw new OrderCurrentPageInvalidException();
