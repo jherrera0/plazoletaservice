@@ -1,6 +1,9 @@
 package com.backendchallenge.plazoletaservice.infrastructure.controller;
 
+import com.backendchallenge.plazoletaservice.application.http.dto.request.ListOrderRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.OrderRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.response.OrderResponse;
+import com.backendchallenge.plazoletaservice.application.http.dto.response.PageResponse;
 import com.backendchallenge.plazoletaservice.application.http.handler.interfaces.IOrderHandler;
 import com.backendchallenge.plazoletaservice.domain.until.ConstDocumentation;
 import com.backendchallenge.plazoletaservice.domain.until.ConstJwt;
@@ -39,10 +42,10 @@ public class OrderRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = ConstDocumentation.CODE_201, description = ConstDocumentation.LIST_ORDERS_CODE_201),
     })
-    @PreAuthorize(ConstJwt.HAS_AUTHORITY_CLIENT)
+    @PreAuthorize(ConstJwt.HAS_AUTHORITY_EMPLOYEE)
     @GetMapping(ConstRoute.LIST_ORDERS)
-    public ResponseEntity<String> listOrders(@RequestBody @Valid ListOrdersRequest listOrdersRequest) {
-        return ResponseEntity.ok(orderHandler.listOrders(listOrdersRequest));
+    public ResponseEntity<PageResponse<OrderResponse>> listOrders(@RequestBody @Valid ListOrderRequest listOrdersRequest) {
+        return ResponseEntity.ok(orderHandler.getOrders(listOrdersRequest));
     }
 
 
