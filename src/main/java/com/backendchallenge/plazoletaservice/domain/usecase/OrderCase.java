@@ -103,6 +103,25 @@ public class OrderCase implements IOrderServicePort {
 
     }
 
+    @Override
+    public void deliverOrder(Long idOrder, Long idRestaurant, String pin) {
+        Order order = validatedUserParams(idOrder, idRestaurant);
+        if (!Objects.equals(order.getIdEmployee(), getIdUser())) {
+            throw new OrderNotBelongToEmployeeException();
+        }
+        if(!order.getStatus().equals(ConstValidation.COMPLETED)) {
+            throw new OrderIsNotCompletedException();
+        }
+        if (!notificationPersistencePort.existPinByPhoneNumber(userPersistencePort.getPhone(order.getIdClient()))){
+            throw new OrderPinNotFoundException();
+        }
+        if (!notificationPersistencePort.findPinByPhoneNumber(userPersistencePort.getPhone(order.getIdClient())).equals(pin)) {
+            throw new OrderPinInvalidException();
+        }
+        order.setStatus(ConstValidation.DELIVERED);
+        orderPersistencePort.updateOrder(order);
+    }
+
     private Long getIdUser() {
         String token = TokenHolder.getTokenValue().substring(ConstJwt.LINESTRING_INDEX);
         return jwtPersistencePort.getUserId(token);
