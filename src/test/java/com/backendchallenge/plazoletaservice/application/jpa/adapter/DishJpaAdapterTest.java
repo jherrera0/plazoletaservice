@@ -259,4 +259,7 @@ class DishJpaAdapterTest {
         assertNull(result.getTotalPages());
         assertNull(result.getItems());
     }
+
+
+
 }

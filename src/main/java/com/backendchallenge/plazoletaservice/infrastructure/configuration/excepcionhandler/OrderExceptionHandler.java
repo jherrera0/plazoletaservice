@@ -1,5 +1,6 @@
 package com.backendchallenge.plazoletaservice.infrastructure.configuration.excepcionhandler;
 
+import com.backendchallenge.plazoletaservice.domain.exceptions.employeeexcepcion.EmployeeNotBelongToRestaurantException;
 import com.backendchallenge.plazoletaservice.domain.exceptions.orderexceptions.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -7,6 +8,31 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class OrderExceptionHandler{
+    @ExceptionHandler(EmployeeNotBelongToRestaurantException.class)
+    public ResponseEntity<Object> handleEmployeeNotBelongToRestaurantException(EmployeeNotBelongToRestaurantException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(OrderCurrentPageInvalidException.class)
+    public ResponseEntity<Object> handleOrderCurrentPageInvalidException(OrderCurrentPageInvalidException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(OrderFilterByInvalidException.class)
+    public ResponseEntity<Object> handleOrderFilterByInvalidException(OrderFilterByInvalidException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(OrderPageSizeInvalidException.class)
+    public ResponseEntity<Object> handleOrderPageSizeInvalidException(OrderPageSizeInvalidException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(OrderOrderDirectionInvalidException.class)
+    public ResponseEntity<Object> handleOrderOrderDirectionInvalidException(OrderOrderDirectionInvalidException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
     @ExceptionHandler(DishNotFoundInRestaurantException.class)
     public ResponseEntity<Object> handleDishNotFoundInRestaurantException(DishNotFoundInRestaurantException ex){
         return ResponseEntity.badRequest().body(ex.getMessage());

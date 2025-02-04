@@ -65,6 +65,16 @@ public class ConstTest {
     public static final Long INVALID_ID = -1L;
     public static final Long ID_2_TEST = 2L;
 
+    public static final long VALID_ID_RESTAURANT = 1L;
+    public static final int VALID_CURRENT_PAGE = 0;
+    public static final int VALID_PAGE_SIZE = 10;
+    public static final String VALID_FILTER_BY = "COMPLETED";
+    public static final String VALID_ORDER_DIRECTION = "asc";
+    public static final String EMPTY_FILTER = "";
+    public static final int INVALID_PAGE_SIZE = -1;
+    public static final Integer CURRENT_PAGE_OVER_VALUE_TEST = 100;
+    public static final String INVALID_ORDER_DIRECTION = "invalid";
+    public static final String INVALID_FILTER_BY = "invalid";
 
     private ConstTest() {
     }

@@ -2,14 +2,17 @@ package com.backendchallenge.plazoletaservice.application.jpa.adapter;
 
 import com.backendchallenge.plazoletaservice.application.jpa.entity.DishEntity;
 import com.backendchallenge.plazoletaservice.application.jpa.entity.OrderEntity;
+import com.backendchallenge.plazoletaservice.application.jpa.entity.OrderedDishEntity;
 import com.backendchallenge.plazoletaservice.application.jpa.entity.RestaurantEntity;
 import com.backendchallenge.plazoletaservice.application.jpa.mapper.IOrderEntityMapper;
+import com.backendchallenge.plazoletaservice.application.jpa.mapper.IOrderedDishEntityMapper;
 import com.backendchallenge.plazoletaservice.application.jpa.repository.IDishRepository;
 import com.backendchallenge.plazoletaservice.application.jpa.repository.IOrderRepository;
 import com.backendchallenge.plazoletaservice.application.jpa.repository.IOrderedDishRepository;
 import com.backendchallenge.plazoletaservice.application.jpa.repository.IRestaurantRepository;
 import com.backendchallenge.plazoletaservice.domain.model.Order;
 import com.backendchallenge.plazoletaservice.domain.model.OrderedDish;
+import com.backendchallenge.plazoletaservice.domain.model.PageCustom;
 import com.backendchallenge.plazoletaservice.domain.until.ConstTest;
 import com.backendchallenge.plazoletaservice.domain.until.ConstValidation;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,14 +20,15 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.*;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class OrderJpaAdapterTest {
@@ -44,6 +48,8 @@ class OrderJpaAdapterTest {
     @Mock
     private IOrderedDishRepository orderedDishRepository;
 
+    @Mock
+    private IOrderedDishEntityMapper orderedDishEntityMapper;
     @InjectMocks
     private OrderJpaAdapter orderJpaAdapter;
 
@@ -145,6 +151,52 @@ class OrderJpaAdapterTest {
                 .thenReturn(false);
 
         assertFalse(orderJpaAdapter.findOrderByClientId(ConstTest.ID_TEST));
+    }
+    @Test
+    void getOrders_successful() {
+        Long idRestaurant = ConstTest.ID_TEST;
+        Integer currentPage = ConstTest.CURRENT_PAGE_TEST;
+        Integer pageSize = ConstTest.PAGE_SIZE_TEST;
+        String filterBy = ConstValidation.PENDING;
+        String orderDirection = ConstValidation.ASC;
+
+        List<OrderEntity> orderEntitiesList = Collections.singletonList(new OrderEntity());
+        Page<OrderEntity> orderEntities = new PageImpl<>(orderEntitiesList);
+
+        when(orderRepository.findAllByRestaurant_IdAndFilter(any(Long.class), any(String.class), any(Pageable.class)))
+                .thenReturn(orderEntities);
+        when(orderEntityMapper.toDomainList(anyList())).thenReturn(Collections.singletonList(new Order()));
+        when(orderedDishRepository.findAllByOrder_Id(any(Long.class))).thenReturn(Collections.
+                singletonList(new OrderedDishEntity()));
+        when(orderedDishEntityMapper.toDomainList(anyList())).thenReturn(Collections.singletonList(new OrderedDish()));
+
+        PageCustom<Order> result = orderJpaAdapter.getOrders(idRestaurant, currentPage, pageSize, filterBy,
+                orderDirection);
+
+        assertNotNull(result);
+        assertEquals(ConstValidation.ONE, result.getItems().size());
+    }
+    @Test
+    void getDishesByRestaurant_handlesInvalidPageRequest() {
+        Long idRestaurant = ConstTest.ID_TEST;
+        Integer currentPage = ConstTest.CURRENT_PAGE_OVER_VALUE_TEST;
+        Integer pageSize = ConstTest.PAGE_SIZE_TEST;
+        String filterBy = ConstTest.FILTER_BY_TEST;
+        String orderDirection = ConstTest.ORDER_DIRECTION_TEST;
+        Page<OrderEntity> page = mock(Page.class);
+
+        when(page.getTotalPages()).thenReturn(ConstValidation.ONE);
+        when(orderRepository.findAllByRestaurant_IdAndFilter(any(Long.class), any(String.class), any(Pageable.class)))
+                .thenReturn(page);
+
+        PageCustom<Order> result = orderJpaAdapter.getOrders(idRestaurant, currentPage, pageSize, filterBy,
+                orderDirection);
+
+        assertNotNull(result);
+        assertEquals(ConstValidation.MINUS_ONE, result.getCurrentPage().intValue());
+        assertNull(result.getPageSize());
+        assertNull(result.getTotalPages());
+        assertNull(result.getItems());
     }
 
 }

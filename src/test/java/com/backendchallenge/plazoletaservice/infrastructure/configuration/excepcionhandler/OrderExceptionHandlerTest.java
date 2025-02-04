@@ -1,5 +1,6 @@
 package com.backendchallenge.plazoletaservice.infrastructure.configuration.excepcionhandler;
 
+import com.backendchallenge.plazoletaservice.domain.exceptions.employeeexcepcion.EmployeeNotBelongToRestaurantException;
 import com.backendchallenge.plazoletaservice.domain.exceptions.orderexceptions.*;
 import com.backendchallenge.plazoletaservice.domain.until.ConstExceptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -72,5 +73,43 @@ class OrderExceptionHandlerTest {
         ResponseEntity<Object> response = orderExceptionHandler.handleOrderNotCreatedException(exception);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals(ConstExceptions.ORDER_NOT_CREATED, response.getBody());
+    }
+    @Test
+    void handleOrderCurrentPageInvalidException_returnsBadRequest() {
+        OrderCurrentPageInvalidException exception = new OrderCurrentPageInvalidException();
+        ResponseEntity<Object> response = orderExceptionHandler.handleOrderCurrentPageInvalidException(exception);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(ConstExceptions.ORDER_CURRENT_PAGE_INVALID, response.getBody());
+    }
+
+    @Test
+    void handleOrderFilterByInvalidException_returnsBadRequest() {
+        OrderFilterByInvalidException exception = new OrderFilterByInvalidException();
+        ResponseEntity<Object> response = orderExceptionHandler.handleOrderFilterByInvalidException(exception);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(ConstExceptions.ORDER_FILTER_BY_INVALID, response.getBody());
+    }
+
+    @Test
+    void handleOrderPageSizeInvalidException_returnsBadRequest() {
+        OrderPageSizeInvalidException exception = new OrderPageSizeInvalidException();
+        ResponseEntity<Object> response = orderExceptionHandler.handleOrderPageSizeInvalidException(exception);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(ConstExceptions.ORDER_PAGE_SIZE_INVALID, response.getBody());
+    }
+
+    @Test
+    void handleOrderOrderDirectionInvalidException_returnsBadRequest() {
+        OrderOrderDirectionInvalidException exception = new OrderOrderDirectionInvalidException();
+        ResponseEntity<Object> response = orderExceptionHandler.handleOrderOrderDirectionInvalidException(exception);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(ConstExceptions.ORDER_ORDER_DIRECTION_INVALID, response.getBody());
+    }
+    @Test
+    void handleEmployeeNotBelongToRestaurantException_returnsBadRequest() {
+        EmployeeNotBelongToRestaurantException exception = new EmployeeNotBelongToRestaurantException();
+        ResponseEntity<Object> response = orderExceptionHandler.handleEmployeeNotBelongToRestaurantException(exception);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(ConstExceptions.EMPLOYEE_NOT_BELONG_TO_RESTAURANT, response.getBody());
     }
 }
