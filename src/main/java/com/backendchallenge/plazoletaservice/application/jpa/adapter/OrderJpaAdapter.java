@@ -88,7 +88,7 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     @Override
     public boolean assignEmployeeToOrder(Long idOrder, Long idUser) {
         OrderEntity orderEntity = orderRepository.findById(idOrder).orElse(null);
-        if (orderEntity == null) {
+        if (orderEntity == null|| orderEntity.getIdEmployee() != null) {
             return false;
         }
         orderEntity.setIdEmployee(idUser);
