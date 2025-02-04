@@ -134,4 +134,14 @@ class OrderHandlerTest {
         verify(orderServicePort, times(ConstValidation.ONE)).deliverOrder(request.getIdOrder(),
                 request.getIdRestaurant(), request.getPin());
     }
+    @Test
+    void cancelOrder_withValidRequest() {
+        EmployeeRequest request = new EmployeeRequest(ConstTest.ID_TEST, ConstTest.VALID_ID_RESTAURANT);
+        when(TokenHolder.getToken()).thenReturn(ConstTest.VALID_TOKEN);
+
+        orderHandler.cancelOrder(request);
+
+        verify(orderServicePort, times(ConstValidation.ONE)).cancelOrder(request.getIdOrder(),
+                request.getIdRestaurant());
+    }
 }
