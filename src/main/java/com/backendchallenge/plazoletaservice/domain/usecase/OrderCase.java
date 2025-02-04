@@ -72,8 +72,7 @@ public class OrderCase implements IOrderServicePort {
 
     @Override
     public PageCustom<Order> getOrders(Long idRestaurant, Integer currentPage, Integer pageSize, String filterBy, String orderDirection) {
-        Long idUser = getIdUser();
-        validatedParamToList(idRestaurant, currentPage, pageSize, filterBy, orderDirection, idUser);
+        validatedParamToList(idRestaurant, currentPage, pageSize, filterBy, orderDirection);
         PageCustom<Order> orderPageCustom = orderPersistencePort.getOrders(idRestaurant, currentPage, pageSize, filterBy, orderDirection);
         if (orderPageCustom.getCurrentPage().equals(ConstValidation.MINUS_ONE)) {
             throw new OrderCurrentPageInvalidException();
@@ -84,6 +83,7 @@ public class OrderCase implements IOrderServicePort {
     @Override
     public void assignEmployeeToOrder(Long idOrder, Long idRestaurant) {
         Order order = validatedUserParams(idOrder, idRestaurant);
+        validEmployeeOfRestaurant(idRestaurant, getIdUser());
         if (validatedOrderParams(idRestaurant, order)) {
             throw new OrderNotAssignedException();
         }
@@ -94,6 +94,7 @@ public class OrderCase implements IOrderServicePort {
     @Override
     public void notifyOrderReady(Long idOrder, Long idRestaurant) {
         Order order = validatedUserParams(idOrder, idRestaurant);
+        validEmployeeOfRestaurant(idRestaurant, getIdUser());
         if (!Objects.equals(order.getIdEmployee(), getIdUser())) {
             throw new OrderNotBelongToEmployeeException();
         }
@@ -106,6 +107,7 @@ public class OrderCase implements IOrderServicePort {
     @Override
     public void deliverOrder(Long idOrder, Long idRestaurant, String pin) {
         Order order = validatedUserParams(idOrder, idRestaurant);
+        validEmployeeOfRestaurant(idRestaurant, getIdUser());
         if (!Objects.equals(order.getIdEmployee(), getIdUser())) {
             throw new OrderNotBelongToEmployeeException();
         }
@@ -145,9 +147,6 @@ public class OrderCase implements IOrderServicePort {
         if (!restaurantPersistencePort.existsRestaurantById(idRestaurant)) {
             throw new RestaurantNotFoundException();
         }
-        if(!userPersistencePort.findEmployeeByIds(getIdUser(), idRestaurant)) {
-            throw new EmployeeNotBelongToRestaurantException();
-        }
         if (!orderPersistencePort.existsOrderById(idOrder)) {
             throw new OrderNotFoundException();
         }
@@ -155,12 +154,9 @@ public class OrderCase implements IOrderServicePort {
         return orderPersistencePort.getOrderById(idOrder);
     }
 
-    private void validatedParamToList(Long idRestaurant, Integer currentPage, Integer pageSize, String filterBy, String orderDirection, Long idUser) {
+    private void validatedParamToList(Long idRestaurant, Integer currentPage, Integer pageSize, String filterBy, String orderDirection) {
         if (!restaurantPersistencePort.existsRestaurantById(idRestaurant)) {
             throw new RestaurantNotFoundException();
-        }
-        if(!userPersistencePort.findEmployeeByIds(idUser, idRestaurant)) {
-            throw new EmployeeNotBelongToRestaurantException();
         }
         if(currentPage == null || currentPage < ConstValidation.ZERO) {
             throw new OrderCurrentPageInvalidException();
@@ -175,6 +171,13 @@ public class OrderCase implements IOrderServicePort {
             throw new OrderOrderDirectionInvalidException();
         }
     }
+
+    private void validEmployeeOfRestaurant(Long idRestaurant, Long idUser) {
+        if(!userPersistencePort.findEmployeeByIds(idUser, idRestaurant)) {
+            throw new EmployeeNotBelongToRestaurantException();
+        }
+    }
+
     private static boolean validatedOrderParams(Long idRestaurant, Order order) {
         return order.equals(new Order()) || !(order.getIdRestaurant().equals(idRestaurant)) ||
                 order.getIdEmployee() != null ||
