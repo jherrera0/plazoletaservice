@@ -60,4 +60,13 @@ class OrderRestControllerTest {
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         verify(orderHandler, times(ConstValidation.ONE)).assignEmployee(employeeRequest);
     }
+
+    @Test
+    void orderReady_withValidRequest_returnsCreatedStatus() {
+        EmployeeRequest request = new EmployeeRequest();
+        ResponseEntity<String> response = orderRestController.orderReady(request);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        verify(orderHandler, times(ConstValidation.ONE)).orderReady(request);
+    }
 }
