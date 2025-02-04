@@ -1,6 +1,7 @@
 package com.backendchallenge.plazoletaservice.infrastructure.configuration;
 
 import com.backendchallenge.plazoletaservice.application.feign.IFeignUserClient;
+import com.backendchallenge.plazoletaservice.application.feign.INotificationFeignClient;
 import com.backendchallenge.plazoletaservice.application.jpa.adapter.*;
 import com.backendchallenge.plazoletaservice.application.jpa.mapper.*;
 import com.backendchallenge.plazoletaservice.application.jpa.repository.*;
@@ -32,6 +33,7 @@ public class BeanConfiguration {
     private final JwtService jwtService;
     private final IRestaurantsWorkersRepository restaurantsWorkersRepository;
     private final IOrderedDishEntityMapper orderedDishEntityMapper;
+    private final INotificationFeignClient notificationFeignClient;
 
     @Bean
     public IUserPersistencePort userPersistencePort() {
@@ -69,9 +71,14 @@ public class BeanConfiguration {
     }
 
     @Bean
+    INotificationPersistencePort notificationPersistencePort() {
+        return new NotificationJpaAdapter(notificationFeignClient);
+    }
+
+    @Bean
     public IOrderServicePort orderServicePort() {
         return new OrderCase(orderPersistencePort(), restaurantPersistencePort(), dishPersistencePort(),
-                jwtPersistencePort(),userPersistencePort());
+                jwtPersistencePort(),userPersistencePort(),notificationPersistencePort());
     }
 
     @Bean

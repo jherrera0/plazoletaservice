@@ -6,7 +6,7 @@ import com.backendchallenge.plazoletaservice.domain.spi.INotificationPersistence
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class INotificationJpaAdapter implements INotificationPersistencePort {
+public class NotificationJpaAdapter implements INotificationPersistencePort {
     private final INotificationFeignClient notificationFeignClient;
     @Override
     public void sendNotification(String phoneNumber, Long idOrder) {
