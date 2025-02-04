@@ -11,6 +11,8 @@ import com.backendchallenge.plazoletaservice.domain.until.ConstJwt;
 import com.backendchallenge.plazoletaservice.domain.until.ConstValidation;
 import com.backendchallenge.plazoletaservice.domain.until.TokenHolder;
 
+import java.util.Objects;
+
 public class OrderCase implements IOrderServicePort {
 
     private final IOrderPersistencePort orderPersistencePort;
@@ -82,6 +84,9 @@ public class OrderCase implements IOrderServicePort {
     @Override
     public void assignEmployeeToOrder(Long idOrder, Long idRestaurant) {
         Order order = validatedUserParams(idOrder, idRestaurant);
+        if (validatedOrderParams(idRestaurant, order)) {
+            throw new OrderNotAssignedException();
+        }
         orderPersistencePort.updateOrder(order);
     }
 
@@ -89,6 +94,9 @@ public class OrderCase implements IOrderServicePort {
     @Override
     public void notifyOrderReady(Long idOrder, Long idRestaurant) {
         Order order = validatedUserParams(idOrder, idRestaurant);
+        if (!Objects.equals(order.getIdEmployee(), getIdUser())) {
+            throw new OrderNotBelongToEmployeeException();
+        }
         order.setStatus(ConstValidation.COMPLETED);
         orderPersistencePort.updateOrder(order);
         notificationPersistencePort.sendNotification(userPersistencePort.getPhone(order.getIdClient()), order.getId());
@@ -109,11 +117,8 @@ public class OrderCase implements IOrderServicePort {
         if (!orderPersistencePort.existsOrderById(idOrder)) {
             throw new OrderNotFoundException();
         }
-        Order order = orderPersistencePort.getOrderById(idOrder);
-        if (validatedOrderParams(idRestaurant, order)) {
-            throw new OrderNotAssignedException();
-        }
-        return order;
+
+        return orderPersistencePort.getOrderById(idOrder);
     }
 
     private void validatedParamToList(Long idRestaurant, Integer currentPage, Integer pageSize, String filterBy, String orderDirection, Long idUser) {
@@ -137,7 +142,8 @@ public class OrderCase implements IOrderServicePort {
         }
     }
     private static boolean validatedOrderParams(Long idRestaurant, Order order) {
-        return order.equals(new Order()) || !(order.getIdRestaurant().equals(idRestaurant)) || order.getIdEmployee() != null ||
+        return order.equals(new Order()) || !(order.getIdRestaurant().equals(idRestaurant)) ||
+                order.getIdEmployee() != null ||
                 order.getStatus().equals(ConstValidation.IN_PROCESS) ||
                 order.getStatus().equals((ConstValidation.COMPLETED));
     }
