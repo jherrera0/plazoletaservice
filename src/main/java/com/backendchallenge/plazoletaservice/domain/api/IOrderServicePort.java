@@ -10,4 +10,6 @@ public interface IOrderServicePort {
                                         String orderDirection);
 
     void assignEmployeeToOrder(Long idOrder, Long idRestaurant);
+
+    void notifyOrderReady(Long idOrder, Long idRestaurant);
 }

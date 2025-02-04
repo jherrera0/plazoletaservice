@@ -18,17 +18,20 @@ public class OrderCase implements IOrderServicePort {
     private final IDishPersistencePort dishPersistencePort;
     private final IJwtPersistencePort jwtPersistencePort;
     private final IUserPersistencePort userPersistencePort;
+    private final INotificationPersistencePort notificationPersistencePort;
 
     public OrderCase(IOrderPersistencePort orderPersistencePort,
                      IRestaurantPersistencePort restaurantPersistencePort,
                      IDishPersistencePort dishPersistencePort,
                      IJwtPersistencePort jwtPersistencePort,
-                     IUserPersistencePort userPersistencePort) {
+                     IUserPersistencePort userPersistencePort,
+                     INotificationPersistencePort notificationPersistencePort) {
         this.orderPersistencePort = orderPersistencePort;
         this.restaurantPersistencePort = restaurantPersistencePort;
         this.dishPersistencePort = dishPersistencePort;
         this.jwtPersistencePort = jwtPersistencePort;
         this.userPersistencePort = userPersistencePort;
+        this.notificationPersistencePort = notificationPersistencePort;
     }
 
     @Override
@@ -67,8 +70,7 @@ public class OrderCase implements IOrderServicePort {
 
     @Override
     public PageCustom<Order> getOrders(Long idRestaurant, Integer currentPage, Integer pageSize, String filterBy, String orderDirection) {
-        String token = TokenHolder.getTokenValue().substring(ConstJwt.LINESTRING_INDEX);
-        Long idUser = jwtPersistencePort.getUserId(token);
+        Long idUser = getIdUser();
         validatedParamToList(idRestaurant, currentPage, pageSize, filterBy, orderDirection, idUser);
         PageCustom<Order> orderPageCustom = orderPersistencePort.getOrders(idRestaurant, currentPage, pageSize, filterBy, orderDirection);
         if (orderPageCustom.getCurrentPage().equals(ConstValidation.MINUS_ONE)) {
@@ -79,12 +81,29 @@ public class OrderCase implements IOrderServicePort {
 
     @Override
     public void assignEmployeeToOrder(Long idOrder, Long idRestaurant) {
+        Order order = validatedUserParams(idOrder, idRestaurant);
+        orderPersistencePort.updateOrder(order);
+    }
+
+
+    @Override
+    public void notifyOrderReady(Long idOrder, Long idRestaurant) {
+        Order order = validatedUserParams(idOrder, idRestaurant);
+        order.setStatus(ConstValidation.COMPLETED);
+        orderPersistencePort.updateOrder(order);
+        notificationPersistencePort.sendNotification(userPersistencePort.getPhone(order.getIdClient()), order.getId());
+
+    }
+
+    private Long getIdUser() {
         String token = TokenHolder.getTokenValue().substring(ConstJwt.LINESTRING_INDEX);
-        Long idUser = jwtPersistencePort.getUserId(token);
+        return jwtPersistencePort.getUserId(token);
+    }
+    private Order validatedUserParams(Long idOrder, Long idRestaurant) {
         if (!restaurantPersistencePort.existsRestaurantById(idRestaurant)) {
             throw new RestaurantNotFoundException();
         }
-        if(!userPersistencePort.findEmployeeByIds(idUser, idRestaurant)) {
+        if(!userPersistencePort.findEmployeeByIds(getIdUser(), idRestaurant)) {
             throw new EmployeeNotBelongToRestaurantException();
         }
         if (!orderPersistencePort.existsOrderById(idOrder)) {
@@ -94,7 +113,7 @@ public class OrderCase implements IOrderServicePort {
         if (validatedOrderParams(idRestaurant, order)) {
             throw new OrderNotAssignedException();
         }
-        orderPersistencePort.updateOrder(order);
+        return order;
     }
 
     private void validatedParamToList(Long idRestaurant, Integer currentPage, Integer pageSize, String filterBy, String orderDirection, Long idUser) {
