@@ -12,6 +12,7 @@ public class ConstJwt {
     public static final String ID = "Id";
     public static final String HAS_AUTHORITY_CLIENT = "hasAuthority('CLIENT')";
     public static final String HAS_ROLE_ADMIN = "hasAuthority('EMPLOYEE')";
+    public static final String HAS_AUTHORITY_EMPLOYEE = "hasAuthority('EMPLOYEE')";
 
     private ConstJwt() {
     }

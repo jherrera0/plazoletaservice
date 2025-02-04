@@ -16,6 +16,7 @@ public class ConstValidation {
     public static final String PENDING = "PENDING";
     public static final String IN_PROCESS = "IN PROCESS";
     public static final String COMPLETED = "COMPLETED";
+    public static final String ID = "id";
 
     private ConstValidation() {
     }

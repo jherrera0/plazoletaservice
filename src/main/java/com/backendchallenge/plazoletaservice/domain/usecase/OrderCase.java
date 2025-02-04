@@ -1,6 +1,5 @@
 package com.backendchallenge.plazoletaservice.domain.usecase;
 
-import com.backendchallenge.plazoletaservice.application.http.dto.response.OrderResponse;
 import com.backendchallenge.plazoletaservice.domain.api.IOrderServicePort;
 import com.backendchallenge.plazoletaservice.domain.exceptions.employeeexcepcion.EmployeeNotBelongToRestaurantException;
 import com.backendchallenge.plazoletaservice.domain.exceptions.orderexceptions.*;
@@ -76,7 +75,7 @@ public class OrderCase implements IOrderServicePort {
         if(!userPersistencePort.findEmployeeByIds(idUser, idRestaurant)) {
             throw new EmployeeNotBelongToRestaurantException();
         }
-        if(currentPage == null || currentPage <= ConstValidation.ZERO) {
+        if(currentPage == null || currentPage < ConstValidation.ZERO) {
             throw new OrderCurrentPageInvalidException();
         }
         if(pageSize == null || pageSize <= ConstValidation.ZERO) {
@@ -85,7 +84,7 @@ public class OrderCase implements IOrderServicePort {
         if(filterBy == null || filterBy.isEmpty()) {
             throw new OrderFilterByInvalidException();
         }
-        if(orderDirection.equals(ConstValidation.ASC) || orderDirection.equals(ConstValidation.DESC)) {
+        if(!orderDirection.equals(ConstValidation.ASC) && !orderDirection.equals(ConstValidation.DESC)) {
             throw new OrderOrderDirectionInvalidException();
         }
         PageCustom<Order> orderPageCustom = orderPersistencePort.getOrders(idRestaurant, currentPage, pageSize, filterBy, orderDirection);
