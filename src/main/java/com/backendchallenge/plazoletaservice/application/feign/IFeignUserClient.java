@@ -12,4 +12,7 @@ public interface IFeignUserClient {
 
     @GetMapping("/user/FindOwnerById")
     boolean findOwnerById(@RequestParam("ownerId") Long ownerId);
+
+    @GetMapping("/user/getClientPhoneById")
+    String getPhoneById(@RequestParam("userId") Long userId);
 }
