@@ -136,4 +136,27 @@ class OrderExceptionHandlerTest {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals(ConstExceptions.EMPLOYEE_NOT_BELONG_TO_RESTAURANT, response.getBody());
     }
+    @Test
+    void handleOrderPinNotFoundException_returnsBadRequest() {
+        OrderPinNotFoundException exception = new OrderPinNotFoundException();
+        ResponseEntity<Object> response = orderExceptionHandler.handleOrderPinNotFoundException(exception);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(exception.getMessage(), response.getBody());
+    }
+
+    @Test
+    void handleOrderPinInvalidException_returnsBadRequest() {
+        OrderPinInvalidException exception = new OrderPinInvalidException();
+        ResponseEntity<Object> response = orderExceptionHandler.handleOrderPinInvalidException(exception);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(exception.getMessage(), response.getBody());
+    }
+
+    @Test
+    void handleOrderIsNotCompletedException_returnsBadRequest() {
+        OrderIsNotCompletedException exception = new OrderIsNotCompletedException();
+        ResponseEntity<Object> response = orderExceptionHandler.handleOrderIsNotCompletedException(exception);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(exception.getMessage(), response.getBody());
+    }
 }

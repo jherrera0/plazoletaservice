@@ -75,6 +75,8 @@ public class ConstTest {
     public static final Integer CURRENT_PAGE_OVER_VALUE_TEST = 100;
     public static final String INVALID_ORDER_DIRECTION = "invalid";
     public static final String INVALID_FILTER_BY = "invalid";
+    public static final String PIN_TEST = "123456";
+    public static final String PIN_TEST_INVALID = "INVALID";
 
     private ConstTest() {
     }

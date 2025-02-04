@@ -2,6 +2,7 @@ package com.backendchallenge.plazoletaservice.application.http.handler;
 
 import com.backendchallenge.plazoletaservice.application.http.dto.request.EmployeeRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.ListOrderRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.request.OrderDeliveredRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.OrderRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.response.OrderResponse;
 import com.backendchallenge.plazoletaservice.application.http.dto.response.PageResponse;
@@ -119,6 +120,18 @@ class OrderHandlerTest {
 
         orderHandler.orderReady(request);
 
-        verify(orderServicePort, times(ConstValidation.ONE)).notifyOrderReady(request.getIdOrder(), request.getIdRestaurant());
+        verify(orderServicePort, times(ConstValidation.ONE)).notifyOrderReady(request.getIdOrder(),
+                request.getIdRestaurant());
+    }
+    @Test
+    void orderDelivered_withValidRequest() {
+        OrderDeliveredRequest request = new OrderDeliveredRequest(ConstTest.ID_TEST, ConstTest.VALID_ID_RESTAURANT,
+                ConstTest.PIN_TEST);
+        when(TokenHolder.getToken()).thenReturn(ConstTest.VALID_TOKEN);
+
+        orderHandler.orderDelivered(request);
+
+        verify(orderServicePort, times(ConstValidation.ONE)).deliverOrder(request.getIdOrder(),
+                request.getIdRestaurant(), request.getPin());
     }
 }

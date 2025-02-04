@@ -8,6 +8,18 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class OrderExceptionHandler{
+    @ExceptionHandler(OrderPinNotFoundException.class)
+    public ResponseEntity<Object> handleOrderPinNotFoundException(OrderPinNotFoundException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+    @ExceptionHandler(OrderPinInvalidException.class)
+    public ResponseEntity<Object> handleOrderPinInvalidException(OrderPinInvalidException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+    @ExceptionHandler(OrderIsNotCompletedException.class)
+    public ResponseEntity<Object> handleOrderIsNotCompletedException(OrderIsNotCompletedException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
     @ExceptionHandler(OrderNotBelongToEmployeeException.class)
     public ResponseEntity<Object> handleOrderNotBelongToEmployeeException(OrderNotBelongToEmployeeException ex){
         return ResponseEntity.badRequest().body(ex.getMessage());

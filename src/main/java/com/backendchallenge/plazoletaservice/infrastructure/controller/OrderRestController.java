@@ -2,6 +2,7 @@ package com.backendchallenge.plazoletaservice.infrastructure.controller;
 
 import com.backendchallenge.plazoletaservice.application.http.dto.request.EmployeeRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.ListOrderRequest;
+import com.backendchallenge.plazoletaservice.application.http.dto.request.OrderDeliveredRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.request.OrderRequest;
 import com.backendchallenge.plazoletaservice.application.http.dto.response.OrderResponse;
 import com.backendchallenge.plazoletaservice.application.http.dto.response.PageResponse;
@@ -80,5 +81,20 @@ public class OrderRestController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @Operation(summary = ConstDocumentation.DELIVER_ORDER_OPERATION)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = ConstDocumentation.CODE_201,
+                    description = ConstDocumentation.DELIVER_ORDER_CODE_201),
+            @ApiResponse(responseCode = ConstDocumentation.CODE_400,
+                    description = ConstDocumentation.DELIVER_ORDER_CODE_400),
+            @ApiResponse(responseCode = ConstDocumentation.CODE_403,
+                    description = ConstDocumentation.DELIVER_ORDER_CODE_403),
+    })
+    @PreAuthorize(ConstJwt.HAS_AUTHORITY_EMPLOYEE)
+    @PostMapping(ConstRoute.DELIVER_ORDER)
+    public ResponseEntity<String> deliverOrder(@RequestBody @Valid OrderDeliveredRequest request) {
+        orderHandler.orderDelivered(request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 
 }

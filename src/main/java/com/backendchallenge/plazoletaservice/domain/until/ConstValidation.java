@@ -17,6 +17,7 @@ public class ConstValidation {
     public static final String IN_PROCESS = "IN PROCESS";
     public static final String COMPLETED = "COMPLETED";
     public static final String ID = "id";
+    public static final String DELIVERED = "DELIVERED";
 
     private ConstValidation() {
     }

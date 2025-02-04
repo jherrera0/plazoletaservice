@@ -55,6 +55,12 @@ public class ConstDocumentation {
     public static final String ORDER_READY_CODE_400 = "Invalid data to request order ready";
     public static final String ORDER_READY_CODE_403 = "User not authorized to change order status to ready";
 
+    public static final String DELIVER_ORDER_OPERATION = "Order delivered";
+    public static final String DELIVER_ORDER_CODE_201 = "Order status changed to delivered successfully";
+    public static final String DELIVER_ORDER_CODE_400 = "Invalid data to request order delivered";
+    public static final String DELIVER_ORDER_CODE_403 = "User not authorized to change order status to delivered";
+
+
     private ConstDocumentation() {
     }
 }

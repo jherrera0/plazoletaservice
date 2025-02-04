@@ -67,6 +67,10 @@ public class ConstExceptions {
     public static final String ORDER_NOT_ASSIGNED = "Order not assigned";
     public static final String ORDER_NOT_BELONG_TO_EMPLOYEE = "Order not belong to employee";
 
+    public static final String ORDER_IS_NOT_COMPLETED = "Order is not completed";
+    public static final String ORDER_PIN_NOT_FOUND = "Order pin not found";
+    public static final String ORDER_PIN_INVALID = "Order pin is invalid";
+
     private ConstExceptions() {
     }
 }

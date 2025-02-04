@@ -7,6 +7,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @FeignClient(name = "notification-service", url = "http://localhost:8082", configuration= FeignClientsConfig.class)
 public interface INotificationFeignClient {
+
     @PostMapping("/notification/send")
     void sendNotification(NotificationRequest notificationRequest);
+
+    @PostMapping("/notification/getPin")
+    String findPinByPhoneNumber(String phone);
+
+    @PostMapping("/notification/exist")
+    Boolean existPinByPhoneNumber(String phone);
 }
