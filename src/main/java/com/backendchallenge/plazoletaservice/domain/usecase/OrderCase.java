@@ -11,6 +11,7 @@ import com.backendchallenge.plazoletaservice.domain.until.ConstJwt;
 import com.backendchallenge.plazoletaservice.domain.until.ConstValidation;
 import com.backendchallenge.plazoletaservice.domain.until.TokenHolder;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -68,6 +69,7 @@ public class OrderCase implements IOrderServicePort {
                 throw new OrderDishQuantityInvalidException();
             }
         });
+        order.setDate(LocalDate.now());
         order.setStatus(ConstValidation.PENDING);
         if(!orderPersistencePort.createOrder(order)){
             throw new OrderNotCreatedException();
