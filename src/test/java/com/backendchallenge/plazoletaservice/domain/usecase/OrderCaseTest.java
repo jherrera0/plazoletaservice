@@ -44,6 +44,8 @@ class OrderCaseTest {
 
     @Mock
     private INotificationPersistencePort notificationPersistencePort;
+    @Mock
+    private ITraceabilityPersistencePort traceabilityPersistencePort;
 
     @InjectMocks
     private OrderCase orderCase;
@@ -75,6 +77,7 @@ class OrderCaseTest {
         when(restaurantPersistencePort.existsRestaurantById(anyLong())).thenReturn(true);
         when(dishPersistencePort.getRestaurantIdByDishId(anyLong())).thenReturn(ConstTest.ID_TEST);
         when(orderPersistencePort.createOrder(any(Order.class))).thenReturn(true);
+        when(orderPersistencePort.getOrderByParams(anyString(), anyLong(), anyLong())).thenReturn(order);
 
         orderCase.createOrder(order);
 
