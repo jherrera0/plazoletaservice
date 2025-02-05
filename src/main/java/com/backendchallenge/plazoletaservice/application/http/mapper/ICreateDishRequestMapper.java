@@ -29,7 +29,7 @@ public interface ICreateDishRequestMapper {
         List<Category> categories = new ArrayList<>();
         int minLength = Math.min(names.length, descriptions.length);
 
-        IntStream.range(0, minLength)
+        IntStream.range(ConstValidation.ZERO, minLength)
                 .forEach(i -> categories.add(new Category(names[i].trim(), descriptions[i].trim())));
 
         return categories;
