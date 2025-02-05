@@ -59,7 +59,9 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
 
     @Override
     public boolean findOrderByClientId(Long idClient) {
-        return orderRepository.existsByIdClientAndStatusIsLikeOrStatusIsLike(idClient, ConstValidation.PENDING,ConstValidation.IN_PROCESS);
+        boolean existsByIdClientAndStatusIsLike = orderRepository.existsByIdClientAndStatusIsLike(idClient, ConstValidation.PENDING);
+        boolean existsByIdClientAndStatusIsLike1 = orderRepository.existsByIdClientAndStatusIsLike(idClient, ConstValidation.IN_PROCESS);
+        return (existsByIdClientAndStatusIsLike || existsByIdClientAndStatusIsLike1);
     }
 
     @Override
@@ -97,6 +99,11 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
         orderRepository.save(orderEntity);
     }
 
+    @Override
+    public Order getOrderByParams(String status, Long idClient, Long idRestaurant) {
+        return orderEntityMapper.toDomain(orderRepository.findByStatusAndIdClientAndRestaurant_Id(status, idClient,
+                idRestaurant));
+    }
 
 
 }

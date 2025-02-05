@@ -72,8 +72,10 @@ public class OrderCase implements IOrderServicePort {
         if(!orderPersistencePort.createOrder(order)){
             throw new OrderNotCreatedException();
         }
-        traceabilityPersistencePort.createOrderTraceability(orderPersistencePort.getOrderByParams(order.getStatus(),
-                order.getIdClient(), order.getIdRestaurant()));
+        Order orderCreated = orderPersistencePort.getOrderByParams(order.getStatus(),
+                order.getIdClient(), order.getIdRestaurant());
+        orderCreated.setDishes(order.getDishes());
+        traceabilityPersistencePort.createOrderTraceability(orderCreated);
     }
 
     @Override
