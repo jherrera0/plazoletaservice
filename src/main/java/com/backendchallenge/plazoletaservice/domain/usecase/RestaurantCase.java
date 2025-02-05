@@ -62,6 +62,11 @@ public class RestaurantCase implements IRestaurantServicePort {
     public void createEmployee(Long userId, Long restaurantId) {
         String token = TokenHolder.getTokenValue().substring(ConstJwt.LINESTRING_INDEX);
         Long ownerId = jwtPersistencePort.getUserId(token);
+        validateEmployeeParams(userId, restaurantId, ownerId);
+        userPersistencePort.createEmployee(userId, restaurantId);
+    }
+
+    private void validateEmployeeParams(Long userId, Long restaurantId, Long ownerId) {
         if (userId == null || userId <= ConstValidation.ZERO) {
             throw new RestaurantUserIdEmptyException();
         }
@@ -71,10 +76,9 @@ public class RestaurantCase implements IRestaurantServicePort {
         if (userPersistencePort.findEmployeeByIds(userId, restaurantId)) {
             throw new EmployeeAlreadyExist();
         }
-        if (!restaurantPersistencePort.existsRestaurantByIdAndOwner(restaurantId,ownerId)) {
+        if (!restaurantPersistencePort.existsRestaurantByIdAndOwner(restaurantId, ownerId)) {
             throw new RestaurantNotFoundException();
         }
-        userPersistencePort.createEmployee(userId, restaurantId);
     }
 
     private static void validatedRestaurantParams(Restaurant restaurant) {

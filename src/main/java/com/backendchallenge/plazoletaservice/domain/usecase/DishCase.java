@@ -92,6 +92,27 @@ public class DishCase implements IDishServicePort {
 
     @Override
     public PageCustom<Dish> getDishesByRestaurant(Long restaurantId, Integer currentPage, Integer pageSize, String filterBy,String orderDirection) {
+        validatePageParams(restaurantId, currentPage, pageSize, orderDirection);
+        PageCustom<Dish> dishes =
+                dishPersistencePort.getDishesByRestaurant(restaurantId, currentPage, pageSize, filterBy, orderDirection);
+
+        if (Objects.equals(dishes.getCurrentPage(), ConstValidation.MINUS_ONE)) {
+            throw new DishesCurrentPageInvalidException();
+        }
+
+        return dishes;
+    }
+
+
+    private static void updateValidatedParams(String descriptionUpdate,Integer priceUpdate) {
+        if(descriptionUpdate == null || descriptionUpdate.isBlank()) {
+            throw new DishDescriptionUpdateEmptyException();
+        }
+        if(priceUpdate == null) {
+            throw new DishPriceUpdateEmptyException();
+        }
+    }
+    private void validatePageParams(Long restaurantId, Integer currentPage, Integer pageSize, String orderDirection) {
         if (!restaurantPersistencePort.existsRestaurantById(restaurantId)) {
             throw new RestaurantNotFoundException();
         }
@@ -107,25 +128,7 @@ public class DishCase implements IDishServicePort {
         if(!orderDirection.equals(ConstValidation.ASC) && !orderDirection.equals(ConstValidation.DESC)) {
             throw new DishesOrderDirectionInvalidException();
         }
-        PageCustom<Dish> dishes =
-                dishPersistencePort.getDishesByRestaurant(restaurantId, currentPage, pageSize, filterBy, orderDirection);
-
-        if (Objects.equals(dishes.getCurrentPage(), ConstValidation.MINUS_ONE)) {
-            throw new DishesCurrentPageInvalidException();
-        }
-
-        return dishes;
     }
-
-    private static void updateValidatedParams(String descriptionUpdate,Integer priceUpdate) {
-        if(descriptionUpdate == null || descriptionUpdate.isBlank()) {
-            throw new DishDescriptionUpdateEmptyException();
-        }
-        if(priceUpdate == null) {
-            throw new DishPriceUpdateEmptyException();
-        }
-    }
-
     private static void validatedDishParams(Dish dish) {
         if (dish.getName() == null || dish.getName().isBlank()) {
             throw new DishNameEmptyException();

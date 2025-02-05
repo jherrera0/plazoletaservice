@@ -82,7 +82,7 @@ public class OrderCase implements IOrderServicePort {
 
     @Override
     public PageCustom<Order> getOrders(Long idRestaurant, Integer currentPage, Integer pageSize, String filterBy, String orderDirection) {
-        validatedParamToList(idRestaurant, currentPage, pageSize, filterBy, orderDirection);
+        validatedParamToPage(idRestaurant, currentPage, pageSize, filterBy, orderDirection);
         validEmployeeOfRestaurant(idRestaurant, getIdUser());
         PageCustom<Order> orderPageCustom = orderPersistencePort.getOrders(idRestaurant, currentPage, pageSize, filterBy, orderDirection);
         if (orderPageCustom.getCurrentPage().equals(ConstValidation.MINUS_ONE)) {
@@ -172,7 +172,7 @@ public class OrderCase implements IOrderServicePort {
         return orderPersistencePort.getOrderById(idOrder);
     }
 
-    private void validatedParamToList(Long idRestaurant, Integer currentPage, Integer pageSize, String filterBy, String orderDirection) {
+    private void validatedParamToPage(Long idRestaurant, Integer currentPage, Integer pageSize, String filterBy, String orderDirection) {
         if (!restaurantPersistencePort.existsRestaurantById(idRestaurant)) {
             throw new RestaurantNotFoundException();
         }
