@@ -2,6 +2,7 @@ package com.backendchallenge.plazoletaservice.infrastructure.configuration;
 
 import com.backendchallenge.plazoletaservice.application.feign.IFeignUserClient;
 import com.backendchallenge.plazoletaservice.application.feign.INotificationFeignClient;
+import com.backendchallenge.plazoletaservice.application.feign.ITraceabilityFeignClient;
 import com.backendchallenge.plazoletaservice.application.jpa.adapter.*;
 import com.backendchallenge.plazoletaservice.application.jpa.mapper.*;
 import com.backendchallenge.plazoletaservice.application.jpa.repository.*;
@@ -34,6 +35,7 @@ public class BeanConfiguration {
     private final IRestaurantsWorkersRepository restaurantsWorkersRepository;
     private final IOrderedDishEntityMapper orderedDishEntityMapper;
     private final INotificationFeignClient notificationFeignClient;
+    private final ITraceabilityFeignClient traceabilityFeignClient;
 
     @Bean
     public IUserPersistencePort userPersistencePort() {
@@ -78,9 +80,13 @@ public class BeanConfiguration {
     @Bean
     public IOrderServicePort orderServicePort() {
         return new OrderCase(orderPersistencePort(), restaurantPersistencePort(), dishPersistencePort(),
-                jwtPersistencePort(),userPersistencePort(),notificationPersistencePort());
+                jwtPersistencePort(),userPersistencePort(),notificationPersistencePort(),traceabilityPersistencePort());
     }
 
+    @Bean
+    public ITraceabilityPersistencePort traceabilityPersistencePort() {
+        return new TraceabilityJpaAdapter(traceabilityFeignClient);
+    }
     @Bean
     public IOrderPersistencePort orderPersistencePort() {
         return new OrderJpaAdapter(orderRepository,restaurantRepository,orderEntityMapper,dishRepository, orderedDishRepository,orderedDishEntityMapper);

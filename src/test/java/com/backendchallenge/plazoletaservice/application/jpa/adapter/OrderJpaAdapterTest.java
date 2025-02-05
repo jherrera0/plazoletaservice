@@ -137,7 +137,7 @@ class OrderJpaAdapterTest {
 
     @Test
     void findOrderByClientId_orderExists() {
-        when(orderRepository.existsByIdClientAndStatusIsLikeOrStatusIsLike(any(Long.class), any(String.class),
+        when(orderRepository.existsByIdClientAndStatusIsLike(any(Long.class),
                 any(String.class)))
                 .thenReturn(true);
 
@@ -248,5 +248,26 @@ class OrderJpaAdapterTest {
         orderJpaAdapter.updateOrder(order);
 
         verify(orderRepository, times(ConstValidation.ONE)).save(orderEntity);
+    }
+    @Test
+    void getOrderByParams_orderExists() {
+        OrderEntity orderEntity = new OrderEntity();
+        when(orderRepository.findByStatusAndIdClientAndRestaurant_Id(anyString(), anyLong(), anyLong()))
+                .thenReturn(orderEntity);
+        when(orderEntityMapper.toDomain(any(OrderEntity.class))).thenReturn(new Order());
+
+        Order order = orderJpaAdapter.getOrderByParams(ConstValidation.PENDING, ConstTest.ID_TEST, ConstTest.ID_TEST);
+
+        assertNotNull(order);
+    }
+    @Test
+    void getOrderByParams_orderDoesNotExist() {
+        when(orderRepository.findByStatusAndIdClientAndRestaurant_Id(anyString(), anyLong(), anyLong()))
+                .thenReturn(null);
+        when(orderEntityMapper.toDomain(any(OrderEntity.class))).thenReturn(null);
+
+        Order order = orderJpaAdapter.getOrderByParams(ConstValidation.PENDING, ConstTest.ID_TEST, ConstTest.ID_TEST);
+
+        assertNull(order);
     }
 }

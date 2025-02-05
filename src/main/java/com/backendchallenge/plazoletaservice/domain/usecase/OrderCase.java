@@ -11,6 +11,8 @@ import com.backendchallenge.plazoletaservice.domain.until.ConstJwt;
 import com.backendchallenge.plazoletaservice.domain.until.ConstValidation;
 import com.backendchallenge.plazoletaservice.domain.until.TokenHolder;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class OrderCase implements IOrderServicePort {
@@ -21,19 +23,22 @@ public class OrderCase implements IOrderServicePort {
     private final IJwtPersistencePort jwtPersistencePort;
     private final IUserPersistencePort userPersistencePort;
     private final INotificationPersistencePort notificationPersistencePort;
+    private final ITraceabilityPersistencePort traceabilityPersistencePort;
 
     public OrderCase(IOrderPersistencePort orderPersistencePort,
                      IRestaurantPersistencePort restaurantPersistencePort,
                      IDishPersistencePort dishPersistencePort,
                      IJwtPersistencePort jwtPersistencePort,
                      IUserPersistencePort userPersistencePort,
-                     INotificationPersistencePort notificationPersistencePort) {
+                     INotificationPersistencePort notificationPersistencePort,
+                     ITraceabilityPersistencePort traceabilityPersistencePort) {
         this.orderPersistencePort = orderPersistencePort;
         this.restaurantPersistencePort = restaurantPersistencePort;
         this.dishPersistencePort = dishPersistencePort;
         this.jwtPersistencePort = jwtPersistencePort;
         this.userPersistencePort = userPersistencePort;
         this.notificationPersistencePort = notificationPersistencePort;
+        this.traceabilityPersistencePort = traceabilityPersistencePort;
     }
 
     @Override
@@ -64,10 +69,15 @@ public class OrderCase implements IOrderServicePort {
                 throw new OrderDishQuantityInvalidException();
             }
         });
+        order.setDate(LocalDate.now());
         order.setStatus(ConstValidation.PENDING);
         if(!orderPersistencePort.createOrder(order)){
             throw new OrderNotCreatedException();
         }
+        Order orderCreated = orderPersistencePort.getOrderByParams(order.getStatus(),
+                order.getIdClient(), order.getIdRestaurant());
+        orderCreated.setDishes(order.getDishes());
+        traceabilityPersistencePort.createOrderTraceability(orderCreated);
     }
 
     @Override
@@ -88,7 +98,11 @@ public class OrderCase implements IOrderServicePort {
         if (validatedOrderParams(idRestaurant, order)) {
             throw new OrderNotAssignedException();
         }
+        order.setIdEmployee(getIdUser());
+        order.setStatus(ConstValidation.IN_PROCESS);
         orderPersistencePort.updateOrder(order);
+        traceabilityPersistencePort.assignEmployeeToOrder(order.getId(), getIdUser());
+        traceabilityPersistencePort.updateOrderTraceability(order.getId(), order.getStatus(), LocalDateTime.now());
     }
 
 
@@ -102,6 +116,7 @@ public class OrderCase implements IOrderServicePort {
         order.setStatus(ConstValidation.COMPLETED);
         orderPersistencePort.updateOrder(order);
         notificationPersistencePort.sendNotification(userPersistencePort.getPhone(order.getIdClient()), order.getId());
+        traceabilityPersistencePort.updateOrderTraceability(order.getId(), order.getStatus(), LocalDateTime.now());
 
     }
 
@@ -125,6 +140,7 @@ public class OrderCase implements IOrderServicePort {
         }
         order.setStatus(ConstValidation.DELIVERED);
         orderPersistencePort.updateOrder(order);
+        traceabilityPersistencePort.updateOrderTraceability(order.getId(), order.getStatus(), LocalDateTime.now());
     }
 
     @Override
@@ -138,6 +154,7 @@ public class OrderCase implements IOrderServicePort {
         }
         order.setStatus(ConstValidation.CANCELED);
         orderPersistencePort.updateOrder(order);
+        traceabilityPersistencePort.updateOrderTraceability(order.getId(), order.getStatus(), LocalDateTime.now());
     }
 
     private Long getIdUser() {

@@ -22,4 +22,7 @@ public interface IOrderRepository extends JpaRepository<OrderEntity, Long> {
                                                       @Param("filterBy") String filterBy,
                                                       Pageable pageable);
 
+    OrderEntity findByStatusAndIdClientAndRestaurant_Id(String status, Long idClient, Long restaurantId);
+
+    boolean existsByIdClientAndStatusIsLike(Long idClient, String status);
 }
