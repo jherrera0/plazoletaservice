@@ -15,4 +15,6 @@ public interface IOrderPersistencePort {
     Order getOrderById(Long idOrder);
 
     void updateOrder(Order order);
+
+    Order getOrderByParams(String status, Long idClient, Long idRestaurant);
 }
